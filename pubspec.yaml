@@ -27,9 +27,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  firebase_core: ^1.13.1
-  firebase_auth: ^3.3.11
-  
   flutter:
     sdk: flutter
 
@@ -62,6 +59,22 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - lib/assets/
+    - lib/assets/i18n/
+    - lib/assets/images/
+
+  fonts:
+    - family: Courier
+      fonts:
+        - asset: lib/assets/fonts/CourierPrime-Bold.ttf
+          weight: 700
+        - asset: lib/assets/fonts/CourierPrime-BoldItalic.ttf
+          weight: 700
+        - asset: lib/assets/fonts/CourierPrime-Italic.ttf
+          weight: 400
+        - asset: lib/assets/fonts/CourierPrime-Regular.ttf
+          weight: 500
 
   # To add assets to your application, add an assets section, like this:
   # assets:
