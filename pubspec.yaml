@@ -63,22 +63,7 @@ flutter:
     - lib/assets/
     - lib/assets/i18n/
     - lib/assets/images/
-
-  fonts:
-    - family: Courier
-      fonts:
-        - asset: lib/assets/fonts/CourierPrime-Bold.ttf
-          weight: 700
-        - asset: lib/assets/fonts/CourierPrime-BoldItalic.ttf
-          weight: 700
-        - asset: lib/assets/fonts/CourierPrime-Italic.ttf
-          weight: 400
-        - asset: lib/assets/fonts/CourierPrime-Regular.ttf
-          weight: 500
-
-  assets:
-      - lib/assets/images/
-      - lib/assets/fonts/
+    - lib/assets/fonts/
 
   fonts:
     - family: Asap
