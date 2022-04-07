@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pdm/src/features/auth/presentation/view/page/user.dart';
 
 import 'contentOnboarding.dart';
+import 'login.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -102,7 +103,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => UserScreen(),
+                      builder: (_) => LoginScreen(),
                     ),
                   );
                 }

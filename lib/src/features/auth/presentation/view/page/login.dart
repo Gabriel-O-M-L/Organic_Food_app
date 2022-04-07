@@ -16,19 +16,6 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-// Future<http.Response> login(String email, String password) async {
-//   return http.post(
-//     Uri.parse('http://127.0.0.1:8000/api/login/'),
-//     headers: <String, String>{
-//       'Content-Type': 'application/json; charset=UTF-8',
-//     },
-//     body: jsonEncode(<String, String>{
-//       "email": email,
-//       "password": password,
-//     }),
-//   );
-// }
-
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
@@ -60,7 +47,6 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 height: MediaQuery.of(context).size.height / 15,
                 child: Text(
-                  //'Please rate with star',
                   text,
                   style: TextStyle(
                     fontSize: 18,
@@ -183,21 +169,11 @@ class _LoginScreenState extends State<LoginScreen> {
     } else if (response.statusCode == 202)
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => OnboardingScreen()),
+        MaterialPageRoute(builder: (context) => UserScreen()),
       );
     else
       alertDialog("Dados Incorretos!");
-    return '$email, $password';
   }
-  //   if (response.statusCode == 202)
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => OnboardingScreen()),
-  //     );
-  //   else
-  //     alertDialog("Email inválido?");
-  //   return '$email, $password';
-  // }
 
   Widget _buildLoginTF() {
     email = emailController.text.toString();

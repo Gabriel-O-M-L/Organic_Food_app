@@ -31,6 +31,45 @@ class _ForgetPassword extends State<ForgetPassword> {
   String email = "";
   String password = "";
 
+  Future alertDialog(String text) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("OK",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(6.0))),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const SizedBox(height: 30),
+              Container(
+                height: MediaQuery.of(context).size.height / 15,
+                child: Text(
+                  //'Please rate with star',
+                  text,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildEmailTF() {
     email = emailController.text;
     return SizedBox(
@@ -111,15 +150,23 @@ class _ForgetPassword extends State<ForgetPassword> {
     );
   }
 
-  void _buildResetPasswordTF() {
+  Future _buildResetPasswordTF() async {
     email = emailController.text.toString();
     password = passwordController.text.toString();
 
+    if (email.length < 5) {
+      return alertDialog("Email muito pequeno!");
+    } else if (!email.contains("@")) {
+      alertDialog("Email inválido!");
+    } else if (password.length < 6) {
+      return alertDialog("Senha muito pequena!");
+    } else
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+
     forgetPassword(email, password);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
   }
 
   @override
