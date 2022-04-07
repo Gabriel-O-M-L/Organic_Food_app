@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
+import 'package:localization/localization.dart';
 
 import 'login.dart';
 
@@ -45,7 +46,7 @@ class _ForgetPassword extends State<ForgetPassword> {
               },
             ),
           ],
-          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          title: Text("warning".i18n(), style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -108,7 +109,7 @@ class _ForgetPassword extends State<ForgetPassword> {
         obscureText: true,
         autofocus: false,
         decoration: InputDecoration(
-          labelText: "New Password",
+          labelText: "new_password".i18n(),
           labelStyle: TextStyle(
             color: Color(0xffFFFFFF),
             fontSize: 22,
@@ -140,8 +141,8 @@ class _ForgetPassword extends State<ForgetPassword> {
         fixedSize: const Size(180, 70),
         primary: Colors.black,
       ),
-      child: const Text(
-        "Reset Passoword",
+      child: Text(
+        "password_reset".i18n(),
         style: TextStyle(
           color: Color(0xffFFFFFF),
           fontSize: 18,
@@ -155,11 +156,11 @@ class _ForgetPassword extends State<ForgetPassword> {
     password = passwordController.text.toString();
 
     if (email.length < 5) {
-      return alertDialog("Email muito pequeno!");
+      return alertDialog("short_email".i18n());
     } else if (!email.contains("@")) {
-      alertDialog("Email inválido!");
+      alertDialog("invalid_email".i18n());
     } else if (password.length < 6) {
-      return alertDialog("Senha muito pequena!");
+      return alertDialog("short_password".i18n());
     } else
       Navigator.push(
         context,
@@ -182,8 +183,8 @@ class _ForgetPassword extends State<ForgetPassword> {
               alignment: Alignment.topCenter,
             ),
             const SizedBox(height: 50),
-            const Text(
-              "Reset your password",
+            Text(
+              "reset_password".i18n(),
               style: TextStyle(
                 fontSize: 28,
                 color: Color(0xff212121),

@@ -5,11 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
 import 'ResetPassoword.dart';
 import 'SignUp.dart';
-import 'onboarding.dart';
-import 'user.dart';
+import '../../../../onboarding/presentation/page/onboarding.dart';
+import 'package:pdm/src/features/auth/presentation/view/page/ResetPassoword.dart';
+import 'package:localization/localization.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -37,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
               },
             ),
           ],
-          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          title: Text('warning'.i18n(), style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -68,9 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
       child: TextFormField(
         validator: (value) {
           if (value!.length < 5) {
-            return "Email muito curto";
+            return "short_email".i18n();
           } else if (!value.contains("@")) {
-            return "Email Inválido";
+            return "invalid_email".i18n();
           }
           return null;
         },
@@ -105,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: TextFormField(
         validator: (value) {
           if (value!.length < 5) {
-            return "Senha muito curto";
+            return "short_password".i18n();
           }
           return null;
         },
@@ -113,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
         obscureText: true,
         autofocus: false,
         decoration: InputDecoration(
-          labelText: "Password",
+          labelText: "password".i18n(),
           labelStyle: TextStyle(
             fontSize: 22,
             color: Color(0xffFFFFFF),
@@ -161,18 +162,18 @@ class _LoginScreenState extends State<LoginScreen> {
         .post(url, body: {'email': '$email', 'password': '$password'});
 
     if (email.length < 5) {
-      return alertDialog("Email muito pequeno!");
+      return alertDialog("short_email".i18n());
     } else if (!email.contains("@")) {
-      alertDialog("Email inválido!");
+      alertDialog("invalid_email".i18n());
     } else if (password.length < 6) {
-      return alertDialog("Senha muito pequena!");
+      return alertDialog("short_password".i18n());
     } else if (response.statusCode == 202)
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => UserScreen()),
       );
     else
-      alertDialog("Dados Incorretos!");
+      alertDialog("incorrect_data".i18n());
   }
 
   Widget _buildLoginTF() {
@@ -186,8 +187,8 @@ class _LoginScreenState extends State<LoginScreen> {
         fixedSize: const Size(90, 40),
         primary: Colors.black,
       ),
-      child: const Text(
-        "Acessar",
+      child: Text(
+        "acess".i18n(),
         style: TextStyle(
           color: Color(0xffFFFFFF),
           fontSize: 16,
@@ -204,8 +205,8 @@ class _LoginScreenState extends State<LoginScreen> {
         fixedSize: const Size(90, 40),
         primary: Colors.black,
       ),
-      child: const Text(
-        "Cadastrar",
+      child: Text(
+        "register".i18n(),
         style: TextStyle(
           color: Color(0xffFFFFFF),
           fontSize: 16,
@@ -220,8 +221,8 @@ class _LoginScreenState extends State<LoginScreen> {
       style: TextButton.styleFrom(
         primary: Colors.black,
       ),
-      child: const Text(
-        "Perdi a senha",
+      child: Text(
+        "forgot_password".i18n(),
         style: TextStyle(
           color: Color(0xff212121),
           fontSize: 16,

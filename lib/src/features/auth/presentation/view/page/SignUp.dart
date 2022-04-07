@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:localization/localization.dart';
 import 'login.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -69,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         obscureText: true,
         autofocus: false,
         decoration: InputDecoration(
-          labelText: "Password",
+          labelText: "password".i18n(),
           labelStyle: TextStyle(
             fontSize: 22,
             color: Color(0xffFFFFFF),
@@ -101,8 +101,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         fixedSize: const Size(120, 70),
         primary: Colors.black,
       ),
-      child: const Text(
-        "Sign Up",
+      child: Text(
+        "enter".i18n(),
         style: TextStyle(
           color: Color(0xffFFFFFF),
           fontSize: 22,
@@ -125,7 +125,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               },
             ),
           ],
-          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          title: Text("warning".i18n(), style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -155,11 +155,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     password = passwordController.text.toString();
 
     if (email.length < 5) {
-      return alertDialog("Email muito pequeno!");
+      return alertDialog("short_email".i18n());
     } else if (!email.contains("@")) {
-      alertDialog("Email inválido!");
+      alertDialog("invalid_email".i18n());
     } else if (password.length < 6) {
-      return alertDialog("Senha muito pequena!");
+      return alertDialog("short_password".i18n());
     } else
       Navigator.push(
         context,

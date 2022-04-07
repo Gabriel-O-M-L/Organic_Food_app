@@ -1,0 +1,45 @@
+{
+    "next": "Proximo",
+    "go_back": "Anterior",
+    "go forward": "Para o login",
+    "short_email":  "Email muito muito curto",
+    "invalid_email": "Email invalido",
+    "short_password": "Senha  muito pequena",
+    "incorect_data": "Dados incorretos",
+    "data": "Dados",
+    "acess": "Acesso",
+    "register": "Cadastrar",
+    "regist": "Cadastro",
+    "forgot_password": "Esqueci a senha",
+    "password_reset": "Recuperação de Senha",
+    "password": "senha",
+    "new_password": "nova senha",
+    "reset_password": "Refaça sua senha",
+    "enter": "sign up",
+    "change_password": "Trocar Senha",
+    "search": "Pesquisar",
+    "recent_searches": "Buscas recentes",
+    "search_for": "Você proucura por:",
+    "login" : "Entrar",
+    "recover": "Recuperar",
+    "warning": "Alerta!",
+    "request": "Pedidos",
+    "ratings": "Pontuacão",
+
+
+    "historic": "Histório de Compras",
+    "personal_data": "Dados",
+    "configuration": "Configuração",
+    "name": "nome",
+
+    "onboard_first_page_theme":     "Ligação com o Cliente",
+    "onboard_first_page_phrase":  "O aplicativo foi feito para ajudar a pequenos agricultores a conseguir aumentar suas margens de lucro e facilitar na divulgação de seus produtos, conectando diretamente com o consumidor.",
+
+
+    "onboard_second_page_theme":    "Venda Mais",
+    "onboard_second_page_phrase":  "Produtores poderão ver o que possíveis compradores estão à procura e usuários poderão encontrar produtos mais perto de casa.",
+    
+
+    "onboard_third_page_theme":     "Encontre os Melhores Produtos",
+    "onboard_third_page_phrase":  "O sistema de histórico preços proporciona uma forma de o usuário avaliar suas compra. Já a media de preço pode ajudar o produtor controlar seus preços, usando preços gerais."
+}

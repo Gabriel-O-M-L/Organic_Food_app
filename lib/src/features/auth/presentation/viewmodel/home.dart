@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:localization/localization.dart';
 
 class Home_Page extends StatelessWidget {
   Home_Page({Key? key}) : super(key: key);
@@ -38,12 +39,12 @@ class Home_Page extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 80),
-          const SizedBox(
+          SizedBox(
             width: 300,
             child: TextField(
               autofocus: false,
               decoration: InputDecoration(
-                labelText: "Nome",
+                labelText: "name".i18n(),
                 labelStyle: TextStyle(
                   color: Color(0xffFFFFFF),
                 ),
@@ -62,12 +63,12 @@ class Home_Page extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          const SizedBox(
+          SizedBox(
             width: 300,
             child: TextField(
               autofocus: false,
               decoration: InputDecoration(
-                labelText: "Senha",
+                labelText: "password".i18n(),
                 labelStyle: TextStyle(
                   color: Color(0xffFFFFFF),
                 ),
@@ -94,8 +95,8 @@ class Home_Page extends StatelessWidget {
                 fixedSize: const Size(90, 40),
                 primary: Colors.black,
               ),
-              child: const Text(
-                "Acessar",
+              child: Text(
+                "acess".i18n(),
                 style: TextStyle(
                   color: Color(0xffFFFFFF),
                   fontSize: 16,
@@ -110,8 +111,8 @@ class Home_Page extends StatelessWidget {
                 fixedSize: const Size(90, 40),
                 primary: Colors.black,
               ),
-              child: const Text(
-                "Cadastrar",
+              child: Text(
+                "register".i18n(),
                 style: TextStyle(
                   color: Color(0xffFFFFFF),
                   fontSize: 16,
@@ -125,8 +126,8 @@ class Home_Page extends StatelessWidget {
             style: TextButton.styleFrom(
               primary: Colors.black,
             ),
-            child: const Text(
-              "Perdi a senha",
+            child: Text(
+              "forgot_password".i18n(),
               style: TextStyle(
                 color: Color(0xff212121),
                 fontSize: 16,

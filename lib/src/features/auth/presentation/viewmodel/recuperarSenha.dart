@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:localization/localization.dart';
 
 class RecuperarSenha extends StatelessWidget {
   RecuperarSenha({Key? key}) : super(key: key);
@@ -24,8 +25,8 @@ class RecuperarSenha extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.08,
           ),
-          const Text(
-            "Recuperação de Senha",
+          Text(
+            "password_reset".i18n(),
             style: TextStyle(
               fontSize: 28,
               color: Color(0xff212121),
@@ -37,12 +38,12 @@ class RecuperarSenha extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.05,
           ),
           const SizedBox(height: 80),
-          const SizedBox(
+          SizedBox(
             width: 300,
             child: TextField(
               autofocus: false,
               decoration: InputDecoration(
-                labelText: "Nome",
+                labelText: "name".i18n(),
                 labelStyle: TextStyle(
                   color: Color(0xffFFFFFF),
                 ),
@@ -85,12 +86,12 @@ class RecuperarSenha extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          const SizedBox(
+          SizedBox(
             width: 300,
             child: TextField(
               autofocus: false,
               decoration: InputDecoration(
-                labelText: "Nova Senha",
+                labelText: "new_password".i18n(),
                 labelStyle: TextStyle(
                   color: Color(0xffFFFFFF),
                 ),
@@ -118,8 +119,8 @@ class RecuperarSenha extends StatelessWidget {
               fixedSize: const Size(120, 60),
               primary: Colors.black,
             ),
-            child: const Text(
-              "Recuperar",
+            child: Text(
+              "recover".i18n(),
               style: TextStyle(
                 color: Color(0xffFFFFFF),
                 fontSize: 20,

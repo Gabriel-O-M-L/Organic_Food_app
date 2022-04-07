@@ -4,7 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:pdm/src/features/auth/presentation/view/page/pesquisa.dart';
+import 'package:pdm/src/features/search/presentation/view/page/search.dart';
+import 'package:localization/localization.dart';
 
 import 'config.dart';
 
@@ -25,13 +26,13 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget _buildHistorico() {
     return TextButton(
-      onPressed: (() => print('Histório de Compras')),
+      onPressed: (() => print('historic'.i18n())),
       style: TextButton.styleFrom(
         primary: Colors.black,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Histório de Compras",
+      child: Text(
+        "historic".i18n(),
         style: TextStyle(
           color: Color(0xff212121),
           fontSize: 22,
@@ -42,13 +43,13 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget _buildPedidos() {
     return TextButton(
-      onPressed: (() => print('Pedidos')),
+      onPressed: (() => print('request'.i18n())),
       style: TextButton.styleFrom(
         primary: Colors.black,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Pedidos",
+      child: Text(
+        'request'.i18n(),
         style: TextStyle(
           color: Color(0xff212121),
           fontSize: 22,
@@ -59,13 +60,13 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget _buildDados() {
     return TextButton(
-      onPressed: (() => print('Dados')),
+      onPressed: (() => print('data'.i18n())),
       style: TextButton.styleFrom(
         primary: Colors.black,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Dados",
+      child: Text(
+        'data'.i18n(),
         style: TextStyle(
           color: Color(0xff212121),
           fontSize: 22,
@@ -93,13 +94,13 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget _buildPontuacao() {
     return TextButton(
-      onPressed: (() => print('Pontuação')),
+      onPressed: (() => print('ratings'.i18n())),
       style: TextButton.styleFrom(
         primary: Colors.black,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Pontuação",
+      child: Text(
+        'ratings'.i18n(),
         style: TextStyle(
           color: Color(0xff212121),
           fontSize: 22,
@@ -118,8 +119,8 @@ class _UserScreenState extends State<UserScreen> {
         primary: Colors.black,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Configurações",
+      child: Text(
+        'configuration'.i18n(),
         style: TextStyle(
           color: Color(0xff212121),
           fontSize: 22,
@@ -141,7 +142,7 @@ class _UserScreenState extends State<UserScreen> {
               'lib/assets/images/casa.svg',
             ),
             iconSize: 50,
-            onPressed: (() => print('config')),
+            onPressed: (() => print('configuration'.i18n())),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.2),
           IconButton(
@@ -149,7 +150,7 @@ class _UserScreenState extends State<UserScreen> {
               'lib/assets/images/pessoa.svg',
             ),
             iconSize: 50,
-            onPressed: (() => print('config')),
+            onPressed: (() => print('configuration'.i18n())),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.2),
           IconButton(

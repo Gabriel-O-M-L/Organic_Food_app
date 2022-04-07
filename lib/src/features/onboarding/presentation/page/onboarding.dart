@@ -3,10 +3,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pdm/src/features/auth/presentation/view/page/user.dart';
-
 import 'contentOnboarding.dart';
-import 'login.dart';
+import '../../../auth/presentation/view/page/login.dart';
+import 'package:pdm/src/features/auth/auth_module.dart';
+import 'package:localization/localization.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -54,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       children: [
                         SvgPicture.asset(
                           contents[i].image,
-                          height: 250,
+                          height: 240,
                         ),
                         SizedBox(
                           height: 30,
@@ -96,16 +96,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             width: double.infinity,
             child: FlatButton(
               child: Text(
-                  currentIndex == contents.length - 1 ? "Avançar" : "Próximo",
+                  currentIndex == contents.length - 1
+                      ? 'go_forward'.i18n()
+                      : 'next'.i18n(),
                   style: TextStyle(fontSize: 26)),
               onPressed: () {
                 if (currentIndex == contents.length - 1) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => LoginScreen(),
-                    ),
-                  );
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/login', (Route<dynamic> route) => false);
                 }
                 _controller.nextPage(
                     duration: Duration(milliseconds: 100),

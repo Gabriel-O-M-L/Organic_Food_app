@@ -3,11 +3,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pdm/src/features/auth/presentation/view/page/pesquisa.dart';
-import 'package:pdm/src/features/auth/presentation/view/page/user.dart';
+import 'package:pdm/src/features/search/presentation/view/page/search.dart';
+import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
 import 'package:http/http.dart' as http;
-
-import 'ResetPassoword.dart';
+import 'package:pdm/src/features/auth/presentation/view/page/ResetPassoword.dart';
+import 'package:localization/localization.dart';
 
 class ConfigScreen extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class ConfigScreen extends StatefulWidget {
 }
 
 class _ConfigScreenState extends State<ConfigScreen> {
-  Widget _buildLine() {
+  Widget get _buildLine {
     return Container(
       color: Color.fromARGB(255, 0, 0, 0),
       width: MediaQuery.of(context).size.width,
@@ -24,7 +24,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
     );
   }
 
-  Widget _buildTrocarSenha() {
+  Widget get _buildTrocarSenha {
     return TextButton(
       onPressed: (() => Navigator.push(
             context,
@@ -34,8 +34,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
         primary: Colors.black,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Trocar Senha",
+      child: Text(
+        'change_password'.i18n(),
         style: TextStyle(
           color: Color(0xff212121),
           fontSize: 22,
@@ -44,7 +44,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
     );
   }
 
-  Widget _buildNotificacao() {
+  Widget get _buildNotificacao {
     return TextButton(
       onPressed: (() => print('Notificação')),
       style: TextButton.styleFrom(
@@ -61,7 +61,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
     );
   }
 
-  Widget _buildTema() {
+  Widget get _buildTema {
     return TextButton(
       onPressed: (() => print('Tema')),
       style: TextButton.styleFrom(
@@ -78,7 +78,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
     );
   }
 
-  Widget _buildTrocarEmail() {
+  Widget get _buildTrocarEmail {
     return TextButton(
       onPressed: (() => print('Trocar Email')),
       style: TextButton.styleFrom(
@@ -95,7 +95,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
     );
   }
 
-  Widget _buildFooter() {
+  Widget get _buildFooter {
     return Container(
       color: const Color(0xff388E3C),
       width: MediaQuery.of(context).size.width,
@@ -175,21 +175,21 @@ class _ConfigScreenState extends State<ConfigScreen> {
                   ]),
             ),
             const SizedBox(height: 20),
-            _buildTrocarSenha(),
+            _buildTrocarSenha,
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
-            _buildNotificacao(),
+            _buildNotificacao,
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
-            _buildTema(),
+            _buildTema,
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
-            _buildTrocarEmail(),
+            _buildTrocarEmail,
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(
@@ -198,7 +198,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                 ),
               ),
             ),
-            _buildFooter(),
+            _buildFooter,
           ],
         ),
       ]),

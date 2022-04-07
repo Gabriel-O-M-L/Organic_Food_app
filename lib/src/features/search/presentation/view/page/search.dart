@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:pdm/src/features/auth/presentation/view/page/user.dart';
+import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
