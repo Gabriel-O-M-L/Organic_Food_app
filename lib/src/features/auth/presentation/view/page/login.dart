@@ -8,12 +8,26 @@ import 'package:http/http.dart' as http;
 
 import 'ResetPassoword.dart';
 import 'SignUp.dart';
+import 'onboarding.dart';
 import 'user.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
+
+// Future<http.Response> login(String email, String password) async {
+//   return http.post(
+//     Uri.parse('http://127.0.0.1:8000/api/login/'),
+//     headers: <String, String>{
+//       'Content-Type': 'application/json; charset=UTF-8',
+//     },
+//     body: jsonEncode(<String, String>{
+//       "email": email,
+//       "password": password,
+//     }),
+//   );
+// }
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = new TextEditingController();
@@ -22,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String email = "";
   String password = "";
 
-  Future alertDialog() {
+  Future alertDialog(String text) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -47,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: MediaQuery.of(context).size.height / 15,
                 child: Text(
                   //'Please rate with star',
-                  'Dados incorretos, tente novamente',
+                  text,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -65,7 +79,15 @@ class _LoginScreenState extends State<LoginScreen> {
     email = emailController.text;
     return SizedBox(
       width: 300,
-      child: TextField(
+      child: TextFormField(
+        validator: (value) {
+          if (value!.length < 5) {
+            return "Email muito curto";
+          } else if (!value.contains("@")) {
+            return "Email Inválido";
+          }
+          return null;
+        },
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
@@ -94,7 +116,13 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildPasswordTF() {
     return SizedBox(
       width: 300,
-      child: TextField(
+      child: TextFormField(
+        validator: (value) {
+          if (value!.length < 5) {
+            return "Senha muito curto";
+          }
+          return null;
+        },
         controller: passwordController,
         obscureText: true,
         autofocus: false,
@@ -138,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return '$email, $password';
   }
 
-  Future<String> _buildLoginDateTF() async {
+  Future<Object?> _buildLoginDateTF() async {
     email = emailController.text.toString();
     password = passwordController.text.toString();
 
@@ -146,16 +174,30 @@ class _LoginScreenState extends State<LoginScreen> {
     var response = await http
         .post(url, body: {'email': '$email', 'password': '$password'});
 
-    // login(email, password);
-    if (response.statusCode == 202)
+    if (email.length < 5) {
+      return alertDialog("Email muito pequeno!");
+    } else if (!email.contains("@")) {
+      alertDialog("Email inválido!");
+    } else if (password.length < 6) {
+      return alertDialog("Senha muito pequena!");
+    } else if (response.statusCode == 202)
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => UserScreen()),
+        MaterialPageRoute(builder: (context) => OnboardingScreen()),
       );
     else
-      alertDialog();
+      alertDialog("Dados Incorretos!");
     return '$email, $password';
   }
+  //   if (response.statusCode == 202)
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => OnboardingScreen()),
+  //     );
+  //   else
+  //     alertDialog("Email inválido?");
+  //   return '$email, $password';
+  // }
 
   Widget _buildLoginTF() {
     email = emailController.text.toString();
