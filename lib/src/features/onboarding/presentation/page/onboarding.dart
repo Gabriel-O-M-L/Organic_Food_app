@@ -103,7 +103,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               onPressed: () {
                 if (currentIndex == contents.length - 1) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/login', (Route<dynamic> route) => false);
+                      '/auth', (Route<dynamic> route) => false);
                 }
                 _controller.nextPage(
                     duration: Duration(milliseconds: 100),

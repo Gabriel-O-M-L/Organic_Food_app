@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,14 +12,3 @@ import 'features/auth/presentation/view/page/login.dart';
 void main() {
   runApp(ModularApp(module: AppModule(), child: const AppWidget()));
 }
-
-//class MyApp extends StatelessWidget {
-//  const MyApp({Key? key}) : super(key: key);
-
-//  @override
-  //Widget build(BuildContext context) {
-  //  return MaterialApp(
-  //    home: OnboardingScreen(),
-  //  );
-  // }
-//}

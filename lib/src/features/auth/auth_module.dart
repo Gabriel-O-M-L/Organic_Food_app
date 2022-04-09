@@ -18,7 +18,7 @@ class AuthModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ChildRoute('/login', child: (_, __) => LoginScreen()),
+        ChildRoute('/', child: (_, __) => LoginScreen()),
         ChildRoute('/signup', child: (_, __) => SignUpScreen()),
         ChildRoute('/forgot', child: (_, __) => ForgetPassword())
       ];

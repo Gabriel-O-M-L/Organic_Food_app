@@ -8,22 +8,57 @@ part 'login_viewmodel.g.dart';
 class LoginViewModel = _LoginViewModelBase with _$LoginViewModel;
 
 abstract class _LoginViewModelBase with Store {
+  final error = LoginError();
   final _usecase = Modular.get<LoginUseCase>();
 
   @observable
-  String username = '';
+  String email = '';
 
   @observable
   String password = '';
 
-  void login() async {
-    //TODO: Validate username
-    //TODO: Validate password
+  @action
+  void validateEmail() {
+    error.email = _usecase.validateEmail(email);
+  }
 
-    try {
-      await _usecase.login(username, password);
-    } on UnimplementedError {
-      print('Put the error message in an observable instance field.');
+  @action
+  void validatePassword() {
+    error.password = _usecase.validatePassword(password);
+  }
+
+  bool login() {
+    error.clear();
+
+    validateEmail();
+    validatePassword();
+
+    if (!error.hasErrors) {
+      return false;
+    } else {
+      return true;
     }
+  }
+}
+
+class LoginError = _LoginErrorBase with _$LoginError;
+
+abstract class _LoginErrorBase with Store {
+  @observable
+  String? email;
+
+  @observable
+  String? password;
+
+  @observable
+  String? login;
+
+  @computed
+  bool get hasErrors => email != null || password != null || login != null;
+
+  void clear() {
+    email = null;
+    password = null;
+    login = null;
   }
 }

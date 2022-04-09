@@ -4,7 +4,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 import 'package:localization/localization.dart';
+import 'package:mobx/mobx.dart';
+import 'package:pdm/src/features/auth/presentation/viewmodel/login_viewmodel.dart';
 import 'login.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -24,7 +27,7 @@ Future<http.Response> SignUP(String email, String password) {
   );
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends ModularState<SignUpScreen, LoginViewModel> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
@@ -38,6 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: TextField(
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
+        onChanged: (value) => store.email = value,
         autofocus: false,
         decoration: InputDecoration(
           labelText: "Email",
@@ -66,6 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       width: 300,
       child: TextField(
         controller: passwordController,
+        onChanged: (value) => store.password = value,
         obscureText: true,
         autofocus: false,
         decoration: InputDecoration(
@@ -154,12 +159,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     email = emailController.text.toString();
     password = passwordController.text.toString();
 
-    if (email.length < 5) {
-      return alertDialog("short_email".i18n());
-    } else if (!email.contains("@")) {
-      alertDialog("invalid_email".i18n());
-    } else if (password.length < 6) {
-      return alertDialog("short_password".i18n());
+    store.password = password;
+    store.email = email;
+
+    store.login();
+
+    if (null != store.error.email) {
+      String error = store.error.email.toString();
+      return alertDialog(error);
+    } else if (null != store.error.password) {
+      String error = store.error.password.toString();
+      return alertDialog(error);
     } else
       Navigator.push(
         context,
@@ -182,8 +192,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               alignment: Alignment.topCenter,
             ),
             const SizedBox(height: 50),
-            const Text(
-              "Cadastro",
+            Text(
+              "register".i18n(),
               style: TextStyle(
                 fontSize: 28,
                 color: Color(0xff212121),

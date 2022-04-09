@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:pdm/src/features/auth/presentation/viewmodel/login_viewmodel.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
 import 'ResetPassoword.dart';
 import 'SignUp.dart';
@@ -17,7 +18,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
@@ -68,10 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
       width: 300,
       child: TextFormField(
         validator: (value) {
-          if (value!.length < 5) {
-            return "short_email".i18n();
-          } else if (!value.contains("@")) {
-            return "invalid_email".i18n();
+          store.email = email;
+          store.login();
+          if (null != store.error.email) {
+            String error = store.error.email.toString();
+            return error;
           }
           return null;
         },
@@ -105,8 +107,11 @@ class _LoginScreenState extends State<LoginScreen> {
       width: 300,
       child: TextFormField(
         validator: (value) {
-          if (value!.length < 5) {
-            return "short_password".i18n();
+          store.password = password;
+          store.login();
+          if (null != store.error.password) {
+            String error = store.error.password.toString();
+            return error;
           }
           return null;
         },

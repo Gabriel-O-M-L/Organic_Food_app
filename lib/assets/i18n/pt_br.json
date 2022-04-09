@@ -1,7 +1,7 @@
 {
     "next": "Proximo",
     "go_back": "Anterior",
-    "go forward": "Para o login",
+    "go_forward": "Para o login",
     "short_email":  "Email muito muito curto",
     "invalid_email": "Email invalido",
     "short_password": "Senha  muito pequena",
@@ -15,7 +15,7 @@
     "password": "senha",
     "new_password": "nova senha",
     "reset_password": "Refaça sua senha",
-    "enter": "sign up",
+    "enter": "Cadastrar",
     "change_password": "Trocar Senha",
     "search": "Pesquisar",
     "recent_searches": "Buscas recentes",
@@ -25,7 +25,6 @@
     "warning": "Alerta!",
     "request": "Pedidos",
     "ratings": "Pontuacão",
-
 
     "historic": "Histório de Compras",
     "personal_data": "Dados",

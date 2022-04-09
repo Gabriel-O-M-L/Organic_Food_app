@@ -23,5 +23,17 @@ ThemeData getTheme() {
     tertiary: AppColors.accent,
     onTertiary: AppColors.textLight,
   ));
+
+  var darkTheme = ThemeData(
+    primarySwatch: Colors.green,
+    brightness: Brightness.dark,
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+  );
+  var lightTheme = ThemeData(
+    primarySwatch: Colors.green,
+    brightness: Brightness.light,
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+  );
+
   return theme;
 }

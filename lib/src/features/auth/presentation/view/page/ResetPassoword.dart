@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 import 'package:localization/localization.dart';
+import "package:pdm/src/features/auth/presentation/viewmodel/login_viewmodel.dart";
 
 import 'login.dart';
 
@@ -25,7 +27,7 @@ Future<http.Response> forgetPassword(String email, String password) {
   );
 }
 
-class _ForgetPassword extends State<ForgetPassword> {
+class _ForgetPassword extends ModularState<ForgetPassword, LoginViewModel> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
@@ -155,12 +157,17 @@ class _ForgetPassword extends State<ForgetPassword> {
     email = emailController.text.toString();
     password = passwordController.text.toString();
 
-    if (email.length < 5) {
-      return alertDialog("short_email".i18n());
-    } else if (!email.contains("@")) {
-      alertDialog("invalid_email".i18n());
-    } else if (password.length < 6) {
-      return alertDialog("short_password".i18n());
+    store.password = password;
+    store.email = email;
+
+    store.login();
+
+    if (null != store.error.email) {
+      String error = store.error.email.toString();
+      return alertDialog(error);
+    } else if (null != store.error.password) {
+      String error = store.error.password.toString();
+      return alertDialog(error);
     } else
       Navigator.push(
         context,
