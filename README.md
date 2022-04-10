@@ -8,10 +8,13 @@
 
 
 ##Artigos em ambos formatos tex e PDF na pasta artigo.zip
-##Figma e imagens no arquivo Telas&Figma.zip//
 
-##Pacotes nescessarios para ligar o servidor
-##Django 3.2.12, djangorestframwork 3.13.1, PyJWT 2.3.0 e Django-cors-headers 3.11.0
+##Figma e imagens no arquivo Telas&Figma.zip
+
+##Pacotes nescessarios para ligar o servidor :
+
+##Django 3.2.12, djangorestframwork 3.13.1, PyJWT 2.3.0 e Django-cors-headers 3.11.0   
+
 ##O comando para rodar o servidor seria python manage.py runserver que deve  ser executado dentro da pasta do servidor "back"
 
 Para ativar o tema escuro cadastre e logue com um usuario com o servidor rodando entre em configurações e clique no butão tema
