@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
+import 'package:pdm/theme_manager.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -16,32 +17,33 @@ class _SearchScreenState extends State<SearchScreen> {
 
   String search = "";
   String password = "";
-  Widget _buildSearchTF() {
+  Widget get _buildSearchTF {
     return SizedBox(
       width: 300,
       child: TextField(
         controller: searchController,
+        style: TextStyle(color: getTheme().colorScheme.onTertiary),
         obscureText: true,
         autofocus: false,
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.search,
-            color: Colors.white,
+            color: getTheme().colorScheme.onTertiary,
             size: 50,
           ),
           labelText: "Pesquisar",
           labelStyle: TextStyle(
             fontSize: 22,
-            color: Color(0xffFFFFFF),
+            color: getTheme().colorScheme.onTertiary,
           ),
           filled: true,
-          fillColor: Color(0xffBDBDBD),
+          fillColor: getTheme().colorScheme.tertiary,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             ),
             borderSide: BorderSide(
-              color: Color(0xffBDBDBD),
+              color: getTheme().colorScheme.tertiary,
               width: 2,
             ),
           ),
@@ -50,9 +52,9 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _buildFooter() {
+  Widget get _buildFooter {
     return Container(
-      color: const Color(0xff388E3C),
+      color: getTheme().colorScheme.primary,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.10,
       child: Row(
@@ -64,6 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             iconSize: 50,
             onPressed: (() => print('config')),
+            color: getTheme().colorScheme.onPrimary,
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.2),
           IconButton(
@@ -75,6 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   context,
                   MaterialPageRoute(builder: (context) => UserScreen()),
                 )),
+            color: getTheme().colorScheme.onPrimary,
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.2),
           IconButton(
@@ -83,6 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             iconSize: 50,
             onPressed: (() => print('config')),
+            color: getTheme().colorScheme.onPrimary,
           )
         ],
       ),
@@ -92,18 +97,19 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: getTheme().colorScheme.primaryContainer,
       body: Stack(children: <Widget>[
         Column(
           children: [
             Container(
-              color: const Color(0xff388E3C),
+              color: getTheme().colorScheme.primary,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.08,
               alignment: Alignment.topCenter,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSearchTF(),
+                    _buildSearchTF,
                   ]),
             ),
             const SizedBox(height: 80),
@@ -115,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   "Busca Recentes",
                   style: TextStyle(
                     fontSize: 22,
-                    color: Color(0xff212121),
+                    color: getTheme().colorScheme.onPrimaryContainer,
                   ),
                 ),
               ),
@@ -125,7 +131,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     0, 0, MediaQuery.of(context).size.width / 1.2, 0),
                 child: Icon(
                   Icons.update,
-                  color: Color(0xff757575),
+                  color: getTheme().colorScheme.onPrimaryContainer,
                   size: 30.0,
                 ),
               ),
@@ -135,7 +141,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     0, 0, MediaQuery.of(context).size.width / 1.2, 0),
                 child: Icon(
                   Icons.update,
-                  color: Color(0xff757575),
+                  color: getTheme().colorScheme.onPrimaryContainer,
                   size: 30.0,
                 ),
               ),
@@ -147,7 +153,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   "Você Procura Por",
                   style: TextStyle(
                     fontSize: 22,
-                    color: Color(0xff212121),
+                    color: getTheme().colorScheme.onPrimaryContainer,
                   ),
                 ),
               ),
@@ -159,7 +165,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            _buildFooter(),
+            _buildFooter,
           ],
         ),
       ]),

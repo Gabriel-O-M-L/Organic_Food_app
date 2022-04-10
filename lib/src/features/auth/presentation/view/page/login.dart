@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:pdm/src/features/auth/presentation/viewmodel/login_viewmodel.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
+import 'package:pdm/theme_manager.dart';
 import 'ResetPassoword.dart';
 import 'SignUp.dart';
 import '../../../../onboarding/presentation/page/onboarding.dart';
@@ -63,7 +64,7 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
     );
   }
 
-  Widget _buildEmailTF() {
+  Widget get _buildEmailTF {
     email = emailController.text;
     return SizedBox(
       width: 300,
@@ -80,20 +81,21 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
+        style: TextStyle(color: getTheme().colorScheme.onTertiary),
         decoration: InputDecoration(
           labelText: "Email",
           labelStyle: TextStyle(
             fontSize: 22,
-            color: Color(0xffFFFFFF),
+            color: getTheme().colorScheme.onTertiary,
           ),
           filled: true,
-          fillColor: Color(0xffBDBDBD),
+          fillColor: getTheme().colorScheme.tertiary,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             ),
             borderSide: BorderSide(
-              color: Color(0xffBDBDBD),
+              color: getTheme().colorScheme.tertiary,
               width: 2,
             ),
           ),
@@ -102,7 +104,7 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
     );
   }
 
-  Widget _buildPasswordTF() {
+  Widget get _buildPasswordTF {
     return SizedBox(
       width: 300,
       child: TextFormField(
@@ -118,20 +120,21 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
         controller: passwordController,
         obscureText: true,
         autofocus: false,
+        style: TextStyle(color: getTheme().colorScheme.onTertiary),
         decoration: InputDecoration(
           labelText: "password".i18n(),
           labelStyle: TextStyle(
             fontSize: 22,
-            color: Color(0xffFFFFFF),
+            color: getTheme().colorScheme.onTertiary,
           ),
           filled: true,
-          fillColor: Color(0xffBDBDBD),
+          fillColor: getTheme().colorScheme.tertiary,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             ),
             borderSide: BorderSide(
-              color: Color(0xffBDBDBD),
+              color: getTheme().colorScheme.tertiary,
               width: 2,
             ),
           ),
@@ -166,70 +169,75 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
     var response = await http
         .post(url, body: {'email': '$email', 'password': '$password'});
 
-    if (email.length < 5) {
-      return alertDialog("short_email".i18n());
-    } else if (!email.contains("@")) {
-      alertDialog("invalid_email".i18n());
-    } else if (password.length < 6) {
-      return alertDialog("short_password".i18n());
+    store.password = password;
+    store.email = email;
+
+    store.login();
+
+    if (null != store.error.email) {
+      String error = store.error.email.toString();
+      return alertDialog(error);
+    } else if (null != store.error.password) {
+      String error = store.error.password.toString();
+      return alertDialog(error);
     } else if (response.statusCode == 202)
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => UserScreen()),
       );
     else
-      alertDialog("incorrect_data".i18n());
+      alertDialog("incorect_data".i18n());
   }
 
-  Widget _buildLoginTF() {
+  Widget get _buildLoginTF {
     email = emailController.text.toString();
     password = passwordController.text.toString();
 
     return TextButton(
       onPressed: () => print(_buildLoginDateTF()),
       style: TextButton.styleFrom(
-        backgroundColor: const Color(0xffFF5252),
+        backgroundColor: getTheme().colorScheme.secondary,
         fixedSize: const Size(90, 40),
         primary: Colors.black,
       ),
       child: Text(
         "acess".i18n(),
         style: TextStyle(
-          color: Color(0xffFFFFFF),
+          color: getTheme().colorScheme.onSecondary,
           fontSize: 16,
         ),
       ),
     );
   }
 
-  Widget _buildSignupTF() {
+  Widget get _buildSignupTF {
     return TextButton(
       onPressed: () => print(_buildSignUpTF()),
       style: TextButton.styleFrom(
-        backgroundColor: const Color(0xffFF5252),
+        backgroundColor: getTheme().colorScheme.secondary,
         fixedSize: const Size(90, 40),
         primary: Colors.black,
       ),
       child: Text(
         "register".i18n(),
         style: TextStyle(
-          color: Color(0xffFFFFFF),
+          color: getTheme().colorScheme.onSecondary,
           fontSize: 16,
         ),
       ),
     );
   }
 
-  Widget _buildForgetPasswordTF() {
+  Widget get _buildForgetPasswordTF {
     return TextButton(
       onPressed: (() => _buildResetPasswordTF()),
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        primary: getTheme().colorScheme.onPrimaryContainer,
       ),
       child: Text(
         "forgot_password".i18n(),
         style: TextStyle(
-          color: Color(0xff212121),
+          color: getTheme().colorScheme.onPrimaryContainer,
           fontSize: 16,
         ),
       ),
@@ -239,11 +247,12 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: getTheme().colorScheme.primaryContainer,
       body: Stack(children: <Widget>[
         Column(
           children: [
             Container(
-              color: const Color(0xff388E3C),
+              color: getTheme().colorScheme.primary,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.15,
               alignment: Alignment.topCenter,
@@ -257,25 +266,25 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
               ),
             ),
             const SizedBox(height: 30),
-            const Text(
+            Text(
               "Horti em Casa",
               style: TextStyle(
                 fontSize: 28,
-                color: Color(0xff212121),
+                color: getTheme().colorScheme.onPrimaryContainer,
               ),
             ),
             const SizedBox(height: 80),
-            _buildEmailTF(),
+            _buildEmailTF,
             const SizedBox(height: 30),
-            _buildPasswordTF(),
+            _buildPasswordTF,
             const SizedBox(height: 30),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              _buildLoginTF(),
+              _buildLoginTF,
               const SizedBox(width: 120),
-              _buildSignupTF(),
+              _buildSignupTF,
             ]),
             const SizedBox(height: 30),
-            _buildForgetPasswordTF(),
+            _buildForgetPasswordTF,
           ],
         ),
       ]),
