@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:pdm/src/features/search/presentation/view/page/search.dart';
 import 'package:localization/localization.dart';
+import 'package:pdm/theme_manager.dart';
 
 import 'config.dart';
 
@@ -15,123 +16,117 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-  Widget _buildLine() {
+  Widget get _buildLine {
     return Container(
-      color: const Color(0xff388E3C),
+      color: getTheme().colorScheme.primary,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.005,
       alignment: Alignment.topCenter,
     );
   }
 
-  Widget _buildHistorico() {
+  Widget get _buildHistorico {
     return TextButton(
       onPressed: (() => print('historic'.i18n())),
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: Text(
         "historic".i18n(),
         style: TextStyle(
-          color: Color(0xff212121),
           fontSize: 22,
         ),
       ),
     );
   }
 
-  Widget _buildPedidos() {
+  Widget get _buildPedidos {
     return TextButton(
       onPressed: (() => print('request'.i18n())),
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: Text(
         'request'.i18n(),
         style: TextStyle(
-          color: Color(0xff212121),
           fontSize: 22,
         ),
       ),
     );
   }
 
-  Widget _buildDados() {
+  Widget get _buildDados {
     return TextButton(
       onPressed: (() => print('data'.i18n())),
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: Text(
         'data'.i18n(),
         style: TextStyle(
-          color: Color(0xff212121),
           fontSize: 22,
         ),
       ),
     );
   }
 
-  Widget _buildChat() {
+  Widget get _buildChat {
     return TextButton(
       onPressed: (() => print('Chat')),
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: const Text(
         "Chat",
         style: TextStyle(
-          color: Color(0xff212121),
           fontSize: 22,
         ),
       ),
     );
   }
 
-  Widget _buildPontuacao() {
+  Widget get _buildPontuacao {
     return TextButton(
       onPressed: (() => print('ratings'.i18n())),
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: Text(
         'ratings'.i18n(),
         style: TextStyle(
-          color: Color(0xff212121),
           fontSize: 22,
         ),
       ),
     );
   }
 
-  Widget _buildConfig() {
+  Widget get _buildConfig {
     return TextButton(
       onPressed: (() => Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ConfigScreen()),
           )),
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: Text(
         'configuration'.i18n(),
         style: TextStyle(
-          color: Color(0xff212121),
           fontSize: 22,
         ),
       ),
     );
   }
 
-  Widget _buildFooter() {
+  Widget get _buildFooter {
     return Container(
-      color: const Color(0xff388E3C),
+      color: getTheme().colorScheme.primary,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.10,
       child: Row(
@@ -171,11 +166,12 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: getTheme().colorScheme.primaryContainer,
       body: Stack(children: <Widget>[
         Column(
           children: [
             Container(
-              color: const Color(0xff388E3C),
+              color: getTheme().colorScheme.primary,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.2,
               alignment: Alignment.topCenter,
@@ -189,7 +185,7 @@ class _UserScreenState extends State<UserScreen> {
                       width: MediaQuery.of(context).size.width * 0.20,
                       height: MediaQuery.of(context).size.height * 0.20,
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.25), // border color
+                        color: getTheme().colorScheme.primary, // border color
                         shape: BoxShape.circle,
                       ),
                       child: Padding(
@@ -214,7 +210,7 @@ class _UserScreenState extends State<UserScreen> {
                               "Nome: TESTE",
                               style: TextStyle(
                                 fontSize: 18,
-                                color: Colors.white,
+                                color: getTheme().colorScheme.onPrimary,
                               ),
                             ),
                             const SizedBox(
@@ -226,7 +222,7 @@ class _UserScreenState extends State<UserScreen> {
                             'Email: teste@teste.com',
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.white,
+                              color: getTheme().colorScheme.onPrimary,
                             ),
                           ),
                         ]),
@@ -235,31 +231,31 @@ class _UserScreenState extends State<UserScreen> {
               ]),
             ),
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
-            _buildConfig(),
+            _buildConfig,
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
-            _buildHistorico(),
+            _buildHistorico,
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
-            _buildPedidos(),
+            _buildPedidos,
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
-            _buildDados(),
+            _buildDados,
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
-            _buildChat(),
+            _buildChat,
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
-            _buildPontuacao(),
+            _buildPontuacao,
             const SizedBox(height: 20),
-            _buildLine(),
+            _buildLine,
             const SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(
@@ -268,7 +264,7 @@ class _UserScreenState extends State<UserScreen> {
                 ),
               ),
             ),
-            _buildFooter(),
+            _buildFooter,
           ],
         ),
       ]),

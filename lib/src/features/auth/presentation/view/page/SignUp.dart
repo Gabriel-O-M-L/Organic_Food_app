@@ -6,6 +6,7 @@ import 'dart:developer';
 import 'package:localization/localization.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pdm/src/features/auth/presentation/viewmodel/login_viewmodel.dart';
+import 'package:pdm/theme_manager.dart';
 import 'login.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -34,7 +35,7 @@ class _SignUpScreenState extends ModularState<SignUpScreen, LoginViewModel> {
   String email = "";
   String password = "";
 
-  Widget _buildEmailTF() {
+  Widget get _buildEmailTF {
     email = emailController.text;
     return SizedBox(
       width: 300,
@@ -43,20 +44,21 @@ class _SignUpScreenState extends ModularState<SignUpScreen, LoginViewModel> {
         keyboardType: TextInputType.emailAddress,
         onChanged: (value) => store.email = value,
         autofocus: false,
+        style: TextStyle(color: getTheme().colorScheme.onTertiary),
         decoration: InputDecoration(
           labelText: "Email",
           labelStyle: TextStyle(
             fontSize: 22,
-            color: Color(0xffFFFFFF),
+            color: getTheme().colorScheme.onTertiary,
           ),
           filled: true,
-          fillColor: Color(0xffBDBDBD),
+          fillColor: getTheme().colorScheme.tertiary,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             ),
             borderSide: BorderSide(
-              color: Color(0xffBDBDBD),
+              color: getTheme().colorScheme.tertiary,
               width: 2,
             ),
           ),
@@ -65,7 +67,7 @@ class _SignUpScreenState extends ModularState<SignUpScreen, LoginViewModel> {
     );
   }
 
-  Widget _buildPasswordTF() {
+  Widget get _buildPasswordTF {
     return SizedBox(
       width: 300,
       child: TextField(
@@ -73,20 +75,21 @@ class _SignUpScreenState extends ModularState<SignUpScreen, LoginViewModel> {
         onChanged: (value) => store.password = value,
         obscureText: true,
         autofocus: false,
+        style: TextStyle(color: getTheme().colorScheme.onTertiary),
         decoration: InputDecoration(
           labelText: "password".i18n(),
           labelStyle: TextStyle(
             fontSize: 22,
-            color: Color(0xffFFFFFF),
+            color: getTheme().colorScheme.onTertiary,
           ),
           filled: true,
-          fillColor: Color(0xffBDBDBD),
+          fillColor: getTheme().colorScheme.tertiary,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             ),
             borderSide: BorderSide(
-              color: Color(0xffBDBDBD),
+              color: getTheme().colorScheme.tertiary,
               width: 2,
             ),
           ),
@@ -95,21 +98,21 @@ class _SignUpScreenState extends ModularState<SignUpScreen, LoginViewModel> {
     );
   }
 
-  Widget _buildSignUpTF() {
+  Widget get _buildSignUpTF {
     email = emailController.text.toString();
     password = passwordController.text.toString();
 
     return TextButton(
       onPressed: () => _buildSignUpDateTF(),
       style: TextButton.styleFrom(
-        backgroundColor: const Color(0xffFF5252),
+        backgroundColor: getTheme().colorScheme.secondary,
         fixedSize: const Size(120, 70),
         primary: Colors.black,
       ),
       child: Text(
         "enter".i18n(),
         style: TextStyle(
-          color: Color(0xffFFFFFF),
+          color: getTheme().colorScheme.onSecondary,
           fontSize: 22,
         ),
       ),
@@ -182,11 +185,12 @@ class _SignUpScreenState extends ModularState<SignUpScreen, LoginViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: getTheme().colorScheme.primaryContainer,
       body: Stack(children: <Widget>[
         Column(
           children: [
             Container(
-              color: const Color(0xff388E3C),
+              color: getTheme().colorScheme.primary,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.15,
               alignment: Alignment.topCenter,
@@ -196,15 +200,15 @@ class _SignUpScreenState extends ModularState<SignUpScreen, LoginViewModel> {
               "register".i18n(),
               style: TextStyle(
                 fontSize: 28,
-                color: Color(0xff212121),
+                color: getTheme().colorScheme.onPrimaryContainer,
               ),
             ),
             const SizedBox(height: 80),
-            _buildEmailTF(),
+            _buildEmailTF,
             const SizedBox(height: 30),
-            _buildPasswordTF(),
+            _buildPasswordTF,
             const SizedBox(height: 50),
-            _buildSignUpTF(),
+            _buildSignUpTF,
           ],
         ),
       ]),

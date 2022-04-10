@@ -6,6 +6,6 @@ class OnboardModule extends Module {
   @override
   List<ModularRoute> get routes => [
         ChildRoute('/', child: (_, __) => OnboardingScreen()),
-        ModuleRoute('/auth', module: AuthModule())
+        ModuleRoute('/auth/', module: AuthModule())
       ];
 }

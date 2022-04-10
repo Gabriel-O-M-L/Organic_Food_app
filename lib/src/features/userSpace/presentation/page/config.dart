@@ -8,6 +8,7 @@ import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:pdm/src/features/auth/presentation/view/page/ResetPassoword.dart';
 import 'package:localization/localization.dart';
+import 'package:pdm/theme_manager.dart';
 
 class ConfigScreen extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class ConfigScreen extends StatefulWidget {
 class _ConfigScreenState extends State<ConfigScreen> {
   Widget get _buildLine {
     return Container(
-      color: Color.fromARGB(255, 0, 0, 0),
+      color: getTheme().colorScheme.primary,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.005,
       alignment: Alignment.topCenter,
@@ -31,13 +32,12 @@ class _ConfigScreenState extends State<ConfigScreen> {
             MaterialPageRoute(builder: (context) => ForgetPassword()),
           )),
       style: TextButton.styleFrom(
-        primary: Colors.black,
         minimumSize: const Size.fromHeight(50),
       ),
       child: Text(
         'change_password'.i18n(),
         style: TextStyle(
-          color: Color(0xff212121),
+          color: getTheme().colorScheme.onPrimaryContainer,
           fontSize: 22,
         ),
       ),
@@ -48,13 +48,12 @@ class _ConfigScreenState extends State<ConfigScreen> {
     return TextButton(
       onPressed: (() => print('Notificação')),
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: const Text(
         "Notificação",
         style: TextStyle(
-          color: Color(0xff212121),
           fontSize: 22,
         ),
       ),
@@ -63,15 +62,14 @@ class _ConfigScreenState extends State<ConfigScreen> {
 
   Widget get _buildTema {
     return TextButton(
-      onPressed: (() => print('Tema')),
+      onPressed: (changeTheme),
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: const Text(
         "Tema",
         style: TextStyle(
-          color: Color(0xff212121),
           fontSize: 22,
         ),
       ),
@@ -82,13 +80,12 @@ class _ConfigScreenState extends State<ConfigScreen> {
     return TextButton(
       onPressed: (() => print('Trocar Email')),
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: const Text(
         "Trocar Email",
         style: TextStyle(
-          color: Color(0xff212121),
           fontSize: 22,
         ),
       ),
@@ -97,7 +94,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
 
   Widget get _buildFooter {
     return Container(
-      color: const Color(0xff388E3C),
+      color: getTheme().colorScheme.primary,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.10,
       child: Row(
@@ -140,6 +137,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: getTheme().colorScheme.primaryContainer,
       body: Stack(children: <Widget>[
         Column(
           children: [
@@ -158,7 +156,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                           "Configurações",
                           style: TextStyle(
                             fontSize: 22,
-                            color: Colors.white,
+                            color: getTheme().colorScheme.onPrimary,
                           ),
                         ),
                         Container(
@@ -166,7 +164,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                               MediaQuery.of(context).size.width / 2, 0, 0, 0),
                           child: Icon(
                             Icons.arrow_forward,
-                            color: Colors.white,
+                            color: getTheme().colorScheme.onPrimary,
                             size: 30.0,
                           ),
                         ),
