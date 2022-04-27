@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "921192535252",
+    "firebase_url": "https://organicapp-default-rtdb.firebaseio.com",
+    "project_id": "organicapp",
+    "storage_bucket": "organicapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921192535252:android:4b2ca771e3701649775741",
+        "android_client_info": {
+          "package_name": "com.example.pdm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "921192535252-6t4u8fojditdbrhglqamhanun71fh4tl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnbQq7cE4Y_uKFE3hMn1qqR11fOxsfyVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "921192535252-6t4u8fojditdbrhglqamhanun71fh4tl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
