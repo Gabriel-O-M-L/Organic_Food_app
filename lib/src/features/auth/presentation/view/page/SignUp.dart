@@ -17,7 +17,7 @@ class SignUpScreen extends StatefulWidget {
 
 Future<http.Response> SignUP(String email, String password) {
   return http.post(
-    Uri.parse('http://127.0.0.1:8000/api/create/'),
+    Uri.parse('https://back-end-pdm.herokuapp.com/api/create/'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

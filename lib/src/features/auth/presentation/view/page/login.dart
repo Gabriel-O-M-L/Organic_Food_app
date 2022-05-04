@@ -165,7 +165,7 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
     email = emailController.text.toString();
     password = passwordController.text.toString();
 
-    var url = Uri.parse('http://127.0.0.1:8000/api/login/');
+    var url = Uri.parse('https://back-end-pdm.herokuapp.com/api/login/');
     var response = await http
         .post(url, body: {'email': '$email', 'password': '$password'});
 
