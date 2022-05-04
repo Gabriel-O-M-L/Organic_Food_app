@@ -1,7 +1,7 @@
 
 import os
 from pathlib import Path
-import django_heroku
+#import django_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,13 +19,15 @@ SECURE_SSL_REDIRECT = False
 # Application definition
 
 INSTALLED_APPS = [
+    'user',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user',
+
     'corsheaders',
     'rest_framework',
 ]
@@ -73,14 +75,10 @@ DATABASES = {
         'NAME': 'de2r6ktc53qhsf',
         'USER': 'yaiwjnixbjawge',
         'PASSWORD': '3c4f3cc3aa9d76f5b75bb916f9ebd3c3e6d9829d369fa1bf2b6d5d51475cd7f5',
-        'HOST': 'eec2-44-199-143-43.compute-1.amazonaws.com',
+        'HOST': 'ec2-44-199-143-43.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -123,5 +121,5 @@ STATICFILES_DIRS = (
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
