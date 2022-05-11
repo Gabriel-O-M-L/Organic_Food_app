@@ -51,8 +51,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Notificação",
+      child: Text(
+        "notification".i18n(),
         style: TextStyle(
           fontSize: 22,
         ),
@@ -67,8 +67,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Tema",
+      child: Text(
+        "theme".i18n(),
         style: TextStyle(
           fontSize: 22,
         ),
@@ -83,8 +83,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Trocar Email",
+      child: Text(
+        "change_email".i18n(),
         style: TextStyle(
           fontSize: 22,
         ),
@@ -153,7 +153,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                       children: [
                         const SizedBox(width: 20),
                         Text(
-                          "Configurações",
+                          "configuration".i18n(),
                           style: TextStyle(
                             fontSize: 22,
                             color: getTheme().colorScheme.onPrimary,

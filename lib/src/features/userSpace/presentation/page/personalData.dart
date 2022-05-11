@@ -22,14 +22,6 @@ class _dadosPessoaisState extends State<dadosPessoais> {
   TextEditingController cidadeController = new TextEditingController();
   TextEditingController estadoController = new TextEditingController();
 
-  final itens = [
-    'Brasília',
-    'Guará',
-    'Recanto',
-    'Núcleo Bandeirante',
-    'Cruzeiro'
-  ];
-
   String email = "";
   String nome = "";
   String numero = "";
@@ -226,7 +218,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                             height: 30,
                           ),
                           TextButton(
-                            onPressed: () => http.post( Uri.parse('http://127.0.0.1:8000/api/create/'),
+                            onPressed: () => http.post( Uri.parse('https://back-end-pdm.herokuapp.com/api/user/personaldata'),
                             headers: <String, String>{
                             'Content-Type': 'application/json; charset=UTF-8',
                            },
@@ -236,6 +228,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                             "phone" : numero,
                             "city" : cidade,
                             "state": estado,
+                            
                               }),
                             ),
                             style: TextButton.styleFrom(
