@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'user.dart';
 import 'package:pdm/theme_manager.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:localization/localization.dart';
 
 const kGoogleApiKey = "AIzaSyDjVyvOsvS2qsb2_ASvIFZRhAR-tjQmc3I";
 
@@ -29,7 +32,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
 
   String email = "";
   String nome = "";
-  int numero = 0;
+  String numero = "";
   String cidade = "";
   String estado = "";
 
@@ -78,7 +81,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 120,
-          title: Text("Dados Pessoais"),
+          title: Text('data'.i18n()),
           centerTitle: true,
           backgroundColor: Color(0xff388E3C),
         ),
@@ -104,7 +107,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                           TextFormField(
                             controller: nomeController,
                             decoration: InputDecoration(
-                              labelText: "Nome",
+                              labelText: "name".i18n(),
                               labelStyle: TextStyle(
                                 fontSize: 22,
                                 color: Color(0xffFFFFFF),
@@ -128,7 +131,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                           TextFormField(
                             controller: emailController,
                             decoration: InputDecoration(
-                              labelText: "Email",
+                              labelText: "email".i18n(),
                               labelStyle: TextStyle(
                                 fontSize: 22,
                                 color: Color(0xffFFFFFF),
@@ -153,7 +156,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                             keyboardType: TextInputType.number,
                             controller: telefoneController,
                             decoration: InputDecoration(
-                              labelText: "Email",
+                              labelText: "phone".i18n(),
                               labelStyle: TextStyle(
                                 fontSize: 22,
                                 color: Color(0xffFFFFFF),
@@ -177,7 +180,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                           TextFormField(
                             controller: cidadeController,
                             decoration: InputDecoration(
-                              labelText: "Cidade",
+                              labelText: "city".i18n(),
                               labelStyle: TextStyle(
                                 fontSize: 22,
                                 color: Color(0xffFFFFFF),
@@ -201,7 +204,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                           TextFormField(
                             controller: estadoController,
                             decoration: InputDecoration(
-                              labelText: "Estado",
+                              labelText: "state".i18n(),
                               labelStyle: TextStyle(
                                 fontSize: 22,
                                 color: Color(0xffFFFFFF),
@@ -223,14 +226,25 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                             height: 30,
                           ),
                           TextButton(
-                            onPressed: () => print("print"),
+                            onPressed: () => http.post( Uri.parse('http://127.0.0.1:8000/api/create/'),
+                            headers: <String, String>{
+                            'Content-Type': 'application/json; charset=UTF-8',
+                           },
+                            body: jsonEncode(<String, String>{
+                            "name" : nome,
+                            "password": email,
+                            "phone" : numero,
+                            "city" : cidade,
+                            "state": estado,
+                              }),
+                            ),
                             style: TextButton.styleFrom(
                               backgroundColor: const Color(0xffFF5252),
                               fixedSize: const Size(90, 40),
                               primary: Colors.black,
                             ),
-                            child: const Text(
-                              "Cadastrar",
+                            child: Text(
+                              "register".i18n(),
                               style: TextStyle(
                                 color: Color(0xffFFFFFF),
                                 fontSize: 16,

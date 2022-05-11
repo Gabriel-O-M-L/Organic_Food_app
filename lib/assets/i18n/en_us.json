@@ -30,6 +30,9 @@
     "personal_data": "Personal Data",
     "configuration": "Configuration",
     "name": "Name",
+    "phone": "Phone",
+    "city": "City",
+    "state" : "State",
     
     "onboard_first_page_theme":    "Connecting with your consumer",
     "onboard_first_page_phrase":  "The application was made to help small farmers to increase their profit margins and facilitate the dissemination of its products, connecting directly with the consumer and facilitate the dissemination of its products, connecting directly with the consumer.",

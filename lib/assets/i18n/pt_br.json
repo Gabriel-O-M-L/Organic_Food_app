@@ -29,7 +29,10 @@
     "historic": "Histório de Compras",
     "personal_data": "Dados",
     "configuration": "Configuração",
-    "name": "nome",
+    "name": "Nome",
+    "phone": "Telefone",
+    "city": "Cidade",
+    "state" : "Estado",
 
     "onboard_first_page_theme":     "Ligação com o Cliente",
     "onboard_first_page_phrase":  "O aplicativo foi feito para ajudar a pequenos agricultores a conseguir aumentar suas margens de lucro e facilitar na divulgação de seus produtos, conectando diretamente com o consumidor.",
