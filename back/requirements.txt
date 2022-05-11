@@ -11,3 +11,5 @@ pytz==2022.1
 sqlparse==0.4.2
 tzdata==2022.1
 whitenoise==6.0.0
+pandas==1.4.2
+numpy==1.20.1
