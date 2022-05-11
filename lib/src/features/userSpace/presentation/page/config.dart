@@ -62,7 +62,14 @@ class _ConfigScreenState extends State<ConfigScreen> {
 
   Widget get _buildTema {
     return TextButton(
-      onPressed: (changeTheme),
+      onPressed: (() {
+        changeTheme();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConfigScreen(),
+            ));
+      }),
       style: TextButton.styleFrom(
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),

@@ -71,6 +71,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: getTheme().colorScheme.primaryContainer,
         appBar: AppBar(
           toolbarHeight: 120,
           title: Text('data'.i18n()),
@@ -105,13 +106,13 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                                 color: Color(0xffFFFFFF),
                               ),
                               filled: true,
-                              fillColor: Color(0xffBDBDBD),
+                              fillColor: getTheme().colorScheme.tertiary,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(5),
                                 ),
                                 borderSide: BorderSide(
-                                  color: Color(0xffBDBDBD),
+                                  color: getTheme().colorScheme.tertiary,
                                   width: 2,
                                 ),
                               ),
@@ -123,19 +124,19 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                           TextFormField(
                             controller: emailController,
                             decoration: InputDecoration(
-                              labelText: "email".i18n(),
+                              labelText: "Email",
                               labelStyle: TextStyle(
                                 fontSize: 22,
-                                color: Color(0xffFFFFFF),
+                                color: getTheme().colorScheme.onTertiary,
                               ),
                               filled: true,
-                              fillColor: Color(0xffBDBDBD),
+                              fillColor: getTheme().colorScheme.tertiary,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(5),
                                 ),
                                 borderSide: BorderSide(
-                                  color: Color(0xffBDBDBD),
+                                  color: getTheme().colorScheme.tertiary,
                                   width: 2,
                                 ),
                               ),
@@ -151,16 +152,16 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                               labelText: "phone".i18n(),
                               labelStyle: TextStyle(
                                 fontSize: 22,
-                                color: Color(0xffFFFFFF),
+                                color: getTheme().colorScheme.onTertiary,
                               ),
                               filled: true,
-                              fillColor: Color(0xffBDBDBD),
+                              fillColor: getTheme().colorScheme.tertiary,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(5),
                                 ),
                                 borderSide: BorderSide(
-                                  color: Color(0xffBDBDBD),
+                                  color: getTheme().colorScheme.tertiary,
                                   width: 2,
                                 ),
                               ),
@@ -175,16 +176,16 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                               labelText: "city".i18n(),
                               labelStyle: TextStyle(
                                 fontSize: 22,
-                                color: Color(0xffFFFFFF),
+                                color: getTheme().colorScheme.onTertiary,
                               ),
                               filled: true,
-                              fillColor: Color(0xffBDBDBD),
+                              fillColor: getTheme().colorScheme.tertiary,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(5),
                                 ),
                                 borderSide: BorderSide(
-                                  color: Color(0xffBDBDBD),
+                                  color: getTheme().colorScheme.tertiary,
                                   width: 2,
                                 ),
                               ),
@@ -199,16 +200,16 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                               labelText: "state".i18n(),
                               labelStyle: TextStyle(
                                 fontSize: 22,
-                                color: Color(0xffFFFFFF),
+                                color: getTheme().colorScheme.onTertiary,
                               ),
                               filled: true,
-                              fillColor: Color(0xffBDBDBD),
+                              fillColor: getTheme().colorScheme.tertiary,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(5),
                                 ),
                                 borderSide: BorderSide(
-                                  color: Color(0xffBDBDBD),
+                                  color: getTheme().colorScheme.tertiary,
                                   width: 2,
                                 ),
                               ),
@@ -218,17 +219,19 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                             height: 30,
                           ),
                           TextButton(
-                            onPressed: () => http.post( Uri.parse('https://back-end-pdm.herokuapp.com/api/user/personaldata'),
-                            headers: <String, String>{
-                            'Content-Type': 'application/json; charset=UTF-8',
-                           },
-                            body: jsonEncode(<String, String>{
-                            "name" : nome,
-                            "password": email,
-                            "phone" : numero,
-                            "city" : cidade,
-                            "state": estado,
-                            
+                            onPressed: () => http.post(
+                              Uri.parse(
+                                  'https://back-end-pdm.herokuapp.com/api/user/personaldata'),
+                              headers: <String, String>{
+                                'Content-Type':
+                                    'application/json; charset=UTF-8',
+                              },
+                              body: jsonEncode(<String, String>{
+                                "name": nome,
+                                "password": email,
+                                "phone": numero,
+                                "city": cidade,
+                                "state": estado,
                               }),
                             ),
                             style: TextButton.styleFrom(
