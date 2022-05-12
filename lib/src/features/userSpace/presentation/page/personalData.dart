@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pdm/src/features/userSpace/presentation/page/map.dart';
 import 'user.dart';
 import 'package:pdm/theme_manager.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:localization/localization.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 const kGoogleApiKey = "AIzaSyDjVyvOsvS2qsb2_ASvIFZRhAR-tjQmc3I";
 
@@ -25,8 +28,22 @@ class _dadosPessoaisState extends State<dadosPessoais> {
   String email = "";
   String nome = "";
   String numero = "";
-  String cidade = "";
-  String estado = "";
+  String lats = "";
+  String longs = "";
+
+  double lat = 0;
+  double long = 0;
+
+  Future<void> getCurrentLocation() async {
+    await Geolocator.requestPermission();
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    lat = position.latitude;
+    long = position.longitude;
+    lats = lat.toString();
+    longs = long.toString();
+    print("Latitude: $lat and Longitude: $long");
+  }
 
   @override
   Widget _buildFooter() {
@@ -170,70 +187,33 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                           SizedBox(
                             height: 30,
                           ),
-                          TextFormField(
-                            controller: cidadeController,
-                            decoration: InputDecoration(
-                              labelText: "city".i18n(),
-                              labelStyle: TextStyle(
-                                fontSize: 22,
-                                color: getTheme().colorScheme.onTertiary,
-                              ),
-                              filled: true,
-                              fillColor: getTheme().colorScheme.tertiary,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
-                                ),
-                                borderSide: BorderSide(
-                                  color: getTheme().colorScheme.tertiary,
-                                  width: 2,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          TextFormField(
-                            controller: estadoController,
-                            decoration: InputDecoration(
-                              labelText: "state".i18n(),
-                              labelStyle: TextStyle(
-                                fontSize: 22,
-                                color: getTheme().colorScheme.onTertiary,
-                              ),
-                              filled: true,
-                              fillColor: getTheme().colorScheme.tertiary,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
-                                ),
-                                borderSide: BorderSide(
-                                  color: getTheme().colorScheme.tertiary,
-                                  width: 2,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
                           TextButton(
-                            onPressed: () => http.post(
-                              Uri.parse(
-                                  'https://back-end-pdm.herokuapp.com/api/user/personaldata'),
-                              headers: <String, String>{
-                                'Content-Type':
-                                    'application/json; charset=UTF-8',
-                              },
-                              body: jsonEncode(<String, String>{
-                                "name": nome,
-                                "password": email,
-                                "phone": numero,
-                                "city": cidade,
-                                "state": estado,
-                              }),
-                            ),
+                            onPressed: () {
+                              getCurrentLocation();
+                              http.post(
+                                Uri.parse(
+                                    'https://back-end-pdm.herokuapp.com/api/user/personaldata'),
+                                headers: <String, String>{
+                                  'Content-Type':
+                                      'application/json; charset=UTF-8',
+                                },
+                                body: jsonEncode(<String, String>{
+                                  "name": nome,
+                                  "password": email,
+                                  "phone": numero,
+                                  "lat": lats,
+                                  "long": longs,
+                                }),
+                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapSample(
+                                          lat: lat,
+                                          long: long,
+                                        )),
+                              );
+                            },
                             style: TextButton.styleFrom(
                               backgroundColor: const Color(0xffFF5252),
                               fixedSize: const Size(90, 40),

@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapSample extends StatefulWidget {
+  final double lat;
+  final double long;
+
+  const MapSample({Key? key, required this.lat, required this.long})
+      : super(key: key);
   @override
   State<MapSample> createState() => MapSampleState();
 }
