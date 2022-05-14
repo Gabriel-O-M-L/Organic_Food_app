@@ -178,7 +178,6 @@ class _SignUpScreenState extends ModularState<SignUpScreen, LoginViewModel> {
         context,
         MaterialPageRoute(builder: (context) => LoginScreen()),
       );
-
     SignUP(email, password);
   }
 

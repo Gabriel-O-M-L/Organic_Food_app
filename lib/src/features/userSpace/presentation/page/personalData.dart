@@ -192,17 +192,17 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                               getCurrentLocation();
                               http.post(
                                 Uri.parse(
-                                    'https://back-end-pdm.herokuapp.com/api/user/personaldata'),
+                                    'https://back-end-pdm.herokuapp.com/api/personal/'),
                                 headers: <String, String>{
                                   'Content-Type':
                                       'application/json; charset=UTF-8',
                                 },
                                 body: jsonEncode(<String, String>{
                                   "name": nome,
-                                  "password": email,
+                                  "email": email,
                                   "phone": numero,
-                                  "lat": lats,
-                                  "long": longs,
+                                  "latidude": lats,
+                                  "longintude": longs,
                                 }),
                               );
                               Navigator.push(

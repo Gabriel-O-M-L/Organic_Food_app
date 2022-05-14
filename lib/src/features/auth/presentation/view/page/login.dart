@@ -171,7 +171,6 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
 
     store.password = password;
     store.email = email;
-
     store.login();
 
     if (null != store.error.email) {

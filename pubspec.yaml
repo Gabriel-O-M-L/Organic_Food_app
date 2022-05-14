@@ -17,10 +17,10 @@ dependencies:
     
   provider:
   shared_preferences:
-
+  jwt_decode:  
   cupertino_icons: ^1.0.2
   http: ^0.13.4
-  flutter_modular: ^4.4.0
+  flutter_modular: ^5.0.2
   localization: ^2.1.0
   flutter_svg: ^1.0.3
   mobx: ^2.0.6+1
