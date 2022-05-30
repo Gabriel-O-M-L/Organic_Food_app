@@ -13,4 +13,8 @@ tzdata==2022.1
 whitenoise==6.0.0
 pandas==1.4.2
 numpy==1.21.1
+google-api-core
 google-cloud-dialogflow
+django-dialogflow
+dialogflow==1.1.1
+

@@ -246,10 +246,9 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: getTheme().colorScheme.primaryContainer,
-      body: Stack(children: <Widget>[
-        Column(
-          children: [
+        backgroundColor: getTheme().colorScheme.primaryContainer,
+        body: Stack(children: <Widget>[
+          Column(children: [
             Container(
               color: getTheme().colorScheme.primary,
               width: MediaQuery.of(context).size.width,
@@ -272,22 +271,28 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
                 color: getTheme().colorScheme.onPrimaryContainer,
               ),
             ),
-            const SizedBox(height: 80),
-            _buildEmailTF,
-            const SizedBox(height: 30),
-            _buildPasswordTF,
-            const SizedBox(height: 30),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              _buildLoginTF,
-              const SizedBox(width: 120),
-              _buildSignupTF,
-            ]),
+            Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 80),
+                    _buildEmailTF,
+                    const SizedBox(height: 30),
+                    _buildPasswordTF,
+                    const SizedBox(height: 30),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      _buildLoginTF,
+                      const SizedBox(width: 120),
+                      _buildSignupTF,
+                    ])
+                  ],
+                )),
             const SizedBox(height: 30),
             _buildForgetPasswordTF,
-          ],
-        ),
-      ]),
-    );
+          ]),
+        ]));
+    ;
     throw UnimplementedError();
   }
 }

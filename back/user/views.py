@@ -49,7 +49,9 @@ class UserView(viewsets.ViewSet):
 
     def add_data(self,request):
         try:
-            user = User.objects.get(email=request.data.get('email', None))
+            decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',algorithms='HS256')
+            user = User.objects.get(user_id=decoded_jwt['user_id'])
+            user.email = request.data.get('email', None)
             user.phone = request.data.get('phone', None)
             user.latidude = request.data.get('latidude', None)
             user.longitude = request.data.get('longitude', None)
