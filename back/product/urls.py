@@ -12,4 +12,7 @@ urlpatterns = [
     path('show/', ProductView.as_view({
         'post': 'showProducts'
     })),
+    path('recommend/', ProductView.as_view({
+        'get': 'recommendCloser'
+    }))
 ]

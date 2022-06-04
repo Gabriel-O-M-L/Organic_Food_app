@@ -88,3 +88,15 @@ class UserView(viewsets.ViewSet):
 
         except(User.DoesNotExist, exceptions.FieldError):
             return Response(status=401)
+
+    def delete(self,request):
+        decoded_jwt = jwt.decode(request.get.data('jwt', None),
+                                 key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
+                                 algorithms='HS256')
+        user = User.objects.get(user_id=decoded_jwt['user_id'])
+        password = hashlib.sha256(request.data.get('password', None).encode())
+        if(user.password == password):
+            user.delete()
+            return Response(status=200)
+        else:
+            return Response(status=401)
