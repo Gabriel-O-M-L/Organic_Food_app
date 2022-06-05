@@ -7,6 +7,7 @@ import Seller.models
 from Seller.serializer import SellerSerializer
 from user.models import User
 import jwt
+import json
 
 class SellerView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
@@ -50,9 +51,13 @@ class SellerView(viewsets.ViewSet):
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(user_id=decoded_jwt['user_id'])
-        product = Product.objects.get(P_id=request.data.get('P_id', None))
+        product = Seller.objects.get(P_id=request.data.get('P_id', None))
         if(user.id == product.P_seller.S_id.id):
             product.delete()
             return Response(status=200)
         else:
             return Response(status=401)
+
+    def search(self,request):
+        results = Seller.objects.filter(P_name=request.data.get('P_name', None))
+        return Response(json.dump(results),status=200)

@@ -7,5 +7,11 @@ urlpatterns = [
     })),
     path('create/', CartView.as_view({
         'post': 'create'
+    })),
+    path('remove/', CartView.as_view({
+        'delete': 'remove'
+    })),
+    path('add/', CartView.as_view({
+        'post': 'add'
     }))
 ]

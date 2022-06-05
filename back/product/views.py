@@ -78,7 +78,7 @@ class ProductView(viewsets.ViewSet):
         product = Product.objects.get(P_id=request.data.get('P_id',None))
         user_rating = int(request.data.get('P_rating', None))
         product.P_ratings = (product.P_ratings+user_rating)/2
-
+        product.save()
         return Response(status=200)
 
     def delete(self,request):
@@ -93,3 +93,6 @@ class ProductView(viewsets.ViewSet):
         else:
             return Response(status=401)
 
+    def search(self,request):
+        results = Product.objects.filter(P_name=request.data.get('P_name', None))
+        return Response(json.dump(results),status=200)

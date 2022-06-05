@@ -15,4 +15,7 @@ urlpatterns = [
     path('personal/', UserView.as_view({
         'post': 'add_data'
     })),
+    path('delete/', UserView.as_view({
+        'delete': 'delete'
+    }))
 ]

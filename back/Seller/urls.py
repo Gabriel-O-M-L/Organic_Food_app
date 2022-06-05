@@ -7,5 +7,11 @@ urlpatterns = [
     path('create_seller/', SellerView.as_view({
         'post': 'create'
     })),
+    path('delete/', SellerView.as_view({
+        'delete': 'delete'
+    })),
+    path('search/', SellerView.as_view({
+        'get': 'search'
+    }))
 
 ]
