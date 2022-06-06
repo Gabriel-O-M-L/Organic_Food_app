@@ -4,7 +4,7 @@ from Seller.views import SellerView
 
 urlpatterns = [
 
-    path('create_seller/', SellerView.as_view({
+    path('create/', SellerView.as_view({
         'post': 'create'
     })),
     path('delete/', SellerView.as_view({

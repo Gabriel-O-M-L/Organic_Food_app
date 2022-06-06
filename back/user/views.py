@@ -48,9 +48,9 @@ class UserView(viewsets.ViewSet):
                 return Response(user.errors, status=400)
 
     def add_data(self,request):
-        try:
+
             decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',algorithms='HS256')
-            user = User.objects.get(user_id=decoded_jwt['user_id'])
+            user = User.objects.get(id=decoded_jwt['user_id'])
             user.email = request.data.get('email', None)
             user.phone = request.data.get('phone', None)
             user.latidude = request.data.get('latidude', None)
@@ -60,8 +60,7 @@ class UserView(viewsets.ViewSet):
             user.save(force_update=True)
             return Response(status=200)
 
-        except(user.DoesNotExist, exceptions.FieldError):
-            return Response(status=401)
+
 
     def sign_in(self, request):
         try:
@@ -93,7 +92,7 @@ class UserView(viewsets.ViewSet):
         decoded_jwt = jwt.decode(request.get.data('jwt', None),
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
-        user = User.objects.get(user_id=decoded_jwt['user_id'])
+        user = User.objects.get(id=decoded_jwt['user_id'])
         password = hashlib.sha256(request.data.get('password', None).encode())
         if(user.password == password):
             user.delete()

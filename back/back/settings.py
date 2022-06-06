@@ -20,6 +20,7 @@ SECURE_SSL_REDIRECT = False
 
 INSTALLED_APPS = [
     'user',
+    'recommendation',
     'chat',
     'cart',
     'Seller',

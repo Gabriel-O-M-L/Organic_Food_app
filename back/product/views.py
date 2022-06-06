@@ -7,7 +7,6 @@ import back.utils
 from product.models import Product
 from product.serializer import ProductSerializer
 from user.models import User
-from product.product_utils import ProductUtils, Recommend
 
 class ProductView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
@@ -46,35 +45,16 @@ class ProductView(viewsets.ViewSet):
         else:
             return Response(product.errors, status=400)
 
-    def recommendCloser(self,request):
-        decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',algorithms='HS256')
-        user = User.objects.get(user_id=decoded_jwt['user_id'])
-        max_radius = 160.000
-        reccomendArray = Recommend(request.data.get('P_id', None))
-
-        ArrayProduct = {}
-
-        for i in reccomendArray:
-          p = Product.objects.get(P_id=i['P_id'])
-          if ProductUtils.getDistanceBetweenPointsNew(user.latidude,user.longitude,p.P_seller.S_id.latidude,p.P_seller.S_id.longitude) <  max_radius:
-             ArrayProduct[i.id] = ProductUtils.getDistanceBetweenPointsNew(user.latidude,user.longitude,p.P_seller.S_id.latidude,p.P_seller.S_id.longitude)
-
-        if(request.data.get('type',None)== 'recommend'):
-
-            return Response(json.dump(ArrayProduct),status=200)
-        else:
-            return Response(json.dump(reccomendArray),status=200)
-
     def showProducts(self,request):
         product = Product.objects.get(P_seller=request.data.get('item_id',None))
         return Response(json.dump(product),status=200)
 
 
     def addRating(self,request):
-        decoded_jwt = jwt.decode(request.get.data('jwt', None),
+        decoded_jwt = jwt.decode(request.data.get('jwt', None),
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
-        user = User.objects.get(user_id=decoded_jwt['user_id'])
+        user = User.objects.get(id=decoded_jwt['user_id'])
         product = Product.objects.get(P_id=request.data.get('P_id',None))
         user_rating = int(request.data.get('P_rating', None))
         product.P_ratings = (product.P_ratings+user_rating)/2
@@ -85,7 +65,7 @@ class ProductView(viewsets.ViewSet):
         decoded_jwt = jwt.decode(request.get.data('jwt', None),
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
-        user = User.objects.get(user_id=decoded_jwt['user_id'])
+        user = User.objects.get(id=decoded_jwt['user_id'])
         product = Product.objects.get(P_id=request.data.get('P_id', None))
         if(user.id == product.P_seller.S_id.id):
             product.delete()

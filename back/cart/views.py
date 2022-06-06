@@ -22,7 +22,7 @@ class CartView(viewsets.ViewSet):
 
     def add(self, request):
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',algorithms='HS256')
-        cart = Cart.objects.get(user_id=decoded_jwt['user_id'])
+        cart = Cart.objects.get(id=decoded_jwt['user_id'])
         cart.products.append(request.data.get('P_id'))
         if cart.is_valid(raise_exception=True):
             cart.save()

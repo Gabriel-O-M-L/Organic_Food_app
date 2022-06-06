@@ -32,7 +32,7 @@ class SellerView(viewsets.ViewSet):
         else:
             return Response(status=401)
     def create(self, request):
-        decoded_jwt = jwt.decode(request.get.data('jwt', None),
+        decoded_jwt = jwt.decode(request.data.get('jwt', None),
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
 
@@ -47,10 +47,10 @@ class SellerView(viewsets.ViewSet):
             return Response(seller.errors, status=400)
 
     def delete(self,request):
-        decoded_jwt = jwt.decode(request.get.data('jwt', None),
+        decoded_jwt = jwt.decode(request.data.get('jwt', None),
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
-        user = User.objects.get(user_id=decoded_jwt['user_id'])
+        user = User.objects.get(id=decoded_jwt['user_id'])
         product = Seller.objects.get(P_id=request.data.get('P_id', None))
         if(user.id == product.P_seller.S_id.id):
             product.delete()

@@ -5,5 +5,6 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
     path('product/', include('product.urls')),
     path('seller/', include('Seller.urls')),
-    path('cart/', include('cart.urls'))
+    path('cart/', include('cart.urls')),
+    path('recommendation/', include('recommendation.urls'))
 ]
