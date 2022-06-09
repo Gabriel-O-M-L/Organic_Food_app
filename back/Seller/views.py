@@ -61,3 +61,7 @@ class SellerView(viewsets.ViewSet):
     def search(self,request):
         results = Seller.objects.filter(P_name=request.data.get('P_name', None))
         return Response(json.dump(results),status=200)
+
+    def searchseller(self,request):
+        results = Seller.objects.filter(P_name=request.data.get('P_id', None))
+        return Response(results,status=200)

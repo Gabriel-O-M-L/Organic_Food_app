@@ -12,6 +12,9 @@ urlpatterns = [
     })),
     path('search/', SellerView.as_view({
         'get': 'search'
+    })),
+    path('searchid/', SellerView.as_view({
+        'get': 'searchseller'
     }))
 
 ]

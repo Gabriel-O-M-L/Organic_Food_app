@@ -14,5 +14,8 @@ urlpatterns = [
     })),
     path('search/', ProductView.as_view({
         'get': 'search'
+    })),
+    path('seller/', ProductView.as_view({
+        'get': 'seller'
     }))
 ]

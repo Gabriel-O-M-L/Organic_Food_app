@@ -76,3 +76,7 @@ class ProductView(viewsets.ViewSet):
     def search(self,request):
         results = Product.objects.filter(P_name=request.data.get('P_name', None))
         return Response(json.dump(results),status=200)
+
+    def seller(self,request):
+        produtucs = Product.objects.filter(P_seller__product__P_id=request.data.get("P_seller"))
+        return Response(produtucs,status=200)

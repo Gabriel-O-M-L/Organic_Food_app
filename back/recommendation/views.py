@@ -51,7 +51,7 @@ class RegisterView(viewsets.ViewSet):
 
                 return Response((ArrayProduct),status=200)
             else:
-                return Response((ArrayProduct),status=200)
+                return Response(reccomendArray.index,status=200)
         else:
             return Response('Failed to find items to recommend',status=409)
 
