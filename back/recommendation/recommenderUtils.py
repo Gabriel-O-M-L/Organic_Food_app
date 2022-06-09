@@ -25,7 +25,6 @@ class RecommendUtils:
         if unit == 'miles':
             return round(distance, 2)
         if unit == 'kilometers':
-            print(round(distance * 1.609344))
             return round(distance * 1.609344, 2)
 
 
