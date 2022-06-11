@@ -14,9 +14,9 @@ class chat(models.Model):
     chatId = models.BigAutoField(primary_key=True)
     text = ArrayField(models.TextField(null=True, blank=True), null=True, blank=True)
     U_id_sender = models.ForeignKey(
-        User,on_delete=models.CASCADE
-    ),
+        User,on_delete=models.CASCADE,related_name='U_id_sender'
+    )
     U_id_receiver = models.ForeignKey(
-        Seller, on_delete=models.CASCADE
+        User,on_delete=models.CASCADE, related_name='U_id_receiver'
     )
 
