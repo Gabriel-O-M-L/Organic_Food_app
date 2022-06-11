@@ -7,7 +7,7 @@ import Seller.models
 from Seller.serializer import SellerSerializer
 from user.models import User
 import jwt
-import json
+from django.http import HttpResponse
 
 class SellerView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
@@ -57,8 +57,8 @@ class SellerView(viewsets.ViewSet):
 
     def search(self,request):
         results = Seller.objects.get(P_name=request.data.get('P_name', None))
-        return Response(results,status=200)
+        return HttpResponse(results,content_type="application/json",status=200)
 
     def searchseller(self,request):
         results = Seller.objects.filter(P_id=request.data.get('P_id', None))
-        return Response(results,status=200)
+        return Response(results,content_type="application/json",status=200)

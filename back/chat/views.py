@@ -49,7 +49,7 @@ class ChatbotViews(viewsets.ViewSet):
             language_code=language_code,
             user_input=request.data.get("user_message", None)
         )
-        return HttpResponse(response.query_result.fulfillment_text, status=200)
+        return HttpResponse(response.query_result.fulfillment_text,content_type="application/json", status=200)
 
     def detect_intent_with_parameters(project_id, session_id, query_params, language_code, user_input):
 
@@ -105,7 +105,7 @@ class ChatViews(viewsets.ViewSet):
         userChat = chat.objects.get((Q(U_id_sender=user.id)|Q(U_id_sender=request.data.get('S_id', None)) & (Q(U_id_receiver=request.data.get('S_id', None))|Q(U_id_sender=user.id))))
         lstMen = userChat.text[len(userChat.text)-1]
 
-        return Response((userChat.text,lstMen),status=200)
+        return HttpResponse((userChat.text,lstMen),content_type="application/json",status=200)
 
     def send(self,request):
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
@@ -118,3 +118,21 @@ class ChatViews(viewsets.ViewSet):
         userChat.save()
 
         return Response(status=200)
+
+    def getchatlist(self,request):
+        decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
+                                 algorithms='HS256')
+        user = User.objects.get(id=decoded_jwt['user_id'])
+
+        chatlist = chat.objects.filter(Q(U_id_sender=user.id) | Q(U_id_receiver=user.id))
+
+        idList = list
+        for i in chatlist:
+            idList.append(i.chatId)
+
+        return HttpResponse(idList,content_type="application/json",status=200)
+
+    def getchat(self,request):
+        userchat = chat.objects.get(request.data.get('chat_id', None))
+
+        return HttpResponse(userchat,content_type="application/json", status=200)

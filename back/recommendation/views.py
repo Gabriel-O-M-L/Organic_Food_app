@@ -6,7 +6,7 @@ from product.models import Product
 import pandas as pd
 import django
 from rest_framework import viewsets
-import json
+from django.http import HttpResponse
 from recommendation.recommenderUtils import RecommendUtils
 from recommendation.models import Register
 
@@ -49,9 +49,9 @@ class RegisterView(viewsets.ViewSet):
 
             if(request.data.get('type',None)== 'recommend'):
 
-                return Response((ArrayProduct),status=200)
+                return HttpResponse(ArrayProduct,content_type="application/json",status=200)
             else:
-                return Response(reccomendArray.index,status=200)
+                return HttpResponse(reccomendArray.index,content_type="application/json",status=200)
         else:
             return Response('Failed to find items to recommend',status=409)
 

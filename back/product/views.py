@@ -4,6 +4,7 @@ import django.core.exceptions as exceptions
 from rest_framework import viewsets
 from rest_framework.response import Response
 import back.utils
+from django.http import HttpResponse
 from product.models import Product
 from product.serializer import ProductSerializer
 from user.models import User
@@ -52,7 +53,7 @@ class ProductView(viewsets.ViewSet):
 
     def showProducts(self,request):
         product = Product.objects.get(P_seller=request.data.get('item_id',None))
-        return Response(json.dump(product),status=200)
+        return HttpResponse(product,content_type="application/json",status=200)
 
 
     def addRating(self,request):
@@ -83,8 +84,8 @@ class ProductView(viewsets.ViewSet):
         array = list()
         for i in results_p:
             array.append(i.P_id)
-        return Response(array,status=200)
+        return HttpResponse(array,content_type="application/json",status=200)
 
     def seller(self,request):
         products = Product.objects.filter(P_seller=request.data.get("P_seller"))
-        return Response(products,status=200)
+        return HttpResponse(products,content_type="application/json",status=200)
