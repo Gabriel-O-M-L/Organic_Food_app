@@ -9,6 +9,7 @@ from rest_framework import viewsets
 from django.http import HttpResponse
 from recommendation.recommenderUtils import RecommendUtils
 from recommendation.models import Register
+import json
 
 class RegisterView(viewsets.ViewSet):
     query = str(Register.objects.all().query)
@@ -48,10 +49,11 @@ class RegisterView(viewsets.ViewSet):
                     ArrayProduct[p.P_id] = RecommendUtils.getDistanceBetweenPointsNew(user.latidude,user.longitude,p.P_seller.S_id.latidude,p.P_seller.S_id.longitude)
 
             if(request.data.get('type',None)== 'recommend'):
-
-                return HttpResponse(ArrayProduct,content_type="application/json",status=200)
+                returns = json.dumps(ArrayProduct)
+                return Response({"ArrayProduct": returns},status=200,content_type="application/json")
             else:
-                return HttpResponse(reccomendArray.index,content_type="application/json",status=200)
+                returns = json.dumps(reccomendArray)
+                return Response({'reccomendArray':returns},status=200,content_type="application/json")
         else:
             return Response('Failed to find items to recommend',status=409)
 

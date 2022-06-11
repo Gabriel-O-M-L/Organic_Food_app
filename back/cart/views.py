@@ -26,9 +26,9 @@ class CartView(viewsets.ViewSet):
         cart.products.append(request.data.get('P_id'))
         if cart.is_valid(raise_exception=True):
             cart.save()
-            return Response(cart.data, status=201)
+            return Response(cart.data, status=201,content_type="application/json")
         else:
-            return Response(cart.errors, status=400)
+            return Response(cart.errors, status=400,content_type="application/json")
     def remove(self,request):
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')

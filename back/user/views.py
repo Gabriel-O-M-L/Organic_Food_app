@@ -68,14 +68,16 @@ class UserView(viewsets.ViewSet):
             password = hashlib.sha256(request.data.get('password', None).encode())
 
             if password.hexdigest() == user.password:
-                encoded_jwt = jwt.encode({
+                login_jwt = jwt.encode({
                     'user_id': user.id,
                     'exp': datetime.now().timestamp() * 1000 + 604800000,
                 }, 'askdasdiuh123i1y98yejas9d812hiu89dqw9', algorithm='HS256')
-            return Response({
-                'jwt': encoded_jwt
-            }, status=202)
 
+                return Response({
+                    'jwt': login_jwt
+                }, status=202,content_type="application/json")
+            else:
+                return Response(status=401)
         except (User.DoesNotExist, exceptions.FieldError):
             return Response(status=401)
 

@@ -47,13 +47,20 @@ class ProductView(viewsets.ViewSet):
         })
         if product.is_valid(raise_exception=True):
             product.save()
-            return Response(product.data, status=201)
+            return Response(product.data, status=201,content_type="application/json")
         else:
-            return Response(product.errors, status=400)
+            return Response(product.errors, status=400,content_type="application/json")
 
     def showProducts(self,request):
         product = Product.objects.get(P_seller=request.data.get('item_id',None))
-        return HttpResponse(product,content_type="application/json",status=200)
+        returns = ProductSerializer(data={
+            'P_name': product.P_name,
+            'P_type': product.P_type,
+            'P_ratings': product.P_ratings,
+            'P_value': product.P_value,
+            'P_seller': product.P_seller
+        })
+        return Response(returns.data,status=200,content_type="application/json")
 
 
     def addRating(self,request):
@@ -84,8 +91,14 @@ class ProductView(viewsets.ViewSet):
         array = list()
         for i in results_p:
             array.append(i.P_id)
-        return HttpResponse(array,content_type="application/json",status=200)
+        returns = json.dumps(array)
+        return Response({"array": returns},status=200,content_type="application/json")
 
     def seller(self,request):
         products = Product.objects.filter(P_seller=request.data.get("P_seller"))
-        return HttpResponse(products,content_type="application/json",status=200)
+        returns = {}
+        for i in products:
+            returns.append(i.P_id)
+
+        returns = json.dumps(returns)
+        return Response({"array":returns},status=200,content_type="application/json")

@@ -1,14 +1,14 @@
+import json
 import os
-
-from requests import Response
-from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework import viewsets,status
 from chat.models import chat
 import google.cloud.dialogflow_v2 as dialogflow
 from django.http import HttpResponse
 from google.protobuf import struct_pb2 as pb
 import jwt
 from user.models import User
-from Seller.models import Seller
+
 from chat.serializer import chatSerial
 from chat.models import chat
 from django.db.models import Case, Value, When, Q
@@ -26,7 +26,7 @@ class ChatbotViews(viewsets.ViewSet):
 
         session_id = str(decoded_jwt['user_id'])
         context_short_name = "does_not_matter"
-        context_name = "projects/" + ChatViews.GOOGLE_PROJECT_ID + "/agent/sessions/" + session_id + "/contexts/" + \
+        context_name = "projects/" + ChatbotViews.GOOGLE_PROJECT_ID + "/agent/sessions/" + session_id + "/contexts/" + \
                        context_short_name.lower()
 
 
@@ -42,14 +42,15 @@ class ChatbotViews(viewsets.ViewSet):
 
         language_code = 'en'
 
-        response = ChatViews.detect_intent_with_parameters(
-            project_id=ChatViews.GOOGLE_PROJECT_ID,
+        response = ChatbotViews.detect_intent_with_parameters(
+            project_id=ChatbotViews.GOOGLE_PROJECT_ID,
             session_id=session_id,
             query_params=query_params_1,
             language_code=language_code,
             user_input=request.data.get("user_message", None)
         )
-        return HttpResponse(response.query_result.fulfillment_text,content_type="application/json", status=200)
+        returns = response.query_result.fulfillment_text
+        return Response({"fulfilment_text": returns}, status=200,content_type="application/json")
 
     def detect_intent_with_parameters(project_id, session_id, query_params, language_code, user_input):
 
@@ -96,16 +97,17 @@ class ChatViews(viewsets.ViewSet):
             'text': request.data.get('text', None)
         })
         chat.save()
-        return Response(chat.data,status=200)
+        return Response(chat.data,status=200,content_type="application/json")
 
     def receive(self,request):
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
         userChat = chat.objects.get((Q(U_id_sender=user.id)|Q(U_id_sender=request.data.get('S_id', None)) & (Q(U_id_receiver=request.data.get('S_id', None))|Q(U_id_sender=user.id))))
-        lstMen = userChat.text[len(userChat.text)-1]
-
-        return HttpResponse((userChat.text,lstMen),content_type="application/json",status=200)
+        returns = json.dumps(userChat.text)
+        return Response({
+            "text": userChat.text
+        },status=200,content_type="application/json")
 
     def send(self,request):
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
@@ -130,9 +132,18 @@ class ChatViews(viewsets.ViewSet):
         for i in chatlist:
             idList.append(i.chatId)
 
-        return HttpResponse(idList,content_type="application/json",status=200)
+        idList = json.dumps(idList)
+        return Response({
+            "idlist": idList
+        },status=200,content_type="application/json")
 
     def getchat(self,request):
         userchat = chat.objects.get(request.data.get('chat_id', None))
-
-        return HttpResponse(userchat,content_type="application/json", status=200)
+        chat_serial = chatSerial(data={
+                'chatId': userchat.chatId,
+                'text': userchat.text,
+                'U_id_sender': userchat.U_id_sender,
+                'U_id_receiver': userchat.U_id_receiver,
+                'text': userchat.text
+            })
+        return Response(chat_serial.data, status=200,content_type="application/json")

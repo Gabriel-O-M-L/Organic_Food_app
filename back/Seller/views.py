@@ -9,6 +9,7 @@ from user.models import User
 import jwt
 from django.http import HttpResponse
 
+
 class SellerView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         valid = back.utils.decode(request.META.get("HTTP_AUTHORIZATION", None)).get("valid", False)
@@ -57,8 +58,17 @@ class SellerView(viewsets.ViewSet):
 
     def search(self,request):
         results = Seller.objects.get(P_name=request.data.get('P_name', None))
-        return HttpResponse(results,content_type="application/json",status=200)
+        returns = SellerSerializer(data={
+            'S_name': results.S_name,
+            'S_id': results.S_id
+        })
+        return Response(returns.data,status=200,content_type="application/json")
 
     def searchseller(self,request):
-        results = Seller.objects.filter(P_id=request.data.get('P_id', None))
-        return Response(results,content_type="application/json",status=200)
+        results = Seller.objects.get(P_id=request.data.get('P_id', None))
+        returns = SellerSerializer(data={
+            'S_name': results.S_name,
+            'S_id': results.S_id
+        })
+
+        return Response(returns.data,status=200,content_type="application/json")
