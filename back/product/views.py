@@ -7,6 +7,8 @@ import back.utils
 from product.models import Product
 from product.serializer import ProductSerializer
 from user.models import User
+import array as ArrayUtils
+from Seller.models import Seller
 
 class ProductView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
@@ -31,13 +33,16 @@ class ProductView(viewsets.ViewSet):
         else:
             return Response(status=401)
     def create(self, request):
-
+        decoded_jwt = jwt.decode(request.data.get('jwt', None),
+                                 key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
+                                 algorithms='HS256')
+        user = User.objects.get(id=decoded_jwt['user_id'])
         product = ProductSerializer(data={
             'P_name': request.data.get('P_name', None),
             'P_type': request.data.get('P_type', None),
             'P_ratings': 0.0,
             'P_value': request.data.get('P_value', None),
-            'P_seller': request.data.get('P_seller', None)
+            'P_seller': user.id
         })
         if product.is_valid(raise_exception=True):
             product.save()
@@ -74,9 +79,12 @@ class ProductView(viewsets.ViewSet):
             return Response(status=401)
 
     def search(self,request):
-        results = Product.objects.filter(P_name=request.data.get('P_name', None))
-        return Response(json.dump(results),status=200)
+        results_p = Product.objects.filter(P_name=request.data.get('P_name', None))
+        array = list()
+        for i in results_p:
+            array.append(i.P_id)
+        return Response(array,status=200)
 
     def seller(self,request):
-        produtucs = Product.objects.filter(P_seller__product__P_id=request.data.get("P_seller"))
-        return Response(produtucs,status=200)
+        products = Product.objects.filter(P_seller=request.data.get("P_seller"))
+        return Response(products,status=200)

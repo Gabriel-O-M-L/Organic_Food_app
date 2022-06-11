@@ -51,17 +51,14 @@ class SellerView(viewsets.ViewSet):
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
-        product = Seller.objects.get(P_id=request.data.get('P_id', None))
-        if(user.id == product.P_seller.S_id.id):
-            product.delete()
-            return Response(status=200)
-        else:
-            return Response(status=401)
+        seller = Seller.objects.get(S_id=user.id)
+        seller.delete()
+        return Response(status=200)
 
     def search(self,request):
-        results = Seller.objects.filter(P_name=request.data.get('P_name', None))
-        return Response(json.dump(results),status=200)
+        results = Seller.objects.get(P_name=request.data.get('P_name', None))
+        return Response(results,status=200)
 
     def searchseller(self,request):
-        results = Seller.objects.filter(P_name=request.data.get('P_id', None))
+        results = Seller.objects.filter(P_id=request.data.get('P_id', None))
         return Response(results,status=200)
