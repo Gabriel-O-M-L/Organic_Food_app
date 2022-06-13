@@ -12,6 +12,9 @@ urlpatterns = [
     path('forgot/', UserView.as_view({
         'post': 'change_password'
     })),
+    path('getuser/', UserView.as_view({
+        'get': 'getUser'
+    })),
     path('personal/', UserView.as_view({
         'post': 'add_data'
     })),
