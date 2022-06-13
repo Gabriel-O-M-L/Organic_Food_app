@@ -102,7 +102,7 @@ class UserView(viewsets.ViewSet):
         else:
             return Response(status=401)
 
-    def getUser(self,request)
+    def getUser(self,request):
         decoded_jwt = jwt.decode(request.get.data('jwt', None),
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
