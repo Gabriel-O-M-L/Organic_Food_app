@@ -12,6 +12,9 @@ urlpatterns = [
     path('delete/', ProductView.as_view({
         'delete': 'delete'
     })),
+    path('rate/', ProductView.as_view({
+        'post': 'addRating'
+    })),
     path('search/', ProductView.as_view({
         'get': 'search'
     })),

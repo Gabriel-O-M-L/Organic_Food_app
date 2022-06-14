@@ -97,7 +97,11 @@ class ChatViews(viewsets.ViewSet):
             'text': request.data.get('text', None)
         })
         chat.save()
-        return Response(chat.data,status=200,content_type="application/json")
+        if chat.is_valid(raise_exception=True):
+            chat.save()
+            return Response(chat.data, status=200, content_type="application/json")
+        else:
+            return Response(chat.errors, status=400)
 
     def receive(self,request):
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
@@ -128,7 +132,7 @@ class ChatViews(viewsets.ViewSet):
 
         chatlist = chat.objects.filter(Q(U_id_sender=user.id) | Q(U_id_receiver=user.id))
 
-        idList = list
+        idList = []
         for i in chatlist:
             idList.append(i.chatId)
 
@@ -139,11 +143,14 @@ class ChatViews(viewsets.ViewSet):
 
     def getchat(self,request):
         userchat = chat.objects.get(request.data.get('chat_id', None))
-        chat_serial = chatSerial(data={
+        returns = chatSerial(data={
                 'chatId': userchat.chatId,
                 'text': userchat.text,
                 'U_id_sender': userchat.U_id_sender,
                 'U_id_receiver': userchat.U_id_receiver,
                 'text': userchat.text
             })
-        return Response(chat_serial.data, status=200,content_type="application/json")
+        if returns.is_valid(raise_exception=True):
+            return Response(returns.data, status=200, content_type="application/json")
+        else:
+            return Response(returns.errors, status=400)

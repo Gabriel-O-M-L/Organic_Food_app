@@ -32,9 +32,7 @@ class UserView(viewsets.ViewSet):
         else:
             return Response(status=401)
     def create(self, request):
-        if User.objects.filter(email=request.data.get('email', None)).exists():
-            return Response(status=409)
-        else:
+
             password = hashlib.sha256(request.data.get('password', None).encode('utf-8'))
 
             user = UserSerializer(data={

@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('P_value', models.FloatField()),
                 ('P_type', models.TextField()),
                 ('P_ratings', models.FloatField()),
-                ('P_seller', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Seller.seller')),
+                ('P_seller', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Seller.Seller')),
             ],
         ),
     ]

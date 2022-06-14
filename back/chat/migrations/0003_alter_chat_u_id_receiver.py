@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='chat',
             name='U_id_receiver',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Seller.seller'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Seller.Seller'),
         ),
     ]

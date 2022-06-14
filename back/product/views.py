@@ -9,7 +9,8 @@ from product.models import Product
 from product.serializer import ProductSerializer
 from user.models import User
 import array as ArrayUtils
-from Seller.models import Seller
+from Seller.models import seller
+from recommendation.serializer import RegisterSerializer
 
 class ProductView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
@@ -38,12 +39,13 @@ class ProductView(viewsets.ViewSet):
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
+        Seller = seller.objects.get(S_id=user.id)
         product = ProductSerializer(data={
             'P_name': request.data.get('P_name', None),
             'P_type': request.data.get('P_type', None),
             'P_ratings': 0.0,
             'P_value': request.data.get('P_value', None),
-            'P_seller': user.id
+            'P_seller': Seller.pk
         })
         if product.is_valid(raise_exception=True):
             product.save()
@@ -52,16 +54,18 @@ class ProductView(viewsets.ViewSet):
             return Response(product.errors, status=400,content_type="application/json")
 
     def showProducts(self,request):
-        product = Product.objects.get(P_seller=request.data.get('item_id',None))
+        product = Product.objects.get(P_id=request.data.get('P_id',None))
         returns = ProductSerializer(data={
             'P_name': product.P_name,
             'P_type': product.P_type,
             'P_ratings': product.P_ratings,
             'P_value': product.P_value,
-            'P_seller': product.P_seller
+            'P_seller': product.P_seller.pk
         })
-        return Response(returns.data,status=200,content_type="application/json")
-
+        if returns.is_valid(raise_exception=True):
+            return Response(returns.data, status=200, content_type="application/json")
+        else:
+            return Response(returns.errors, status=400)
 
     def addRating(self,request):
         decoded_jwt = jwt.decode(request.data.get('jwt', None),
@@ -69,10 +73,22 @@ class ProductView(viewsets.ViewSet):
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
         product = Product.objects.get(P_id=request.data.get('P_id',None))
-        user_rating = int(request.data.get('P_rating', None))
+        user_rating = float(request.data.get('P_rating', None))
         product.P_ratings = (product.P_ratings+user_rating)/2
-        product.save()
-        return Response(status=200)
+        register = RegisterSerializer(data={
+            'U_id': user.pk,
+            'P_id': product.pk,
+            'P_type': product.P_type,
+            'P_ratings': float(request.data.get('P_rating'))
+        })
+        product.P_ratings = (product.P_ratings + int(request.data.get('P_rating'))) / 2
+        if register.is_valid(raise_exception=True):
+            register.save()
+            product.save()
+            return Response(register.data, status=201)
+        else:
+            return Response(register.errors, status=400)
+
 
     def delete(self,request):
         decoded_jwt = jwt.decode(request.get.data('jwt', None),
@@ -88,17 +104,21 @@ class ProductView(viewsets.ViewSet):
 
     def search(self,request):
         results_p = Product.objects.filter(P_name=request.data.get('P_name', None))
-        array = list()
+        array = []
         for i in results_p:
             array.append(i.P_id)
         returns = json.dumps(array)
         return Response({"array": returns},status=200,content_type="application/json")
 
     def seller(self,request):
-        products = Product.objects.filter(P_seller=request.data.get("P_seller"))
-        returns = {}
+        products = Product.objects.filter(P_seller__S_id=request.data.get("P_seller"))
+        returns = []
         for i in products:
-            returns.append(i.P_id)
+            returns.append(str(i.P_id))
 
         returns = json.dumps(returns)
         return Response({"array":returns},status=200,content_type="application/json")
+
+
+
+

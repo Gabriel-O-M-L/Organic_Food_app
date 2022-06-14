@@ -1,5 +1,5 @@
 from django.db import models
-from Seller.models import Seller
+from Seller.models import seller
 
 class Product(models.Model):
     P_id = models.BigAutoField(primary_key=True)
@@ -8,5 +8,5 @@ class Product(models.Model):
     P_type = models.TextField()
     P_ratings = models.FloatField()
     P_seller = models.ForeignKey(
-        Seller,on_delete=models.CASCADE
+        seller,on_delete=models.CASCADE
     )

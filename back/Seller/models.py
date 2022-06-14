@@ -1,7 +1,7 @@
 from django.db import models
 from user.models import User
 
-class Seller(models.Model):
+class seller(models.Model):
     S_id = models.ForeignKey(
         User,on_delete=models.CASCADE
     )

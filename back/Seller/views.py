@@ -3,7 +3,7 @@ import django.core.exceptions as exceptions
 from rest_framework import viewsets
 from rest_framework.response import Response
 import back.utils
-import Seller.models
+from Seller.models import seller
 from Seller.serializer import SellerSerializer
 from user.models import User
 import jwt
@@ -15,9 +15,9 @@ class SellerView(viewsets.ViewSet):
         valid = back.utils.decode(request.META.get("HTTP_AUTHORIZATION", None)).get("valid", False)
         if valid:
             try:
-                seller = Seller.objects.get(id=pk)
-                return Response(SellerSerializer(seller).data)
-            except Seller.DoesNotExist:
+                returns = seller.objects.get(id=pk)
+                return Response(SellerSerializer(returns).data)
+            except seller.DoesNotExist:
                 return Response(status=404)
         else:
             return Response(status=401)
@@ -26,8 +26,8 @@ class SellerView(viewsets.ViewSet):
         valid = back.utils.decode(request.META.get("HTTP_AUTHORIZATION", None)).get("valid", False)
         if valid:
             try:
-                seller = Seller.objects.all()
-                return Response(SellerSerializer(seller, many=True))
+                returns = seller.objects.all()
+                return Response(SellerSerializer(returns, many=True))
             except exceptions.FieldError:
                 return Response(status=500)
         else:
@@ -52,23 +52,39 @@ class SellerView(viewsets.ViewSet):
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
-        seller = Seller.objects.get(S_id=user.id)
-        seller.delete()
+        delseller = seller.objects.get(S_id=user.id)
+        delseller.delete()
         return Response(status=200)
 
     def search(self,request):
-        results = Seller.objects.get(P_name=request.data.get('P_name', None))
+        results = seller.objects.get(S_id=request.data.get('S_id', None))
         returns = SellerSerializer(data={
             'S_name': results.S_name,
-            'S_id': results.S_id
+            'S_id': results.S_id.pk
         })
-        return Response(returns.data,status=200,content_type="application/json")
+        if returns.is_valid(raise_exception=True):
+            return Response(returns.data, status=200, content_type="application/json")
+        else:
+            return Response(returns.errors, status=400)
 
     def searchseller(self,request):
-        results = Seller.objects.get(P_id=request.data.get('P_id', None))
+        results = seller.objects.get(P_id=request.data.get('P_id', None))
         returns = SellerSerializer(data={
             'S_name': results.S_name,
-            'S_id': results.S_id
+            'S_id': results.S_id.pk
         })
+        if returns.is_valid(raise_exception=True):
+            return Response(returns.data,status=200,content_type="application/json")
+        else:
+            return Response(returns.errors, status=400)
 
-        return Response(returns.data,status=200,content_type="application/json")
+    def searchname(self,request):
+        results = seller.objects.get(S_name=request.data.get('S_name', None))
+        returns = SellerSerializer(data={
+            'S_name': results.S_name,
+            'S_id': results.S_id.pk
+        })
+        if returns.is_valid(raise_exception=True):
+            return Response(returns.data,status=200,content_type="application/json")
+        else:
+            return Response(returns.errors, status=400)

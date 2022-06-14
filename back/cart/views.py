@@ -1,3 +1,5 @@
+import json
+
 import jwt
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -36,3 +38,12 @@ class CartView(viewsets.ViewSet):
         cart.products.remove(request.data.get('P_id'))
         cart.save()
         return Response(status=200)
+
+    def show(self,request):
+        decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
+                                 algorithms='HS256')
+        cart = Cart.objects.get(id=decoded_jwt['user_id'])
+
+        returns = json.dumps(cart.products)
+
+        return Response({"ids": returns},status=200,content_type="application/json")

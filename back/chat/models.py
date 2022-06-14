@@ -2,7 +2,7 @@ from django.db import models
 from django.db import models
 from user.models import User
 from django.contrib.postgres.fields import ArrayField
-from Seller.models import Seller
+from Seller.models import seller
 class chatSession(models.Model):
     session_id = models.ForeignKey(
         User,on_delete=models.CASCADE
