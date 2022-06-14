@@ -7,7 +7,7 @@ from rest_framework.response import Response
 import back.utils
 from user.models import User
 from user.serializer import UserSerializer
-
+from decimal import Decimal
 
 class UserView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
@@ -35,7 +35,7 @@ class UserView(viewsets.ViewSet):
         if User.objects.filter(email=request.data.get('email', None)).exists():
             return Response(status=409)
         else:
-            password = hashlib.sha256(request.data.get('password', None).encode())
+            password = hashlib.sha256(request.data.get('password', None).encode('utf-8'))
 
             user = UserSerializer(data={
                 'email': request.data.get('email', None),
@@ -53,8 +53,8 @@ class UserView(viewsets.ViewSet):
             user = User.objects.get(id=decoded_jwt['user_id'])
             user.email = request.data.get('email', None)
             user.phone = request.data.get('phone', None)
-            user.latidude = request.data.get('latidude', None)
-            user.longitude = request.data.get('longitude', None)
+            user.latitude = float(request.data.get('latitude', None))
+            user.longitude = float(request.data.get('longitude', None))
             user.name = request.data.get('name', None)
 
             user.save(force_update=True)

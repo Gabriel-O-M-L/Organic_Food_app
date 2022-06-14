@@ -26,7 +26,7 @@ class RegisterView(viewsets.ViewSet):
             'U_id': user.id,
             'P_id': product.P_id,
             'P_type': product.P_type,
-            'P_ratings': request.data.get('P_rating')
+            'P_ratings': float(request.data.get('P_rating'))
         })
         product.P_ratings = (product.P_ratings+int(request.data.get('P_rating')))/2
         if register.is_valid(raise_exception=True):
@@ -39,7 +39,7 @@ class RegisterView(viewsets.ViewSet):
     def recommendCloser(self,request):
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
-        max_radius = float(160.000)
+        max_radius = float(160000)
         reccomendArray = RegisterView.methodRecommend(request.data.get('P_id', None))
         ArrayProduct = {}
         if(len(reccomendArray) != 0):

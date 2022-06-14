@@ -38,7 +38,7 @@ class SellerView(viewsets.ViewSet):
                                  algorithms='HS256')
 
         seller = SellerSerializer(data={
-            'S_name': request.data.get('name', None),
+            'S_name': request.data.get('S_name', None),
             'S_id': decoded_jwt['user_id']
         })
         if seller.is_valid(raise_exception=True):
