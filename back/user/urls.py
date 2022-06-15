@@ -13,7 +13,7 @@ urlpatterns = [
         'post': 'change_password'
     })),
     path('getuser/', UserView.as_view({
-        'get': 'getUser'
+        'post': 'getUser'
     })),
     path('personal/', UserView.as_view({
         'post': 'add_data'

@@ -4,11 +4,9 @@ import django.core.exceptions as exceptions
 from rest_framework import viewsets
 from rest_framework.response import Response
 import back.utils
-from django.http import HttpResponse
 from product.models import Product
 from product.serializer import ProductSerializer
 from user.models import User
-import array as ArrayUtils
 from Seller.models import seller
 from recommendation.serializer import RegisterSerializer
 
@@ -55,17 +53,15 @@ class ProductView(viewsets.ViewSet):
 
     def showProducts(self,request):
         product = Product.objects.get(P_id=request.data.get('P_id',None))
-        returns = ProductSerializer(data={
+
+        return Response({
             'P_name': product.P_name,
             'P_type': product.P_type,
             'P_ratings': product.P_ratings,
-            'P_value': product.P_value,
+            'P_value':  float(product.P_value),
             'P_seller': product.P_seller.pk
-        })
-        if returns.is_valid(raise_exception=True):
-            return Response(returns.data, status=200, content_type="application/json")
-        else:
-            return Response(returns.errors, status=400)
+        }, status=200, content_type="application/json")
+
 
     def addRating(self,request):
         decoded_jwt = jwt.decode(request.data.get('jwt', None),
@@ -107,8 +103,8 @@ class ProductView(viewsets.ViewSet):
         array = []
         for i in results_p:
             array.append(i.P_id)
-        returns = json.dumps(array)
-        return Response({"array": returns},status=200,content_type="application/json")
+
+        return Response({"array": array},status=200,content_type="application/json")
 
     def seller(self,request):
         products = Product.objects.filter(P_seller__S_id=request.data.get("P_seller"))
@@ -116,7 +112,7 @@ class ProductView(viewsets.ViewSet):
         for i in products:
             returns.append(str(i.P_id))
 
-        returns = json.dumps(returns)
+
         return Response({"array":returns},status=200,content_type="application/json")
 
 

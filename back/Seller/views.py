@@ -37,9 +37,10 @@ class SellerView(viewsets.ViewSet):
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
 
+        user = User.objects.get(decoded_jwt['user_id'])
         seller = SellerSerializer(data={
             'S_name': request.data.get('S_name', None),
-            'S_id': decoded_jwt['user_id']
+            'S_id': user.pk
         })
         if seller.is_valid(raise_exception=True):
             seller.save()
@@ -58,33 +59,24 @@ class SellerView(viewsets.ViewSet):
 
     def search(self,request):
         results = seller.objects.get(S_id=request.data.get('S_id', None))
-        returns = SellerSerializer(data={
+
+        return Response({
             'S_name': results.S_name,
             'S_id': results.S_id.pk
-        })
-        if returns.is_valid(raise_exception=True):
-            return Response(returns.data, status=200, content_type="application/json")
-        else:
-            return Response(returns.errors, status=400)
+        }, status=200, content_type="application/json")
+
 
     def searchseller(self,request):
         results = seller.objects.get(P_id=request.data.get('P_id', None))
-        returns = SellerSerializer(data={
+
+        return Response({
             'S_name': results.S_name,
             'S_id': results.S_id.pk
-        })
-        if returns.is_valid(raise_exception=True):
-            return Response(returns.data,status=200,content_type="application/json")
-        else:
-            return Response(returns.errors, status=400)
+        },status=200,content_type="application/json")
 
     def searchname(self,request):
-        results = seller.objects.get(S_name=request.data.get('S_name', None))
-        returns = SellerSerializer(data={
+        results = seller.objects.filter(S_name=request.data.get('S_name', None)).first()
+        return Response({
             'S_name': results.S_name,
             'S_id': results.S_id.pk
-        })
-        if returns.is_valid(raise_exception=True):
-            return Response(returns.data,status=200,content_type="application/json")
-        else:
-            return Response(returns.errors, status=400)
+        },status=200,content_type="application/json")

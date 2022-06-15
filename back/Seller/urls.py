@@ -11,13 +11,13 @@ urlpatterns = [
         'delete': 'delete'
     })),
     path('search/', SellerView.as_view({
-        'get': 'search'
+        'post': 'search'
     })),
     path('searchid/', SellerView.as_view({
-        'get': 'searchseller'
+        'post': 'searchseller'
     })),
     path('searchname/', SellerView.as_view({
-        'get': 'searchname'
+        'post': 'searchname'
     }))
 
 ]

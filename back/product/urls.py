@@ -16,9 +16,9 @@ urlpatterns = [
         'post': 'addRating'
     })),
     path('search/', ProductView.as_view({
-        'get': 'search'
+        'post': 'search'
     })),
     path('seller/', ProductView.as_view({
-        'get': 'seller'
+        'post': 'seller'
     }))
 ]

@@ -15,6 +15,6 @@ urlpatterns = [
         'post': 'add'
     })),
     path('show/', CartView.as_view({
-        'get': 'show'
+        'post': 'show'
     }))
 ]

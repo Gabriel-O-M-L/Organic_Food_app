@@ -10,13 +10,13 @@ urlpatterns = [
         'post': 'create'
     })),
     path('receive/', ChatViews.as_view({
-        'get': 'receive'
+        'post': 'receive'
     })),
     path('getlist/', ChatViews.as_view({
-        'get': 'send'
+        'post': 'send'
     })),
     path('getchat/', ChatViews.as_view({
-        'get': 'getchat'
+        'post': 'getchat'
     })),
     path('send/', ChatViews.as_view({
         'post': 'send'

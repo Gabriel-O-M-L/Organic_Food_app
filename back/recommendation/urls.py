@@ -4,7 +4,7 @@ from recommendation.views import RegisterView
 
 urlpatterns = [
     path('recommend/', RegisterView.as_view({
-        'get': 'recommendCloser'
+        'post': 'recommendCloser'
     })),
     path('rate/', RegisterView.as_view({
         'post': 'create'
