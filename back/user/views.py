@@ -89,7 +89,7 @@ class UserView(viewsets.ViewSet):
             return Response(status=401)
 
     def delete(self,request):
-        decoded_jwt = jwt.decode(request.get.data('jwt', None),
+        decoded_jwt = jwt.decode(request.data.get('jwt', None),
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])

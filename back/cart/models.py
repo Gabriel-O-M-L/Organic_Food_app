@@ -7,5 +7,5 @@ class Cart(models.Model):
     products = ArrayField(models.IntegerField(null=True, blank=True), null=True, blank=True)
     cart_id = models.BigAutoField(primary_key=True)
     user_id = models.ForeignKey(
-        User,on_delete=models.CASCADE
+        User,on_delete=models.CASCADE,unique=True
     )

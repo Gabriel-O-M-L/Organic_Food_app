@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from rest_framework import viewsets,status
 from chat.models import chat
 import google.cloud.dialogflow_v2 as dialogflow
-from django.http import HttpResponse
 from google.protobuf import struct_pb2 as pb
 import jwt
 from user.models import User
@@ -92,8 +91,8 @@ class ChatViews(viewsets.ViewSet):
         user_sender = User.objects.get(id=decoded_jwt['user_id'])
 
         chat = chatSerial(data={
-            'U_id_sender': user_sender.id,
-            'U_id_receiver': user_receive.id,
+            'U_id_sender': user_sender.pk,
+            'U_id_receiver': user_receive.pk,
             'text': request.data.get('text', None)
         })
         chat.save()
@@ -107,7 +106,7 @@ class ChatViews(viewsets.ViewSet):
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
-        userChat = chat.objects.get((Q(U_id_sender=user.id)|Q(U_id_sender=request.data.get('S_id', None)) & (Q(U_id_receiver=request.data.get('S_id', None))|Q(U_id_sender=user.id))))
+        userChat = chat.objects.get((Q(U_id_sender_id=user.id)|Q(U_id_sender_id=request.data.get('S_id', None)) & (Q(U_id_receiver__id=request.data.get('S_id', None))|Q(U_id_sender_id=user.id))))
         returns = json.dumps(userChat.text)
         return Response({
             "text": userChat.text
@@ -117,7 +116,7 @@ class ChatViews(viewsets.ViewSet):
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
-        userChat = chat.objects.get((Q(U_id_sender=user.id)|Q(U_id_sender=request.data.get('S_id', None)) & (Q(U_id_receiver=request.data.get('S_id', None))|Q(U_id_sender=user.id))))
+        userChat = chat.objects.get((Q(U_id_sender_id=user.id)|Q(U_id_sender_id=request.data.get('S_id', None)) & (Q(U_id_receiver__id=request.data.get('S_id', None))|Q(U_id_sender_id=user.id))))
 
         userChat.text.append(request.data.get('text', None))
 
@@ -130,7 +129,7 @@ class ChatViews(viewsets.ViewSet):
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
 
-        chatlist = chat.objects.filter(Q(U_id_sender=user.id) | Q(U_id_receiver=user.id))
+        chatlist = chat.objects.filter(Q(U_id_sender_id=user.id) | Q(U_id_receiver__id=user.id))
 
         idList = []
         for i in chatlist:
@@ -143,14 +142,11 @@ class ChatViews(viewsets.ViewSet):
 
     def getchat(self,request):
         userchat = chat.objects.get(request.data.get('chat_id', None))
-        returns = chatSerial(data={
+
+        return Response({
                 'chatId': userchat.chatId,
                 'text': userchat.text,
-                'U_id_sender': userchat.U_id_sender,
-                'U_id_receiver': userchat.U_id_receiver,
+                'U_id_sender': userchat.U_id_sender.id,
+                'U_id_receiver': userchat.U_id_receiver.id,
                 'text': userchat.text
-            })
-        if returns.is_valid(raise_exception=True):
-            return Response(returns.data, status=200, content_type="application/json")
-        else:
-            return Response(returns.errors, status=400)
+            }, status=200, content_type="application/json")

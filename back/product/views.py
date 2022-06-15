@@ -60,7 +60,8 @@ class ProductView(viewsets.ViewSet):
             'P_ratings': product.P_ratings,
             'P_value':  float(product.P_value),
             'P_seller': product.P_seller.pk,
-            "P_seller_name": product.P_seller.S_name
+            "P_seller_name": product.P_seller.S_name,
+            "P_id": product.P_id
         }, status=200, content_type="application/json")
 
 
@@ -88,7 +89,7 @@ class ProductView(viewsets.ViewSet):
 
 
     def delete(self,request):
-        decoded_jwt = jwt.decode(request.get.data('jwt', None),
+        decoded_jwt = jwt.decode(request.data.get('jwt', None),
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])

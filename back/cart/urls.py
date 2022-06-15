@@ -16,5 +16,11 @@ urlpatterns = [
     })),
     path('show/', CartView.as_view({
         'post': 'show'
+    })),
+    path('delete/', CartView.as_view({
+        'post': 'delete'
+    })),
+    path('finish/', CartView.as_view({
+        'post': 'finish'
     }))
 ]
