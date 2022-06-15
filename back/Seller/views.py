@@ -1,4 +1,3 @@
-import hashlib
 import django.core.exceptions as exceptions
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -7,7 +6,6 @@ from Seller.models import seller
 from Seller.serializer import SellerSerializer
 from user.models import User
 import jwt
-from django.http import HttpResponse
 
 
 class SellerView(viewsets.ViewSet):
@@ -37,7 +35,7 @@ class SellerView(viewsets.ViewSet):
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
 
-        user = User.objects.get(decoded_jwt['user_id'])
+        user = User.objects.get(id=decoded_jwt['user_id'])
         seller = SellerSerializer(data={
             'S_name': request.data.get('S_name', None),
             'S_id': user.pk
@@ -80,3 +78,5 @@ class SellerView(viewsets.ViewSet):
             'S_name': results.S_name,
             'S_id': results.S_id.pk
         },status=200,content_type="application/json")
+
+

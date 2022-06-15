@@ -59,7 +59,8 @@ class ProductView(viewsets.ViewSet):
             'P_type': product.P_type,
             'P_ratings': product.P_ratings,
             'P_value':  float(product.P_value),
-            'P_seller': product.P_seller.pk
+            'P_seller': product.P_seller.pk,
+            "P_seller_name": product.P_seller.S_name
         }, status=200, content_type="application/json")
 
 
@@ -114,6 +115,19 @@ class ProductView(viewsets.ViewSet):
 
 
         return Response({"array":returns},status=200,content_type="application/json")
+
+    def myproducts(self,request):
+        decoded_jwt = jwt.decode(request.data.get('jwt', None),
+                                 key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
+                                 algorithms='HS256')
+
+        user = User.objects.get(id=decoded_jwt['user_id'])
+        product = Product.objects.filter(P_seller__S_id__id=user.id)
+        returns = []
+        for i in product:
+            returns.append(str(i.P_id))
+
+        return Response({"array": returns},status=200,content_type="application/json")
 
 
 

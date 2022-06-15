@@ -101,16 +101,14 @@ class UserView(viewsets.ViewSet):
             return Response(status=401)
 
     def getUser(self,request):
-        decoded_jwt = jwt.decode(request.get.data('jwt', None),
+        decoded_jwt = jwt.decode(request.data.get('jwt', None),
                                  key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
-
-        userget = UserSerializer(data={
+        return Response({
                 'email': user.email,
                 'name': user.name,
                 'phone': user.phone,
-                'latidude': user.latidude,
+                'latitude': user.latitude,
                 'longitude': user.longitude
-        })
-        return Response(userget.data,status=200,content_type="application/json")
+        },status=200,content_type="application/json")

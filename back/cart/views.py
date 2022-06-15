@@ -1,20 +1,24 @@
 import json
-
+from user.models import User
 import jwt
 from rest_framework import viewsets
 from rest_framework.response import Response
 from cart.models import Cart
 from cart.serializer import CartSerializer
 from product.models import Product
+from chat.models import chat
+from chat.serializer import chatSerial
+from product.models import Product
 
 class CartView(viewsets.ViewSet):
     def create(self, request):
         product = Product.objects.get(P_id=request.data.get('P_id', None))
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',algorithms='HS256')
+        user = User.objects.get(id=decoded_jwt['user_id'])
 
         cart = CartSerializer(data={
-            'user_id': decoded_jwt['user_id'],
-            'products': product.P_id
+            'user_id': user.pk,
+            'products': product.pk
         })
         if cart.is_valid(raise_exception=True):
             cart.save()
@@ -47,3 +51,29 @@ class CartView(viewsets.ViewSet):
         returns = json.dumps(cart.products)
 
         return Response({"ids": returns},status=200,content_type="application/json")
+
+    def delete(self,request):
+        decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
+                                 algorithms='HS256')
+        cart = Cart.objects.get(id=decoded_jwt['user_id'])
+        cart.delete()
+        return Response(status=200)
+
+    def finish(self,request):
+        decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
+                                 algorithms='HS256')
+        cart = Cart.objects.get(id=decoded_jwt['user_id'])
+        chatsend = Product.objects.filter(P_id=cart.products)
+        for i in chatsend:
+            chat = chatSerial(data={
+                "text": "item sold",
+                "U_id_sender": cart.user_id.pk,
+                "U_id_receiver": chatsend[i].P_seller.S_id.pk
+            })
+            if chat.is_valid(raise_exception=True):
+                chat.save()
+
+        return Response(status=200)
+
+
+

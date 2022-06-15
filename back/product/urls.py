@@ -20,5 +20,8 @@ urlpatterns = [
     })),
     path('seller/', ProductView.as_view({
         'post': 'seller'
+    })),
+    path('myproduct/', ProductView.as_view({
+        'post': 'myproducts'
     }))
 ]
