@@ -70,6 +70,7 @@ class CartView(viewsets.ViewSet):
                                  algorithms='HS256')
         cart = Cart.objects.get(user_id__id=decoded_jwt['user_id'])
 
+        chatlist = {}
         for i in cart.products:
             chatsend = Product.objects.get(P_id=i)
             list = []
@@ -83,8 +84,9 @@ class CartView(viewsets.ViewSet):
             })
             if chat.is_valid(raise_exception=True):
                 chat.save()
+                chatlist.update({chatsend.P_id : chat.data})
 
-        return Response(chat.data,status=200)
+        return Response({"chat" : chatlist},status=200)
 
 
 

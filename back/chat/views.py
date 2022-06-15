@@ -39,7 +39,7 @@ class ChatbotViews(viewsets.ViewSet):
         )
         query_params_1 = {"contexts": [context_1]}
 
-        language_code = 'en'
+        language_code = 'pt-br'
 
         response = ChatbotViews.detect_intent_with_parameters(
             project_id=ChatbotViews.GOOGLE_PROJECT_ID,
@@ -93,7 +93,8 @@ class ChatViews(viewsets.ViewSet):
         chat = chatSerial(data={
             'U_id_sender': user_sender.pk,
             'U_id_receiver': user_receive.pk,
-            'text': request.data.get('text', None)
+            'text': request.data.get('text', None),
+            'text': list
         })
         chat.save()
         if chat.is_valid(raise_exception=True):
@@ -141,12 +142,15 @@ class ChatViews(viewsets.ViewSet):
         },status=200,content_type="application/json")
 
     def getchat(self,request):
-        userchat = chat.objects.get(request.data.get('chat_id', None))
+        userchat = chat.objects.get(chatId=request.data.get('chat_id', None))
 
         return Response({
                 'chatId': userchat.chatId,
                 'text': userchat.text,
+                'text2': userchat.text2,
                 'U_id_sender': userchat.U_id_sender.id,
                 'U_id_receiver': userchat.U_id_receiver.id,
-                'text': userchat.text
+                'text': userchat.text,
+                "name": userchat.U_id_sender.name,
+                'secname': userchat.U_id_receiver.name
             }, status=200, content_type="application/json")

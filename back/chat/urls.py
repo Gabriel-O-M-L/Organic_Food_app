@@ -13,7 +13,7 @@ urlpatterns = [
         'post': 'receive'
     })),
     path('getlist/', ChatViews.as_view({
-        'post': 'send'
+        'post': 'getchatlist'
     })),
     path('getchat/', ChatViews.as_view({
         'post': 'getchat'
