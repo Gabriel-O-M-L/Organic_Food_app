@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pdm/src/features/product/presentation/widget/footer.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/map.dart';
+import '../../../auth/presentation/view/page/login.dart';
+import '../../../search/presentation/view/page/search.dart';
 import 'user.dart';
 import 'package:pdm/theme_manager.dart';
 import 'package:http/http.dart' as http;
@@ -12,27 +15,32 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 const kGoogleApiKey = "AIzaSyDjVyvOsvS2qsb2_ASvIFZRhAR-tjQmc3I";
 
 class dadosPessoais extends StatefulWidget {
-  const dadosPessoais({Key? key}) : super(key: key);
+  final String? token;
+  final String? email;
 
+  const dadosPessoais({Key? key, this.token, this.email}) : super(key: key);
   @override
-  State<dadosPessoais> createState() => _dadosPessoaisState();
+  State<dadosPessoais> createState() => _dadosPessoaisState(token, email);
 }
 
 class _dadosPessoaisState extends State<dadosPessoais> {
-  TextEditingController nomeController = new TextEditingController();
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController telefoneController = new TextEditingController();
-  TextEditingController cidadeController = new TextEditingController();
-  TextEditingController estadoController = new TextEditingController();
+  final String? token;
+  final String? email;
 
-  String email = "";
+  TextEditingController nomeController = new TextEditingController();
+  TextEditingController telefoneController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+
   String nome = "";
   String numero = "";
+  String emailf = "";
   String lats = "";
   String longs = "";
 
   double lat = 0;
   double long = 0;
+
+  _dadosPessoaisState(this.token, this.email);
 
   Future<void> getCurrentLocation() async {
     await Geolocator.requestPermission();
@@ -42,13 +50,94 @@ class _dadosPessoaisState extends State<dadosPessoais> {
     long = position.longitude;
     lats = lat.toString();
     longs = long.toString();
-    print("Latitude: $lat and Longitude: $long");
+    print("Latitude: $lats and Longitude: $longs");
+  }
+
+  Future<http.Response> postRequest() async {
+    print("token: " + token!);
+    print("name: " + nome);
+    print("email: " + email!);
+    print("phone: " + numero);
+    print("lat: " + lats);
+    print("long: " + longs);
+
+    var url = Uri.parse('https://back-end-pdm.herokuapp.com/user/personal/');
+
+    Map data = {
+      "jwt": token,
+      "name": nome,
+      "email": emailf,
+      "phone": numero,
+      "latitude": lats,
+      "longitude": longs,
+    };
+    //encode Map to JSON
+    var body = json.encode(data);
+
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"}, body: body);
+    print("${response.statusCode}");
+    print("${response.body}");
+
+    if (response.statusCode == 200) {
+      alertDialog("Sucesso!", 1);
+    } else
+      alertDialog("Error!", 0);
+
+    return response;
+  }
+
+  Future alertDialog(String text, int status) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("OK",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (status == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            UserScreen(token: token, email: email)),
+                  );
+                }
+              },
+            ),
+          ],
+          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(6.0))),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const SizedBox(height: 30),
+              Container(
+                height: MediaQuery.of(context).size.height / 15,
+                child: Text(
+                  //'Please rate with star',
+                  text,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
-  Widget _buildFooter() {
+  Widget get _buildFooter {
     return Container(
-      color: const Color(0xff388E3C),
+      color: getTheme().colorScheme.primary,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.10,
       child: Row(
@@ -59,7 +148,12 @@ class _dadosPessoaisState extends State<dadosPessoais> {
               'lib/assets/images/casa.svg',
             ),
             iconSize: 50,
-            onPressed: (() => print('config')),
+            onPressed: (() => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          UserScreen(token: token, email: email)),
+                )),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.2),
           IconButton(
@@ -69,7 +163,9 @@ class _dadosPessoaisState extends State<dadosPessoais> {
             iconSize: 50,
             onPressed: (() => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserScreen()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          dadosPessoais(token: token, email: email)),
                 )),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.2),
@@ -78,7 +174,12 @@ class _dadosPessoaisState extends State<dadosPessoais> {
               'lib/assets/images/lupa.svg',
             ),
             iconSize: 50,
-            onPressed: (() => print('config')),
+            onPressed: (() => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SearchScreen(token: token, email: email)),
+                )),
           )
         ],
       ),
@@ -116,35 +217,14 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                         children: [
                           TextFormField(
                             controller: nomeController,
+                            onChanged: (text) {
+                              getCurrentLocation();
+                            },
                             decoration: InputDecoration(
                               labelText: "name".i18n(),
                               labelStyle: TextStyle(
                                 fontSize: 22,
                                 color: Color(0xffFFFFFF),
-                              ),
-                              filled: true,
-                              fillColor: getTheme().colorScheme.tertiary,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
-                                ),
-                                borderSide: BorderSide(
-                                  color: getTheme().colorScheme.tertiary,
-                                  width: 2,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          TextFormField(
-                            controller: emailController,
-                            decoration: InputDecoration(
-                              labelText: "Email",
-                              labelStyle: TextStyle(
-                                fontSize: 22,
-                                color: getTheme().colorScheme.onTertiary,
                               ),
                               filled: true,
                               fillColor: getTheme().colorScheme.tertiary,
@@ -187,32 +267,37 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                           SizedBox(
                             height: 30,
                           ),
+                          TextFormField(
+                            controller: emailController,
+                            decoration: InputDecoration(
+                              labelText: "email".i18n(),
+                              labelStyle: TextStyle(
+                                fontSize: 22,
+                                color: getTheme().colorScheme.onTertiary,
+                              ),
+                              filled: true,
+                              fillColor: getTheme().colorScheme.tertiary,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                                borderSide: BorderSide(
+                                  color: getTheme().colorScheme.tertiary,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
                           TextButton(
-                            onPressed: () {
-                              getCurrentLocation();
-                              http.post(
-                                Uri.parse(
-                                    'https://back-end-pdm.herokuapp.com/api/personal/'),
-                                headers: <String, String>{
-                                  'Content-Type':
-                                      'application/json; charset=UTF-8',
-                                },
-                                body: jsonEncode(<String, String>{
-                                  "name": nome,
-                                  "email": email,
-                                  "phone": numero,
-                                  "latidude": lats,
-                                  "longintude": longs,
-                                }),
-                              );
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MapSample(
-                                          lat: lat,
-                                          long: long,
-                                        )),
-                              );
+                            onPressed: () async {
+                              nome = nomeController.text;
+                              numero = telefoneController.text;
+                              emailf = emailController.text;
+
+                              postRequest();
                             },
                             style: TextButton.styleFrom(
                               backgroundColor: const Color(0xffFF5252),
@@ -233,10 +318,18 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                   ),
                 ),
               ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [],
+                  ),
+                ),
+              ),
+              footer(token: token, email: email),
             ],
           ),
         ),
-        bottomSheet: _buildFooter(),
+        // bottomSheet: _buildFooter,
       ),
     );
   }

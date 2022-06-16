@@ -20,17 +20,14 @@ SECURE_SSL_REDIRECT = False
 
 INSTALLED_APPS = [
     'user',
-    'recommendation',
-    'chat',
-    'cart',
-    'Seller',
-    'product',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'corsheaders',
     'rest_framework',
 ]
@@ -67,7 +64,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'back.wsgi.application'
-#ASGI_APPLICATION = "back.asgi.application"
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
