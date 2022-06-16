@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'package:pdm/src/features/product/presentation/widget/footer.dart';
 import 'package:pdm/theme_manager.dart';
 

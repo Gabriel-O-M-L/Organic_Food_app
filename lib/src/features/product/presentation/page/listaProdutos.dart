@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:localization/localization.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pdm/theme_manager.dart';
@@ -35,7 +36,7 @@ class listaNova extends StatelessWidget {
 
     if (response.statusCode == 201) {
       print(response.body);
-      alertDialog("Produto Adicionado");
+      alertDialog("Produto_Adicionado".i18n());
       print("Carrinho Criado!");
       add = true;
     } else if (response.statusCode == 400) {
@@ -66,7 +67,7 @@ class listaNova extends StatelessWidget {
     if (response.statusCode == 200) {
       print(response.body);
       print("Carrinho add");
-      alertDialog("Produto Adicionado");
+      alertDialog("Produto_Adicionado".i18n());
       add = true;
     } else
       print("Carrinho Error!");
@@ -93,7 +94,7 @@ class listaNova extends StatelessWidget {
     if (response.statusCode == 200) {
       print(response.body);
       print("Item removido");
-      alertDialog("Produto Removido");
+      alertDialog("Produto_Removido".i18n());
       add = false;
     } else
       print("Carrinho Error!");
@@ -132,27 +133,27 @@ class listaNova extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Nome: " + produto.P_name,
+                        "Nome:".i18n() + produto.P_name,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Text(
-                        "Preço: " + produto.P_value.toString() + "R\$",
+                        "Preço:".i18n() + produto.P_value.toString() + "R\$",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Text(
-                        "Tipo: " + produto.P_type,
+                        "Tipo:".i18n() + produto.P_type,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Text(
-                        "Rating: " + produto.P_ratings.toString(),
+                        "Rating:".i18n() + produto.P_ratings.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Text(
-                        "Vendedor: " + produto.P_seller_name,
+                        "Vendedor:".i18n() + produto.P_seller_name,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),

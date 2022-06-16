@@ -54,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       children: [
                         SvgPicture.asset(
                           contents[i].image,
-                          height: 240,
+                          height: 200,
                         ),
                         SizedBox(
                           height: 30,
@@ -63,19 +63,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           contents[i].title,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 35,
+                            fontSize: 28,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 15,
                         ),
-                        Text(contents[i].discription,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.grey,
-                            ))
+                        Container(
+                          height: MediaQuery.of(context).size.height / 5,
+                          width: MediaQuery.of(context).size.width / 1.1,
+                          child: ListView(
+                            children: [
+                              Text(contents[i].discription,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey,
+                                  ))
+                            ],
+                          ),
+                        ),
                       ]),
                 );
               },

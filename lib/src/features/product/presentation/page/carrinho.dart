@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:localization/localization.dart';
 import 'dart:convert';
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'package:pdm/src/features/product/presentation/page/recomendacao.dart';
 import 'package:pdm/src/features/product/presentation/widget/footer.dart';
 import 'package:pdm/src/features/product/presentation/widget/produtosItemListCarrinhoRate.dart';
@@ -63,7 +64,7 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
               },
             ),
           ],
-          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          title: Text("Alerta".i18n(), style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -90,7 +91,7 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
 
   Future<http.Response> getProdutoRecomendado(int id) async {
     var url = Uri.parse(
-        'https://9276-2804-d59-8419-9100-5083-7206-8cee-1083.sa.ngrok.io/recommendation/recommend/');
+        'https://back-end-pdm.herokuapp.com/recommendation/recommend/');
 
     Map data = {
       "jwt": token,
@@ -165,10 +166,10 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
           getProdutoRecomendado(idInt);
         }
       } else {
-        alertDialog("Número mínimo de itens 2");
+        alertDialog("Número_minimo_de_itens_2".i18n());
       }
     } else {
-      alertDialog("Carrinho Vazio");
+      alertDialog("Carrinho_Vazio");
       print("Produto por ID Error!");
     }
 
@@ -331,7 +332,7 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
         appBar: AppBar(
           backgroundColor: getTheme().colorScheme.primary,
           title: Text(
-            "Meu Carrinho",
+            "Meu_Carrinho".i18n(),
             style: TextStyle(
               fontSize: 26,
             ),
@@ -388,7 +389,7 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
                       ),
                       child: TextButton(
                           child: Text(
-                            'Finalizar Compra',
+                            'Finalizar_Compra'.i18n(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: getTheme().colorScheme.onPrimary,
@@ -434,7 +435,7 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
         ),
         backgroundColor: getTheme().colorScheme.secondary,
         action: SnackBarAction(
-          label: "Desfazer",
+          label: "Desfazer".i18n(),
           textColor: getTheme().colorScheme.onPrimary,
           onPressed: () {
             setState(() {

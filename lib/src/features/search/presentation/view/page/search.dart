@@ -4,7 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:localization/localization.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'package:pdm/src/features/product/presentation/widget/produtosItemList.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
 import 'package:pdm/theme_manager.dart';
@@ -96,7 +97,7 @@ class _SearchScreenState extends State<SearchScreen> {
             color: getTheme().colorScheme.onTertiary,
             size: 50,
           ),
-          labelText: "Pesquisar",
+          labelText: "Pesquisar".i18n(),
           labelStyle: TextStyle(
             fontSize: 22,
             color: getTheme().colorScheme.onTertiary,
@@ -183,7 +184,7 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Pesquisa",
+                    Text("Pesquisa".i18n(),
                         style: TextStyle(
                             fontSize: 28,
                             color: getTheme().colorScheme.onPrimary)),
@@ -206,7 +207,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                         child: TextButton(
                           child: Text(
-                            'Pesquisar Produto',
+                            'Pesquisar_Produto'.i18n(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: getTheme().colorScheme.onPrimary,
@@ -233,7 +234,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                         child: TextButton(
                           child: Text(
-                            'Pesquisar Loja',
+                            'Pesquisar_Loja'.i18n(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: getTheme().colorScheme.onPrimary,

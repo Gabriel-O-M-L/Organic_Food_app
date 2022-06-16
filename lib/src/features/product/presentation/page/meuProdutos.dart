@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:localization/localization.dart';
 import 'package:pdm/src/features/product/presentation/widget/footer.dart';
 import 'package:pdm/src/features/search/presentation/view/page/search.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/config.dart';
@@ -129,7 +130,7 @@ class _MeusProdutosScreenState extends State<MeusProdutosScreen> {
           appBar: AppBar(
             backgroundColor: getTheme().colorScheme.primary,
             title: Text(
-              "Adicionar Produto",
+              "Adicionar_Produto".i18n(),
               style: TextStyle(
                 fontSize: 26,
               ),
@@ -144,17 +145,17 @@ class _MeusProdutosScreenState extends State<MeusProdutosScreen> {
                 SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: _buildContainer("Escolha o produto"),
+                  child: _buildContainer("Escolha_o_produto".i18n()),
                 ),
                 SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: _buildContainer("Alterar Preço"),
+                  child: _buildContainer("Alterar_Preço".i18n()),
                 ),
                 SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: _buildContainer("Remover Produto"),
+                  child: _buildContainer("Remover_Produto".i18n()),
                 ),
                 Expanded(
                   child: SingleChildScrollView(

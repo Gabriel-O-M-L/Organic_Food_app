@@ -48,6 +48,7 @@ flutter:
     - lib/assets/i18n/
     - lib/assets/images/
     - lib/assets/fonts/
+    - lib/assets/i18n/en_US.json
 
   fonts:
     - family: Asap

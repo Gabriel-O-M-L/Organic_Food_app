@@ -109,7 +109,7 @@ class _dadosPessoaisState extends State<dadosPessoais> {
               },
             ),
           ],
-          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          title: Text("Alerta".i18n(), style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -201,8 +201,9 @@ class _dadosPessoaisState extends State<dadosPessoais> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.only(left: 20, right: 20, bottom: 80),
-                height: MediaQuery.of(context).size.height / 1.7,
+                margin:
+                    EdgeInsets.only(left: 20, right: 20, bottom: 50, top: 20),
+                height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width / 1.2,
                 decoration: BoxDecoration(
                   color: getTheme().colorScheme.primary,

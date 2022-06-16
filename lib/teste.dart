@@ -19,7 +19,7 @@ import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
 
 void main() async {
   runApp(MaterialApp(
-    home: UserScreen(
+    home: dadosPessoais(
       token:
           "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMDEzLCJleHAiOjE2NTU5NTEwOTAxNjYuOTk3fQ.tJoJVtfpeGE6bCJZwkhHB8-LI3Kqy6ZJOLR3aLoFihs",
       email: "tico@tucky.com.br",

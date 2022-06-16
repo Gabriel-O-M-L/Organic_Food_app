@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:localization/localization.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pdm/theme_manager.dart';
 
@@ -22,7 +23,7 @@ class ProdutoItemListCarrinho extends StatelessWidget {
         actionPane: const SlidableStrechActionPane(),
         secondaryActions: [
           IconSlideAction(
-            caption: "Deletar",
+            caption: "Deletar".i18n(),
             color: getTheme().colorScheme.secondary,
             icon: Icons.delete,
             onTap: () {
@@ -49,27 +50,27 @@ class ProdutoItemListCarrinho extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Nome: " + produto.P_name,
+                        "Nome:".i18n() + produto.P_name,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Text(
-                        "Preço: " + produto.P_value.toString() + "R\$",
+                        "Preço:".i18n() + produto.P_value.toString() + "R\$",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Text(
-                        "Tipo: " + produto.P_type,
+                        "Tipo:".i18n() + produto.P_type,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Text(
-                        "Rating: " + produto.P_ratings.toString(),
+                        "Rating:".i18n() + produto.P_ratings.toStringAsFixed(2),
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Text(
-                        "Vendedor: " + produto.P_seller_name,
+                        "Vendedor:".i18n() + produto.P_seller_name,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),

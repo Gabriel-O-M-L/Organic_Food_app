@@ -1,6 +1,7 @@
 import 'package:bubble/bubble.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:pdm/src/features/userSpace/model/chatModel.dart';
 import 'package:pdm/src/features/userSpace/model/chatUserModel.dart';
 import 'package:pdm/src/features/userSpace/widget/chatBubble.dart';
@@ -169,7 +170,7 @@ class _SendChatScreenState extends State<SendChatScreen> {
                       child: TextField(
                     controller: msgController,
                     decoration: InputDecoration.collapsed(
-                        hintText: "Enviar Mensagem",
+                        hintText: "Enviar_Mensagem".i18n(),
                         hintStyle: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18.0)),
                   )),

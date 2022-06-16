@@ -60,7 +60,7 @@ class _areaProdutorState extends State<areaProdutor> {
       appBar: AppBar(
         backgroundColor: getTheme().colorScheme.primary,
         title: Text(
-          "Área do Produtor".i18n(),
+          "Area_do_Produtor".i18n(),
           style: TextStyle(
             fontSize: 26,
           ),
@@ -77,15 +77,15 @@ class _areaProdutorState extends State<areaProdutor> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 50.0),
               child: Container(
-                height: MediaQuery.of(context).size.height / 12,
-                width: MediaQuery.of(context).size.width / 1.5,
+                height: MediaQuery.of(context).size.height / 8,
+                width: MediaQuery.of(context).size.width / 1.3,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: getTheme().colorScheme.secondary,
                 ),
                 child: TextButton(
                   child: Text(
-                    'Adicionar Produto'.i18n(),
+                    'Adicionar_Produto'.i18n(),
                     style: TextStyle(
                         color: getTheme().colorScheme.onPrimary, fontSize: 28),
                   ),
@@ -103,15 +103,15 @@ class _areaProdutorState extends State<areaProdutor> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 50.0),
               child: Container(
-                height: MediaQuery.of(context).size.height / 12,
-                width: MediaQuery.of(context).size.width / 1.5,
+                height: MediaQuery.of(context).size.height / 8,
+                width: MediaQuery.of(context).size.width / 1.3,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: getTheme().colorScheme.secondary,
                 ),
                 child: TextButton(
                   child: Text(
-                    'Ver Meus Produto'.i18n(),
+                    'Ver_Meus_Produto'.i18n(),
                     style: TextStyle(
                         color: getTheme().colorScheme.onPrimary, fontSize: 28),
                   ),
@@ -129,7 +129,7 @@ class _areaProdutorState extends State<areaProdutor> {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height / x,
+              height: MediaQuery.of(context).size.height / 20,
             ),
             Expanded(
               child: SingleChildScrollView(

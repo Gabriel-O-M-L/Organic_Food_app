@@ -86,7 +86,7 @@ class _areaChatState extends State<areaChat> {
                 ),
                 child: TextButton(
                   child: Text(
-                    'Chat Bot',
+                    'Chat_Bot'.i18n(),
                     style: TextStyle(
                         color: getTheme().colorScheme.onPrimary, fontSize: 28),
                   ),

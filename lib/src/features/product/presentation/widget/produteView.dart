@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 import 'package:pdm/src/features/product/presentation/page/carrinho.dart';
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
 import 'package:pdm/theme_manager.dart';
 import 'package:http/http.dart' as http;
@@ -65,7 +65,7 @@ class _ProdutoViewState extends State<ProdutoView> {
               },
             )
           ],
-          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          title: Text("Alerta".i18n(), style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -114,7 +114,7 @@ class _ProdutoViewState extends State<ProdutoView> {
                     color: getTheme().colorScheme.onPrimary, size: 150),
                 SizedBox(height: 100),
                 Text(
-                  "Nome: " + produto.P_name,
+                  "Nome:".i18n() + produto.P_name,
                   style: TextStyle(
                       color: getTheme().colorScheme.onPrimary,
                       fontSize: 28,
@@ -122,7 +122,7 @@ class _ProdutoViewState extends State<ProdutoView> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "Valor: " + produto.P_value.toString(),
+                  "Preço:".i18n() + produto.P_value.toString(),
                   style: TextStyle(
                       color: getTheme().colorScheme.onPrimary,
                       fontSize: 28,
@@ -130,7 +130,7 @@ class _ProdutoViewState extends State<ProdutoView> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "Tipo: " + produto.P_type,
+                  "Tipo:".i18n() + produto.P_type,
                   style: TextStyle(
                       color: getTheme().colorScheme.onPrimary,
                       fontSize: 28,
@@ -138,7 +138,7 @@ class _ProdutoViewState extends State<ProdutoView> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "Rating: " + produto.P_ratings.toStringAsFixed(2),
+                  "Rating:".i18n() + produto.P_ratings.toStringAsFixed(2),
                   style: TextStyle(
                       color: getTheme().colorScheme.onPrimary,
                       fontSize: 28,
@@ -146,7 +146,7 @@ class _ProdutoViewState extends State<ProdutoView> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "Vendedor: " + produto.P_seller_name,
+                  "Vendedor:".i18n() + produto.P_seller_name,
                   style: TextStyle(
                       color: getTheme().colorScheme.onPrimary,
                       fontSize: 28,
@@ -159,7 +159,7 @@ class _ProdutoViewState extends State<ProdutoView> {
                     keyboardType: TextInputType.number,
                     controller: notaController,
                     decoration: InputDecoration(
-                      labelText: "nota do protudo".i18n(),
+                      labelText: "nota_do_protudo".i18n(),
                       labelStyle: TextStyle(
                         fontSize: 22,
                         color: getTheme().colorScheme.onPrimaryContainer,
@@ -200,7 +200,7 @@ class _ProdutoViewState extends State<ProdutoView> {
 
                         nota = double.parse(notaStr!);
                         if (nota! > 10) {
-                          alertDialog("Nota deve ser de 0 a 10!".i18n());
+                          alertDialog("Nota_deve_ser_de_0_a_10!".i18n());
                           notaController.clear();
                         } else {
                           print(nota);

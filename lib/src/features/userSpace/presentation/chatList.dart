@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:localization/localization.dart';
 import 'dart:convert';
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'package:pdm/src/features/product/presentation/widget/footer.dart';
 import 'package:pdm/src/features/search/presentation/view/page/search.dart';
 import 'package:pdm/src/features/userSpace/model/chatUserModel.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:localization/localization.dart';
 import 'dart:convert';
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'package:pdm/src/features/product/presentation/widget/footer.dart';
 import 'package:pdm/src/features/product/presentation/widget/produtosItemList.dart';
 import 'package:pdm/src/features/product/presentation/widget/produtosItemListCarrinhoRate.dart';
@@ -63,7 +63,7 @@ class _RecomendacaoScreenState extends State<RecomendacaoScreen> {
               },
             ),
           ],
-          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          title: Text("Alerta".i18n(), style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -123,10 +123,10 @@ class _RecomendacaoScreenState extends State<RecomendacaoScreen> {
           // getProdutoRecomendado(idInt);
         }
       } else {
-        alertDialog("Número mínimo de itens 2");
+        alertDialog("Número_minimo_de_itens_2");
       }
     } else {
-      alertDialog("Carrinho Vazio");
+      alertDialog("Carrinho_Vazio");
       print("Produto por ID Error!");
     }
 

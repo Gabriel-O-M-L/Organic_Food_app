@@ -5,14 +5,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
 import 'package:localization/localization.dart';
 import 'package:pdm/src/features/product/presentation/page/listaProdutos.dart';
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../../theme_manager.dart';
 import '../widget/footer.dart';
 import '../widget/produtosItemList.dart';
-import 'lojamodel.dart';
+import '../model/lojamodel.dart';
 
 class SearchProduct extends StatefulWidget {
   final String? token;
@@ -112,7 +112,7 @@ class _SearchProductState extends State<SearchProduct> {
           showProduct(idInt);
         }
       } else {
-        alertDialog("Produto não encontrado");
+        alertDialog("Produto_nao_encontrado");
       }
     } else
       print("Error!");
@@ -203,7 +203,7 @@ class _SearchProductState extends State<SearchProduct> {
                     ),
                     child: TextButton(
                         child: Text(
-                          'Pesquisar Produto',
+                          'Pesquisar_Produto'.i18n(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: getTheme().colorScheme.onPrimary,

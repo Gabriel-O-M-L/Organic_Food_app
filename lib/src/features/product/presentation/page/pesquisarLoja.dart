@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
 import 'package:localization/localization.dart';
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pdm/src/features/product/presentation/widget/produtosItemListCarrinho.dart';
@@ -12,7 +12,7 @@ import 'package:pdm/src/features/product/presentation/widget/produtosItemListCar
 import '../../../../../theme_manager.dart';
 import '../widget/footer.dart';
 import '../widget/produtosItemList.dart';
-import 'lojamodel.dart';
+import '../model/lojamodel.dart';
 
 class SearchSeller extends StatefulWidget {
   final String? token;
@@ -106,7 +106,7 @@ class _SearchSellertState extends State<SearchSeller> {
       showIdSeller(loja!.S_id);
       return Loja.fromJson(jsonDecode(response.body));
     } else {
-      alertDialog("Vendedor não encontrado");
+      alertDialog("Vendedor_nao_encontrado".i18n());
       throw Exception('Failed to load album');
     }
   }
@@ -229,7 +229,7 @@ class _SearchSellertState extends State<SearchSeller> {
                     ),
                     child: TextButton(
                         child: Text(
-                          'Pesquisar Vendedor',
+                          'Pesquisar_Vendedor'.i18n(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: getTheme().colorScheme.onPrimary,

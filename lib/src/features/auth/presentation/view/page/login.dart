@@ -247,47 +247,55 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(children: <Widget>[
-        Column(
-          children: [
-            Container(
-              color: const Color(0xff388E3C),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.15,
-              alignment: Alignment.topCenter,
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(children: <Widget>[
+          Container(
+            child: ListView(
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      color: const Color(0xff388E3C),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      alignment: Alignment.topCenter,
+                    ),
+                    Container(
+                      height: 120,
+                      width: 120,
+                      margin: const EdgeInsets.all(30),
+                      child: SvgPicture.asset(
+                        'lib/assets/images/leaf.svg',
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    const Text(
+                      "Horti em Casa",
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: Color(0xff212121),
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height / x),
+                    _buildEmailTF(),
+                    SizedBox(height: MediaQuery.of(context).size.height / x),
+                    _buildPasswordTF(),
+                    SizedBox(height: MediaQuery.of(context).size.height / x),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      _buildLoginTF(),
+                      const SizedBox(width: 120),
+                      _buildSignupTF(),
+                    ]),
+                    SizedBox(height: MediaQuery.of(context).size.height / x),
+                    _buildForgetPasswordTF(),
+                  ],
+                ),
+              ],
             ),
-            Container(
-              height: 120,
-              width: 120,
-              margin: const EdgeInsets.all(30),
-              child: SvgPicture.asset(
-                'lib/assets/images/leaf.svg',
-              ),
-            ),
-            const SizedBox(height: 30),
-            const Text(
-              "Horti em Casa",
-              style: TextStyle(
-                fontSize: 28,
-                color: Color(0xff212121),
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height / x),
-            _buildEmailTF(),
-            SizedBox(height: MediaQuery.of(context).size.height / x),
-            _buildPasswordTF(),
-            SizedBox(height: MediaQuery.of(context).size.height / x),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              _buildLoginTF(),
-              const SizedBox(width: 120),
-              _buildSignupTF(),
-            ]),
-            SizedBox(height: MediaQuery.of(context).size.height / x),
-            _buildForgetPasswordTF(),
-          ],
-        ),
-      ]),
+          ),
+        ]),
+      ),
     );
     throw UnimplementedError();
   }

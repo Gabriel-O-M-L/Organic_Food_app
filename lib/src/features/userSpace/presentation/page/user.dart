@@ -99,7 +99,7 @@ class _UserScreenState extends State<UserScreen> {
               },
             ),
           ],
-          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          title: Text("Alerta".i18n(), style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -180,7 +180,7 @@ class _UserScreenState extends State<UserScreen> {
       );
     } else {
       print("Error!");
-      alertDialog("Falta dados");
+      alertDialog("Falta_dados".i18n());
     }
 
     return response;
@@ -196,7 +196,7 @@ class _UserScreenState extends State<UserScreen> {
         minimumSize: const Size.fromHeight(50),
       ),
       child: Text(
-        'want be seller'.i18n(),
+        'want_be_seller'.i18n(),
         style: TextStyle(
           fontSize: 22,
         ),
@@ -236,24 +236,8 @@ class _UserScreenState extends State<UserScreen> {
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Chat",
-        style: TextStyle(
-          fontSize: 22,
-        ),
-      ),
-    );
-  }
-
-  Widget get _buildPontuacao {
-    return TextButton(
-      onPressed: (() => print('ratings'.i18n())),
-      style: TextButton.styleFrom(
-        primary: getTheme().colorScheme.onPrimaryContainer,
-        minimumSize: const Size.fromHeight(50),
-      ),
       child: Text(
-        'ratings'.i18n(),
+        "Chat".i18n(),
         style: TextStyle(
           fontSize: 22,
         ),
@@ -375,7 +359,7 @@ class _UserScreenState extends State<UserScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Email: ' + email!,
+                            'Email:'.i18n() + email!,
                             style: TextStyle(
                               fontSize: 18,
                               color: getTheme().colorScheme.onPrimary,
@@ -411,10 +395,6 @@ class _UserScreenState extends State<UserScreen> {
                   _buildLine,
                   const SizedBox(height: 20),
                   _buildChat,
-                  const SizedBox(height: 20),
-                  _buildLine,
-                  const SizedBox(height: 20),
-                  _buildPontuacao,
                   const SizedBox(height: 20),
                   _buildLine,
                   const SizedBox(height: 20),

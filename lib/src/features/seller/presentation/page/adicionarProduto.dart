@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:localization/localization.dart';
 import 'package:pdm/src/features/product/presentation/widget/footer.dart';
 import 'package:pdm/src/features/seller/presentation/page/areaProdutor.dart';
 
@@ -176,7 +177,7 @@ class _AdicionarProdutoScreenState extends State<AdicionarProdutoScreen> {
           appBar: AppBar(
             backgroundColor: getTheme().colorScheme.primary,
             title: Text(
-              "Adicionar Produto",
+              "Adicionar_Produto".i18n(),
               style: TextStyle(
                 fontSize: 26,
               ),
@@ -201,7 +202,7 @@ class _AdicionarProdutoScreenState extends State<AdicionarProdutoScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: _buildContainer(
-                              "Tipo de Produto", tipoController),
+                              "Tipo_de_Produto".i18n(), tipoController),
                         ),
                       ],
                     ),
@@ -212,12 +213,14 @@ class _AdicionarProdutoScreenState extends State<AdicionarProdutoScreen> {
                 SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: _buildContainer("Preço por KG", precoController),
+                  child:
+                      _buildContainer("Preço_por_KG".i18n(), precoController),
                 ),
                 SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: _buildContainer("Nome do Produto", nomeController),
+                  child:
+                      _buildContainer("Nome_do_Produto".i18n(), nomeController),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 25.0),
@@ -230,7 +233,7 @@ class _AdicionarProdutoScreenState extends State<AdicionarProdutoScreen> {
                     ),
                     child: TextButton(
                       child: Text(
-                        'Adicionar Produto',
+                        'Adicionar_Produto'.i18n(),
                         style: TextStyle(
                             color: getTheme().colorScheme.onPrimary,
                             fontSize: 28),

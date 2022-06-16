@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
 import 'package:localization/localization.dart';
-import 'package:pdm/src/features/product/presentation/page/lojamodel.dart';
-import 'package:pdm/src/features/product/presentation/page/produtos.dart';
+import 'package:pdm/src/features/product/presentation/model/lojamodel.dart';
+import 'package:pdm/src/features/product/presentation/model/produtos.dart';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pdm/src/features/product/presentation/widget/footer.dart';
@@ -149,7 +149,7 @@ class _ItensVendedorState extends State<ItensVendedor> {
               },
             ),
           ],
-          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
+          title: Text("Alerta".i18n(), style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -209,7 +209,7 @@ class _ItensVendedorState extends State<ItensVendedor> {
           print(idInt);
         }
       } else {
-        alertDialog("Você não possui produtos!");
+        alertDialog("Você_nao_possui_produtos!".i18n());
       }
     } else
       print("Error!");
@@ -255,7 +255,7 @@ class _ItensVendedorState extends State<ItensVendedor> {
         appBar: AppBar(
           backgroundColor: getTheme().colorScheme.primary,
           title: Text(
-            "Seus Itens".i18n(),
+            "Seus_Itens".i18n(),
             style: TextStyle(
               fontSize: 26,
             ),
