@@ -61,7 +61,7 @@ class _areaChatState extends State<areaChat> {
       appBar: AppBar(
         backgroundColor: getTheme().colorScheme.primary,
         title: Text(
-          "Área de Chat".i18n(),
+          "Area_de_Chat".i18n(),
           style: TextStyle(
             fontSize: 26,
           ),
@@ -112,7 +112,7 @@ class _areaChatState extends State<areaChat> {
                 ),
                 child: TextButton(
                   child: Text(
-                    'Lista de Conversa'.i18n(),
+                    'Lista_de_Conversa'.i18n(),
                     style: TextStyle(
                         color: getTheme().colorScheme.onPrimary, fontSize: 28),
                   ),

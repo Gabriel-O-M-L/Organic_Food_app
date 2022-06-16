@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:localization/localization.dart';
 import 'dart:convert';
 import 'package:pdm/src/features/product/presentation/page/produtos.dart';
-import 'package:pdm/src/features/product/presentation/page/recomendacao.dart';
 import 'package:pdm/src/features/product/presentation/widget/footer.dart';
+import 'package:pdm/src/features/product/presentation/widget/produtosItemList.dart';
 import 'package:pdm/src/features/product/presentation/widget/produtosItemListCarrinhoRate.dart';
 import 'package:pdm/src/features/search/presentation/view/page/search.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/config.dart';
@@ -13,33 +14,38 @@ import 'package:pdm/theme_manager.dart';
 
 import '../widget/produtosItemListCarrinho.dart';
 
-class CarrinhoScreen extends StatefulWidget {
+class RecomendacaoScreen extends StatefulWidget {
   final String? token;
   final String? email;
-  const CarrinhoScreen({Key? key, this.token, this.email}) : super(key: key);
+  final List<String> listaRecomed;
+  const RecomendacaoScreen(
+      {Key? key, this.token, this.email, required this.listaRecomed})
+      : super(key: key);
 
   @override
-  State<CarrinhoScreen> createState() => _CarrinhoScreenState(token, email);
+  State<RecomendacaoScreen> createState() =>
+      _RecomendacaoScreenState(token, email, listaRecomed);
 }
 
-class _CarrinhoScreenState extends State<CarrinhoScreen> {
+class _RecomendacaoScreenState extends State<RecomendacaoScreen> {
   final String? token;
   final String? email;
-  Produtos? deletedProduto;
-  int? deletedProdutoPos;
   String? produtoId;
   List<String> idProduto = [];
   List<Produtos> listaProdutos = [];
-  List<String> listaRecomed = [];
+  final List<String> listaRecomed;
 
-  _CarrinhoScreenState(this.token, this.email);
+  _RecomendacaoScreenState(this.token, this.email, this.listaRecomed);
 
   void initState() {
     super.initState();
 
     setState(() {
-      showProductByName();
-      listaProdutos.clear();
+      print(listaRecomed);
+      for (String x in listaRecomed) {
+        int id = int.parse(x);
+        showProductById(id);
+      }
     });
   }
 
@@ -54,12 +60,6 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          UserScreen(token: token, email: email)),
-                );
               },
             ),
           ],
@@ -86,43 +86,6 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
         );
       },
     );
-  }
-
-  Future<http.Response> getProdutoRecomendado(int id) async {
-    var url = Uri.parse(
-        'https://9276-2804-d59-8419-9100-5083-7206-8cee-1083.sa.ngrok.io/recommendation/recommend/');
-
-    Map data = {
-      "jwt": token,
-      "P_id": id,
-      "type": "recommend",
-    };
-
-    var body = json.encode(data);
-
-    var response = await http.post(url,
-        headers: {"Content-Type": "application/json"}, body: body);
-
-    print("${response.statusCode}");
-    print("${response.body}");
-
-    String recomendacao;
-    List<String> list = [];
-    recomendacao = response.body;
-    print(recomendacao);
-    recomendacao = recomendacao.replaceAll('["[', '');
-    recomendacao = recomendacao.replaceAll(']"]', '');
-    listaRecomed = recomendacao.split(',');
-    print("lista: " + list.toString());
-    print(recomendacao);
-
-    if (response.statusCode == 200) {
-      print("Lista Recomendação Ok!");
-    } else {
-      print("Lista Recomendação Error!");
-    }
-
-    return response;
   }
 
   Future<http.Response> showProductByName() async {
@@ -159,11 +122,6 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
           showProductById(idInt);
           // getProdutoRecomendado(idInt);
         }
-        for (String id in idProduto) {
-          int idInt = int.parse(id);
-          // showProductById(idInt);
-          getProdutoRecomendado(idInt);
-        }
       } else {
         alertDialog("Número mínimo de itens 2");
       }
@@ -171,47 +129,6 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
       alertDialog("Carrinho Vazio");
       print("Produto por ID Error!");
     }
-
-    return response;
-  }
-
-  Future<void> finalizarCompra() async {
-    // removeCarrinho();
-    // mandarMsg();
-    // listaProdutos.clear();
-    print(listaRecomed);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => RecomendacaoScreen(
-                token: token,
-                email: email,
-                listaRecomed: listaRecomed,
-              )),
-    );
-  }
-
-  Future<http.Response> mandarMsg() async {
-    var url = Uri.parse('https://back-end-pdm.herokuapp.com/cart/finish/');
-
-    Map data = {
-      "jwt": token,
-    };
-
-    var body = json.encode(data);
-
-    var response = await http.post(url,
-        headers: {"Content-Type": "application/json"}, body: body);
-
-    print("${response.statusCode}");
-    print("${response.body}");
-
-    if (response.statusCode == 200) {
-      print(response.body);
-      print("Msg Enviada");
-      ;
-    } else
-      print("Msg Error!");
 
     return response;
   }
@@ -267,30 +184,6 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
     return response;
   }
 
-  Future<http.Response> removeCarrinho() async {
-    var url = Uri.parse('https://back-end-pdm.herokuapp.com/cart/delete/');
-
-    Map data = {
-      "jwt": token,
-    };
-
-    var body = json.encode(data);
-
-    var response = await http.delete(url,
-        headers: {"Content-Type": "application/json"}, body: body);
-
-    print("${response.statusCode}");
-    print("${response.body}");
-
-    if (response.statusCode == 200) {
-      print(response.body);
-      print("Carrinho Removido ok!");
-    } else
-      print("Carrinho Removido Error!");
-
-    return response;
-  }
-
   Future<Produtos?> showProductById(int product) async {
     var url = Uri.parse('https://back-end-pdm.herokuapp.com/product/show/');
 
@@ -331,7 +224,7 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
         appBar: AppBar(
           backgroundColor: getTheme().colorScheme.primary,
           title: Text(
-            "Meu Carrinho",
+            "Recomendações".i18n(),
             style: TextStyle(
               fontSize: 26,
             ),
@@ -368,37 +261,12 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
                       shrinkWrap: true,
                       children: [
                         for (Produtos produtos in listaProdutos)
-                          ProdutoItemListCarrinhoRate(
-                            produto: produtos,
-                            onDelete: onDelete,
+                          ProdutoItemList(
                             token: token!,
-                            email: email,
+                            alertDialog: alertDialog,
+                            produto: produtos,
                           ),
                       ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 25.0),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 15,
-                      width: MediaQuery.of(context).size.width / 2,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: getTheme().colorScheme.secondary,
-                      ),
-                      child: TextButton(
-                          child: Text(
-                            'Finalizar Compra',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: getTheme().colorScheme.onPrimary,
-                                fontSize: 20),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              finalizarCompra();
-                            });
-                          }),
                     ),
                   ),
                 ],
@@ -413,37 +281,6 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
             footer(token: token, email: email),
           ],
         ),
-      ),
-    );
-  }
-
-  void onDelete(Produtos produto) {
-    deletedProduto = produto;
-    deletedProdutoPos = listaProdutos.indexOf(produto);
-    setState(() {
-      listaProdutos.remove(produto);
-      removeProduct(produto.P_id);
-    });
-    ScaffoldMessenger.of(context).clearSnackBars();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          "Produto ${produto.P_name} foi removida com sucesso!",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: getTheme().colorScheme.secondary,
-        action: SnackBarAction(
-          label: "Desfazer",
-          textColor: getTheme().colorScheme.onPrimary,
-          onPressed: () {
-            setState(() {
-              listaProdutos.insert(deletedProdutoPos!, deletedProduto!);
-              addCarrinho(produto.P_id);
-            });
-          },
-        ),
-        duration: const Duration(seconds: 5),
       ),
     );
   }

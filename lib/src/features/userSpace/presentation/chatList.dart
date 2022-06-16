@@ -110,7 +110,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         appBar: AppBar(
           backgroundColor: getTheme().colorScheme.primary,
           title: Text(
-            "Minhas Conversas",
+            "Minhas_Conversas".i18n(),
             style: TextStyle(
               fontSize: 26,
             ),

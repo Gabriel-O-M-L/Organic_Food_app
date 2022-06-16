@@ -9,8 +9,7 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LocalJsonLocalization.delegate.directories = ['lib/assets/i18n'];
-
+    LocalJsonLocalization.delegate.directories = ["lib/assets/i18n"];
     return MaterialApp.router(
       title: 'app_name'.i18n(),
       localizationsDelegates: [
