@@ -6,7 +6,7 @@ class User(models.Model):
     password = models.TextField()
     name = models.TextField(null=True)
     phone = models.TextField(null=True)
-    latidude = models.DecimalField(null=True,max_digits=256,decimal_places=10)
+    latitude = models.DecimalField(null=True,max_digits=256,decimal_places=10)
     longitude = models.DecimalField(null=True,max_digits=256,decimal_places=10)
 
 
