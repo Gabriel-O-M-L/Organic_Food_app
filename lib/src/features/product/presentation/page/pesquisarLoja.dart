@@ -204,7 +204,7 @@ class _SearchSellertState extends State<SearchSeller> {
                         labelText: "Vendedor".i18n(),
                         labelStyle: TextStyle(
                           fontSize: 22,
-                          color: Color(0xffFFFFFF),
+                          color: getTheme().colorScheme.tertiary,
                         ),
                         filled: true,
                         fillColor: getTheme().colorScheme.tertiary,

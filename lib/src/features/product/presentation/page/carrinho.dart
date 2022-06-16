@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:pdm/src/features/product/presentation/page/produtos.dart';
 import 'package:pdm/src/features/product/presentation/widget/footer.dart';
+import 'package:pdm/src/features/product/presentation/widget/produtosItemListCarrinhoRate.dart';
 import 'package:pdm/src/features/search/presentation/view/page/search.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/config.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
@@ -106,20 +107,25 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
       produtoId = produtoId!.replaceAll('[', '');
       produtoId = produtoId!.replaceAll(']', '');
       produtoId = produtoId!.replaceAll('"', '');
-      print(produtoId);
+      print("id produto: " + produtoId!);
       idProduto = produtoId!.split(",");
+
       print(idProduto);
+      print("lista vazia? " + idProduto.isEmpty.toString());
       print("Produto por ID ok!");
-      if (idProduto.length > 2) {
+
+      if (idProduto.length > 1) {
         for (String id in idProduto) {
           int idInt = int.parse(id);
           showProductById(idInt);
         }
       } else {
-        alertDialog("Carrinho Vazio");
+        alertDialog("Número mínimo de itens 2");
       }
-    } else
+    } else {
+      alertDialog("Carrinho Vazio");
       print("Produto por ID Error!");
+    }
 
     return response;
   }
@@ -307,9 +313,11 @@ class _CarrinhoScreenState extends State<CarrinhoScreen> {
                       shrinkWrap: true,
                       children: [
                         for (Produtos produtos in listaProdutos)
-                          ProdutoItemListCarrinho(
+                          ProdutoItemListCarrinhoRate(
                             produto: produtos,
                             onDelete: onDelete,
+                            token: token!,
+                            email: email,
                           ),
                       ],
                     ),

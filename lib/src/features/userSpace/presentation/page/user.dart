@@ -208,7 +208,9 @@ class _UserScreenState extends State<UserScreen> {
     return TextButton(
       onPressed: (() => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => dadosPessoais()),
+            MaterialPageRoute(
+                builder: (context) =>
+                    dadosPessoais(token: token, email: email)),
           )),
       style: TextButton.styleFrom(
         primary: getTheme().colorScheme.onPrimaryContainer,

@@ -103,7 +103,7 @@ class _SearchProductState extends State<SearchProduct> {
       idProduto = produtoId!.split(",");
       print(idProduto);
       print(idProduto.length);
-      if (idProduto.length > 2) {
+      if (idProduto.length > 1) {
         print("id ok!");
         for (String id in idProduto) {
           int idInt = int.parse(id);
@@ -178,7 +178,7 @@ class _SearchProductState extends State<SearchProduct> {
                         labelText: "product".i18n(),
                         labelStyle: TextStyle(
                           fontSize: 22,
-                          color: Color(0xffFFFFFF),
+                          color: getTheme().colorScheme.tertiary,
                         ),
                         filled: true,
                         fillColor: getTheme().colorScheme.tertiary,

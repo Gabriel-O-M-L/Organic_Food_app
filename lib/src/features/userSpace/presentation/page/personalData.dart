@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pdm/src/features/product/presentation/widget/footer.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/map.dart';
 import '../../../auth/presentation/view/page/login.dart';
 import '../../../search/presentation/view/page/search.dart';
@@ -317,10 +318,18 @@ class _dadosPessoaisState extends State<dadosPessoais> {
                   ),
                 ),
               ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [],
+                  ),
+                ),
+              ),
+              footer(token: token, email: email),
             ],
           ),
         ),
-        bottomSheet: _buildFooter,
+        // bottomSheet: _buildFooter,
       ),
     );
   }
