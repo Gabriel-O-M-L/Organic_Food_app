@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:pdm/src/features/search/presentation/view/page/search.dart';
 import 'package:localization/localization.dart';
 import 'package:pdm/theme_manager.dart';
+import 'personalData.dart';
 
 import 'config.dart';
 
@@ -59,7 +60,10 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget get _buildDados {
     return TextButton(
-      onPressed: (() => print('data'.i18n())),
+      onPressed: (() => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => dadosPessoais()),
+          )),
       style: TextButton.styleFrom(
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
@@ -230,33 +234,41 @@ class _UserScreenState extends State<UserScreen> {
                 ),
               ]),
             ),
-            const SizedBox(height: 20),
-            _buildLine,
-            const SizedBox(height: 20),
-            _buildConfig,
-            const SizedBox(height: 20),
-            _buildLine,
-            const SizedBox(height: 20),
-            _buildHistorico,
-            const SizedBox(height: 20),
-            _buildLine,
-            const SizedBox(height: 20),
-            _buildPedidos,
-            const SizedBox(height: 20),
-            _buildLine,
-            const SizedBox(height: 20),
-            _buildDados,
-            const SizedBox(height: 20),
-            _buildLine,
-            const SizedBox(height: 20),
-            _buildChat,
-            const SizedBox(height: 20),
-            _buildLine,
-            const SizedBox(height: 20),
-            _buildPontuacao,
-            const SizedBox(height: 20),
-            _buildLine,
-            const SizedBox(height: 20),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: ListView(children: [
+                Column(children: [
+                  const SizedBox(height: 20),
+                  _buildLine,
+                  const SizedBox(height: 20),
+                  _buildConfig,
+                  const SizedBox(height: 20),
+                  _buildLine,
+                  const SizedBox(height: 20),
+                  _buildHistorico,
+                  const SizedBox(height: 20),
+                  _buildLine,
+                  const SizedBox(height: 20),
+                  _buildPedidos,
+                  const SizedBox(height: 20),
+                  _buildLine,
+                  const SizedBox(height: 20),
+                  _buildDados,
+                  const SizedBox(height: 20),
+                  _buildLine,
+                  const SizedBox(height: 20),
+                  _buildChat,
+                  const SizedBox(height: 20),
+                  _buildLine,
+                  const SizedBox(height: 20),
+                  _buildPontuacao,
+                  const SizedBox(height: 20),
+                  _buildLine,
+                  const SizedBox(height: 20),
+                ])
+              ]),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

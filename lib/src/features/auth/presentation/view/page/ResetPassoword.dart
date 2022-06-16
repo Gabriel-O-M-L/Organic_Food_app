@@ -17,7 +17,7 @@ class ForgetPassword extends StatefulWidget {
 
 Future<http.Response> forgetPassword(String email, String password) {
   return http.post(
-    Uri.parse('http://127.0.0.1:8000/api/forgot/'),
+    Uri.parse('https://back-end-pdm.herokuapp.com/api/forgot/'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
