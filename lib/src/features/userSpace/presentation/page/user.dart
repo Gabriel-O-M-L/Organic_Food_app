@@ -4,19 +4,33 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:pdm/src/features/product/presentation/page/carrinho.dart';
 import 'package:pdm/src/features/search/presentation/view/page/search.dart';
 import 'package:localization/localization.dart';
+import 'package:pdm/src/features/userSpace/presentation/page/areaChat.dart';
 import 'package:pdm/theme_manager.dart';
+import '../../../seller/presentation/page/adicionarProduto.dart';
+import '../../../seller/presentation/page/areaProdutor.dart';
+import '../../model/userModel.dart';
 import 'personalData.dart';
 
 import 'config.dart';
 
 class UserScreen extends StatefulWidget {
+  final String? token;
+  final String? email;
+
+  const UserScreen({Key? key, this.token, this.email}) : super(key: key);
   @override
-  _UserScreenState createState() => _UserScreenState();
+  _UserScreenState createState() => _UserScreenState(token, email);
 }
 
 class _UserScreenState extends State<UserScreen> {
+  final String? token;
+  final String? email;
+  UserModel? user;
+
+  _UserScreenState(this.token, this.email);
   Widget get _buildLine {
     return Container(
       color: getTheme().colorScheme.primary,
@@ -28,13 +42,19 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget get _buildHistorico {
     return TextButton(
-      onPressed: (() => print('historic'.i18n())),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CarrinhoScreen(token: token, email: email)),
+        );
+      },
       style: TextButton.styleFrom(
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: Text(
-        "historic".i18n(),
+        "cart".i18n(),
         style: TextStyle(
           fontSize: 22,
         ),
@@ -58,11 +78,139 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
+  Future alertDialog(String text) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("OK",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+              onPressed: () {
+                Navigator.of(context).pop();
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          UserScreen(token: token, email: email)),
+                );
+              },
+            ),
+          ],
+          title: Text("Alerta".i18n(), style: TextStyle(fontSize: 28)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(6.0))),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const SizedBox(height: 30),
+              Container(
+                height: MediaQuery.of(context).size.height / 15,
+                child: Text(
+                  //'Please rate with star',
+                  text,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<UserModel?> showUser() async {
+    var url = Uri.parse('https://back-end-pdm.herokuapp.com/user/getuser/');
+
+    Map data = {
+      "jwt": token,
+    };
+    //encode Map to JSON
+    var body = json.encode(data);
+
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"}, body: body);
+    print("${response.statusCode}");
+    print("${response.body}");
+
+    if (response.statusCode == 200) {
+      print("sucesso!");
+
+      setState(() {
+        user = UserModel.fromJson(jsonDecode(response.body));
+        cadastrarSeller(user!.name);
+      });
+      return UserModel.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<http.Response> cadastrarSeller(String nome) async {
+    var url = Uri.parse('https://back-end-pdm.herokuapp.com/seller/create/');
+
+    Map data = {
+      "jwt": token,
+      "S_name": nome,
+    };
+
+    var body = json.encode(data);
+
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"}, body: body);
+
+    print("${response.statusCode}");
+    print("${response.body}");
+
+    if (response.statusCode == 200 ||
+        response.statusCode == 400 ||
+        response.statusCode == 201) {
+      print("Criado/Existente");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => areaProdutor(token: token, email: email)),
+      );
+    } else {
+      print("Error!");
+      alertDialog("Falta_dados".i18n());
+    }
+
+    return response;
+  }
+
+  Widget get _buildProdutor {
+    return TextButton(
+      onPressed: (() {
+        showUser();
+      }),
+      style: TextButton.styleFrom(
+        primary: getTheme().colorScheme.onPrimaryContainer,
+        minimumSize: const Size.fromHeight(50),
+      ),
+      child: Text(
+        'want_be_seller'.i18n(),
+        style: TextStyle(
+          fontSize: 22,
+        ),
+      ),
+    );
+  }
+
   Widget get _buildDados {
     return TextButton(
       onPressed: (() => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => dadosPessoais()),
+            MaterialPageRoute(
+                builder: (context) =>
+                    dadosPessoais(token: token, email: email)),
           )),
       style: TextButton.styleFrom(
         primary: getTheme().colorScheme.onPrimaryContainer,
@@ -79,29 +227,17 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget get _buildChat {
     return TextButton(
-      onPressed: (() => print('Chat')),
-      style: TextButton.styleFrom(
-        primary: getTheme().colorScheme.onPrimaryContainer,
-        minimumSize: const Size.fromHeight(50),
-      ),
-      child: const Text(
-        "Chat",
-        style: TextStyle(
-          fontSize: 22,
-        ),
-      ),
-    );
-  }
-
-  Widget get _buildPontuacao {
-    return TextButton(
-      onPressed: (() => print('ratings'.i18n())),
+      onPressed: (() => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => areaChat(token: token, email: email)),
+          )),
       style: TextButton.styleFrom(
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
       child: Text(
-        'ratings'.i18n(),
+        "Chat".i18n(),
         style: TextStyle(
           fontSize: 22,
         ),
@@ -113,7 +249,8 @@ class _UserScreenState extends State<UserScreen> {
     return TextButton(
       onPressed: (() => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ConfigScreen()),
+            MaterialPageRoute(
+                builder: (context) => ConfigScreen(token: token, email: email)),
           )),
       style: TextButton.styleFrom(
         primary: getTheme().colorScheme.onPrimaryContainer,
@@ -141,7 +278,12 @@ class _UserScreenState extends State<UserScreen> {
               'lib/assets/images/casa.svg',
             ),
             iconSize: 50,
-            onPressed: (() => print('configuration'.i18n())),
+            onPressed: (() => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          UserScreen(token: token, email: email)),
+                )),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.2),
           IconButton(
@@ -149,7 +291,12 @@ class _UserScreenState extends State<UserScreen> {
               'lib/assets/images/pessoa.svg',
             ),
             iconSize: 50,
-            onPressed: (() => print('configuration'.i18n())),
+            onPressed: (() => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          dadosPessoais(token: token, email: email)),
+                )),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.2),
           IconButton(
@@ -159,7 +306,9 @@ class _UserScreenState extends State<UserScreen> {
             iconSize: 50,
             onPressed: (() => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SearchScreen()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SearchScreen(token: token, email: email)),
                 )),
           )
         ],
@@ -209,21 +358,8 @@ class _UserScreenState extends State<UserScreen> {
                     Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Row(children: [
-                            Text(
-                              "Nome: TESTE",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: getTheme().colorScheme.onPrimary,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 110,
-                            ),
-                          ]),
-                          const SizedBox(height: 10),
                           Text(
-                            'Email: teste@teste.com',
+                            'Email:'.i18n() + email!,
                             style: TextStyle(
                               fontSize: 18,
                               color: getTheme().colorScheme.onPrimary,
@@ -262,7 +398,7 @@ class _UserScreenState extends State<UserScreen> {
                   const SizedBox(height: 20),
                   _buildLine,
                   const SizedBox(height: 20),
-                  _buildPontuacao,
+                  _buildProdutor,
                   const SizedBox(height: 20),
                   _buildLine,
                   const SizedBox(height: 20),

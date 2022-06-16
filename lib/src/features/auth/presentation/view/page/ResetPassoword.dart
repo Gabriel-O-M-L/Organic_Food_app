@@ -1,41 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:pdm/src/features/search/presentation/view/page/search.dart';
+import 'package:pdm/src/features/userSpace/presentation/page/map.dart';
+import 'package:pdm/src/features/userSpace/presentation/page/personalData.dart';
+import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
+import 'package:pdm/theme_manager.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:developer';
 import 'package:localization/localization.dart';
-import "package:pdm/src/features/auth/presentation/viewmodel/login_viewmodel.dart";
-import 'package:pdm/theme_manager.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'login.dart';
+const kGoogleApiKey = "AIzaSyDjVyvOsvS2qsb2_ASvIFZRhAR-tjQmc3I";
 
 class ForgetPassword extends StatefulWidget {
+  final String? token;
+  final String? email;
+
+  const ForgetPassword({Key? key, this.token, this.email}) : super(key: key);
   @override
-  _ForgetPassword createState() => _ForgetPassword();
+  State<ForgetPassword> createState() => _ForgetPasswordState(token, email);
 }
 
-Future<http.Response> forgetPassword(String email, String password) {
-  return http.post(
-    Uri.parse('https://back-end-pdm.herokuapp.com/api/forgot/'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      "email": email,
-      "password": password,
-    }),
-  );
-}
+class _ForgetPasswordState extends State<ForgetPassword> {
+  final String? token;
+  final String? email;
 
-class _ForgetPassword extends ModularState<ForgetPassword, LoginViewModel> {
+  TextEditingController senhaController = new TextEditingController();
+
   TextEditingController emailController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
 
-  String email = "";
-  String password = "";
+  String senha = "";
+  String emailf = "";
 
-  Future alertDialog(String text) {
+  _ForgetPasswordState(this.token, this.email);
+
+  Future<http.Response> postRequest() async {
+    var url = Uri.parse('https://back-end-pdm.herokuapp.com/user/forgot/');
+
+    Map data = {
+      "email": emailf,
+      "password": senha,
+    };
+    //encode Map to JSON
+    var body = json.encode(data);
+
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"}, body: body);
+    print("${response.statusCode}");
+    print("${response.body}");
+
+    if (response.statusCode == 200) {
+      alertDialog("Sucesso!", 1);
+    } else
+      alertDialog("Error!", 0);
+
+    return response;
+  }
+
+  Future alertDialog(String text, int status) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -46,10 +69,18 @@ class _ForgetPassword extends ModularState<ForgetPassword, LoginViewModel> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
               onPressed: () {
                 Navigator.of(context).pop();
+                if (status == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            UserScreen(token: token, email: email)),
+                  );
+                }
               },
             ),
           ],
-          title: Text("warning".i18n(), style: TextStyle(fontSize: 28)),
+          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -74,143 +105,175 @@ class _ForgetPassword extends ModularState<ForgetPassword, LoginViewModel> {
     );
   }
 
-  Widget get _buildEmailTF {
-    email = emailController.text;
-    return SizedBox(
-      width: 300,
-      child: TextField(
-        controller: emailController,
-        keyboardType: TextInputType.emailAddress,
-        autofocus: false,
-        style: TextStyle(color: getTheme().colorScheme.onTertiary),
-        decoration: InputDecoration(
-          labelText: "Email",
-          labelStyle: TextStyle(
-            fontSize: 22,
-            color: getTheme().colorScheme.onTertiary,
-          ),
-          filled: true,
-          fillColor: getTheme().colorScheme.tertiary,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
-            ),
-            borderSide: BorderSide(
-              color: getTheme().colorScheme.tertiary,
-              width: 2,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget get _buildPasswordTF {
-    return SizedBox(
-      width: 300,
-      child: TextField(
-        controller: passwordController,
-        obscureText: true,
-        autofocus: false,
-        style: TextStyle(color: getTheme().colorScheme.onTertiary),
-        decoration: InputDecoration(
-          labelText: "new_password".i18n(),
-          labelStyle: TextStyle(
-            color: getTheme().colorScheme.onTertiary,
-            fontSize: 22,
-          ),
-          filled: true,
-          fillColor: getTheme().colorScheme.tertiary,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
-            ),
-            borderSide: BorderSide(
-              color: getTheme().colorScheme.tertiary,
-              width: 2,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget get _buildSignUpTF {
-    email = emailController.text.toString();
-    password = passwordController.text.toString();
-
-    return TextButton(
-      onPressed: () => _buildResetPasswordTF(),
-      style: TextButton.styleFrom(
-        backgroundColor: getTheme().colorScheme.secondary,
-        fixedSize: const Size(180, 70),
-        primary: Colors.black,
-      ),
-      child: Text(
-        "password_reset".i18n(),
-        style: TextStyle(
-          color: getTheme().colorScheme.onSecondary,
-          fontSize: 18,
-        ),
-      ),
-    );
-  }
-
-  Future _buildResetPasswordTF() async {
-    email = emailController.text.toString();
-    password = passwordController.text.toString();
-
-    store.password = password;
-    store.email = email;
-
-    store.login();
-
-    if (null != store.error.email) {
-      String error = store.error.email.toString();
-      return alertDialog(error);
-    } else if (null != store.error.password) {
-      String error = store.error.password.toString();
-      return alertDialog(error);
-    } else
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
-
-    forgetPassword(email, password);
-  }
-
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: getTheme().colorScheme.primaryContainer,
-      body: Stack(children: <Widget>[
-        Column(
-          children: [
-            Container(
-              color: getTheme().colorScheme.primary,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.15,
-              alignment: Alignment.topCenter,
+  Widget get _buildFooter {
+    return Container(
+      color: getTheme().colorScheme.primary,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.10,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: SvgPicture.asset(
+              'lib/assets/images/casa.svg',
             ),
-            const SizedBox(height: 50),
-            Text(
-              "reset_password".i18n(),
-              style: TextStyle(
-                fontSize: 28,
-                color: getTheme().colorScheme.onPrimaryContainer,
-              ),
+            iconSize: 50,
+            onPressed: (() => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          UserScreen(token: token, email: email)),
+                )),
+          ),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.2),
+          IconButton(
+            icon: SvgPicture.asset(
+              'lib/assets/images/pessoa.svg',
             ),
-            const SizedBox(height: 80),
-            _buildEmailTF,
-            const SizedBox(height: 30),
-            _buildPasswordTF,
-            const SizedBox(height: 50),
-            _buildSignUpTF,
-          ],
-        ),
-      ]),
+            iconSize: 50,
+            onPressed: (() => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          dadosPessoais(token: token, email: email)),
+                )),
+          ),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.2),
+          IconButton(
+            icon: SvgPicture.asset(
+              'lib/assets/images/lupa.svg',
+            ),
+            iconSize: 50,
+            onPressed: (() => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SearchScreen(token: token, email: email)),
+                )),
+          )
+        ],
+      ),
     );
-    throw UnimplementedError();
+  }
+
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: getTheme().colorScheme.primaryContainer,
+        appBar: AppBar(
+          toolbarHeight: 120,
+          title: Text('data'.i18n()),
+          centerTitle: true,
+          backgroundColor: Color(0xff388E3C),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 20, right: 20, bottom: 80),
+                height: MediaQuery.of(context).size.height / 1.7,
+                width: MediaQuery.of(context).size.width / 1.2,
+                decoration: BoxDecoration(
+                  color: getTheme().colorScheme.primary,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: ListView(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextFormField(
+                            controller: emailController,
+                            decoration: InputDecoration(
+                              labelText: "email".i18n(),
+                              labelStyle: TextStyle(
+                                fontSize: 22,
+                                color: Color(0xffFFFFFF),
+                              ),
+                              filled: true,
+                              fillColor: getTheme().colorScheme.tertiary,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                                borderSide: BorderSide(
+                                  color: getTheme().colorScheme.tertiary,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.number,
+                            controller: senhaController,
+                            decoration: InputDecoration(
+                              labelText: "senha".i18n(),
+                              labelStyle: TextStyle(
+                                fontSize: 22,
+                                color: getTheme().colorScheme.onTertiary,
+                              ),
+                              filled: true,
+                              fillColor: getTheme().colorScheme.tertiary,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                                borderSide: BorderSide(
+                                  color: getTheme().colorScheme.tertiary,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              emailf = emailController.text;
+                              senha = senhaController.text;
+
+                              if (emailf.length < 5) {
+                                return alertDialog("Email muito pequeno!", 0);
+                              } else if (!emailf.contains("@")) {
+                                alertDialog("Email inválido!", 0);
+                              } else if (senha.length < 6) {
+                                return alertDialog("Senha muito pequena!", 0);
+                              }
+
+                              postRequest();
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: const Color(0xffFF5252),
+                              fixedSize: const Size(90, 40),
+                              primary: Colors.black,
+                            ),
+                            child: Text(
+                              "register".i18n(),
+                              style: TextStyle(
+                                color: Color(0xffFFFFFF),
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        bottomSheet: _buildFooter,
+      ),
+    );
   }
 }

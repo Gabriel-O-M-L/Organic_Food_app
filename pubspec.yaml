@@ -29,6 +29,9 @@ dependencies:
   geocoder2: ^1.1.0
   geocoding: ^2.0.4
   geolocator: ^8.2.1
+  flutter_secure_storage: ^5.0.2
+  flutter_slidable: ^0.6.0
+  bubble: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -39,14 +42,13 @@ dev_dependencies:
   flutter_lints: ^1.0.0
 
 flutter:
-
-
   uses-material-design: true
   assets:
     - lib/assets/
     - lib/assets/i18n/
     - lib/assets/images/
     - lib/assets/fonts/
+    - lib/assets/i18n/en_US.json
 
   fonts:
     - family: Asap
