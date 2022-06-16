@@ -74,8 +74,9 @@ class CartView(viewsets.ViewSet):
         for i in cart.products:
             chatsend = Product.objects.get(P_id=i)
             list = []
-            text = "item sold"
+            text = "item sold 1"
             list.append(text)
+            p_name = chatsend.P_name + " 1"
             list.append(chatsend.P_name)
             chat = chatSerial(data={
                 "text": list,

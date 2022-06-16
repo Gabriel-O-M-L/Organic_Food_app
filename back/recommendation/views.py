@@ -42,32 +42,31 @@ class RegisterView(viewsets.ViewSet):
         max_radius = float(160000)
         reccomendArray = RegisterView.methodRecommend(request.data.get('P_id', None))
         ArrayProduct = {}
-        j = 1
+        P_array = []
+        j = 0
         if(len(reccomendArray) != 0):
             for i in range(0,len(reccomendArray)):
                 j += 1
+                if (j <= 6):
+                    p = User.objects.get(seller__product__P_id=reccomendArray.index[i])
+                    if(user.latitude is not None or user.longitude is not None):
+                        if (p.longitude is not None or p.longitude is not None):
+                           if RecommendUtils.getDistanceBetweenPointsNew((user.latitude), float(user.longitude),
+                                                                          float(p.latitude),
+                                                                          float(p.latitude)) < max_radius:
+                                ArrayProduct[p.id] = RecommendUtils.getDistanceBetweenPointsNew(float(user.latitude),
+                                                                                                float(user.longitude),
+                                                                                                float(p.latitude),
+                                                                                                float(p.longitude))
+                                P_array.append(p.id)
 
-                p = User.objects.get(seller__product__P_id=reccomendArray.index[i])
-
-                if(user.latitude is not None or user.longitude is not None):
-                    if (p.longitude is not None or p.longitude is not None):
-
-                        if RecommendUtils.getDistanceBetweenPointsNew((user.latitude), float(user.longitude),
-                                                                      float(p.latitude),
-                                                                      float(p.latitude)) < max_radius:
-                            ArrayProduct[p.id] = RecommendUtils.getDistanceBetweenPointsNew(float(user.latitude),
-                                                                                            float(user.longitude),
-                                                                                            float(p.latitude),
-                                                                                            float(p.longitude))
-
-                else:
-                    return Response("You do not have a set location in personal data")
+                    else:
+                        return Response("You do not have a set location in personal data")
 
             if(request.data.get('type',None)== 'recommend'):
                 print(ArrayProduct)
-                return Response({"ArrayProduct": ArrayProduct},status=200,content_type="application/json")
+                return Response({json.dumps(P_array)},status=200,content_type="application/json")
             else:
-
                 return Response({'reccomendArray': reccomendArray},status=200,content_type="application/json")
         else:
             return Response('Failed to find items to recommend',status=409)
