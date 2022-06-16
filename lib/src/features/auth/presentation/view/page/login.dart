@@ -1,27 +1,28 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
-import 'package:pdm/src/features/auth/presentation/viewmodel/login_viewmodel.dart';
+import 'package:pdm/src/features/userSpace/presentation/page/personalData.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
-import 'package:pdm/theme_manager.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'ResetPassoword.dart';
 import 'SignUp.dart';
-import '../../../../onboarding/presentation/page/onboarding.dart';
-import 'package:pdm/src/features/auth/presentation/view/page/ResetPassoword.dart';
-import 'package:localization/localization.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+
+  int x = 24;
+
+  late final String tokenR;
 
   String email = "";
   String password = "";
@@ -40,7 +41,7 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
               },
             ),
           ],
-          title: Text('warning'.i18n(), style: TextStyle(fontSize: 28)),
+          title: Text("Alerta!", style: TextStyle(fontSize: 28)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -50,6 +51,7 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
               Container(
                 height: MediaQuery.of(context).size.height / 15,
                 child: Text(
+                  //'Please rate with star',
                   text,
                   style: TextStyle(
                     fontSize: 18,
@@ -64,38 +66,36 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
     );
   }
 
-  Widget get _buildEmailTF {
+  Widget _buildEmailTF() {
     email = emailController.text;
     return SizedBox(
       width: 300,
       child: TextFormField(
         validator: (value) {
-          store.email = email;
-          store.login();
-          if (null != store.error.email) {
-            String error = store.error.email.toString();
-            return error;
+          if (value!.length < 5) {
+            return "Email muito curto";
+          } else if (!value.contains("@")) {
+            return "Email Inválido";
           }
           return null;
         },
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
-        style: TextStyle(color: getTheme().colorScheme.onTertiary),
         decoration: InputDecoration(
           labelText: "Email",
           labelStyle: TextStyle(
             fontSize: 22,
-            color: getTheme().colorScheme.onTertiary,
+            color: Color(0xffFFFFFF),
           ),
           filled: true,
-          fillColor: getTheme().colorScheme.tertiary,
+          fillColor: Color(0xffBDBDBD),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             ),
             borderSide: BorderSide(
-              color: getTheme().colorScheme.tertiary,
+              color: Color(0xffBDBDBD),
               width: 2,
             ),
           ),
@@ -104,37 +104,33 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
     );
   }
 
-  Widget get _buildPasswordTF {
+  Widget _buildPasswordTF() {
     return SizedBox(
       width: 300,
       child: TextFormField(
         validator: (value) {
-          store.password = password;
-          store.login();
-          if (null != store.error.password) {
-            String error = store.error.password.toString();
-            return error;
+          if (value!.length < 5) {
+            return "Senha muito curto";
           }
           return null;
         },
         controller: passwordController,
         obscureText: true,
         autofocus: false,
-        style: TextStyle(color: getTheme().colorScheme.onTertiary),
         decoration: InputDecoration(
-          labelText: "password".i18n(),
+          labelText: "Password",
           labelStyle: TextStyle(
             fontSize: 22,
-            color: getTheme().colorScheme.onTertiary,
+            color: Color(0xffFFFFFF),
           ),
           filled: true,
-          fillColor: getTheme().colorScheme.tertiary,
+          fillColor: Color(0xffBDBDBD),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             ),
             borderSide: BorderSide(
-              color: getTheme().colorScheme.tertiary,
+              color: Color(0xffBDBDBD),
               width: 2,
             ),
           ),
@@ -161,83 +157,88 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
     return '$email, $password';
   }
 
-  Future<Object?> _buildLoginDateTF() async {
+  Future<Object> _buildLoginDateTF() async {
     email = emailController.text.toString();
     password = passwordController.text.toString();
+    String token;
 
-    var url = Uri.parse('http://127.0.0.1:8000/api/login/');
+    if (email.length < 5) {
+      return alertDialog("Email muito pequeno!");
+    } else if (!email.contains("@")) {
+      alertDialog("Email inválido!");
+    } else if (password.length < 6) {
+      return alertDialog("Senha muito pequena!");
+    }
+
+    var url = Uri.parse('https://back-end-pdm.herokuapp.com/user/login/');
     var response = await http
         .post(url, body: {'email': '$email', 'password': '$password'});
 
-    store.password = password;
-    store.email = email;
+    final responseJson = json.decode(response.body);
 
-    store.login();
+    token = responseJson.toString().replaceAll("{jwt: ", "");
+    token = token.replaceAll("}", "");
 
-    if (null != store.error.email) {
-      String error = store.error.email.toString();
-      return alertDialog(error);
-    } else if (null != store.error.password) {
-      String error = store.error.password.toString();
-      return alertDialog(error);
-    } else if (response.statusCode == 202)
+    if (response.statusCode == 202)
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => UserScreen()),
+        MaterialPageRoute(
+            builder: (context) => dadosPessoais(token: token, email: email)),
       );
     else
-      alertDialog("incorect_data".i18n());
+      alertDialog("Dados Incorretos!");
+    return '$email, $password';
   }
 
-  Widget get _buildLoginTF {
+  Widget _buildLoginTF() {
     email = emailController.text.toString();
     password = passwordController.text.toString();
 
     return TextButton(
       onPressed: () => print(_buildLoginDateTF()),
       style: TextButton.styleFrom(
-        backgroundColor: getTheme().colorScheme.secondary,
+        backgroundColor: const Color(0xffFF5252),
         fixedSize: const Size(90, 40),
         primary: Colors.black,
       ),
-      child: Text(
-        "acess".i18n(),
+      child: const Text(
+        "Acessar",
         style: TextStyle(
-          color: getTheme().colorScheme.onSecondary,
+          color: Color(0xffFFFFFF),
           fontSize: 16,
         ),
       ),
     );
   }
 
-  Widget get _buildSignupTF {
+  Widget _buildSignupTF() {
     return TextButton(
       onPressed: () => print(_buildSignUpTF()),
       style: TextButton.styleFrom(
-        backgroundColor: getTheme().colorScheme.secondary,
+        backgroundColor: const Color(0xffFF5252),
         fixedSize: const Size(90, 40),
         primary: Colors.black,
       ),
-      child: Text(
-        "register".i18n(),
+      child: const Text(
+        "Cadastrar",
         style: TextStyle(
-          color: getTheme().colorScheme.onSecondary,
+          color: Color(0xffFFFFFF),
           fontSize: 16,
         ),
       ),
     );
   }
 
-  Widget get _buildForgetPasswordTF {
+  Widget _buildForgetPasswordTF() {
     return TextButton(
       onPressed: (() => _buildResetPasswordTF()),
       style: TextButton.styleFrom(
-        primary: getTheme().colorScheme.onPrimaryContainer,
+        primary: Colors.black,
       ),
-      child: Text(
-        "forgot_password".i18n(),
+      child: const Text(
+        "Perdi a senha",
         style: TextStyle(
-          color: getTheme().colorScheme.onPrimaryContainer,
+          color: Color(0xff212121),
           fontSize: 16,
         ),
       ),
@@ -247,12 +248,11 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: getTheme().colorScheme.primaryContainer,
       body: Stack(children: <Widget>[
         Column(
           children: [
             Container(
-              color: getTheme().colorScheme.primary,
+              color: const Color(0xff388E3C),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.15,
               alignment: Alignment.topCenter,
@@ -266,25 +266,25 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginViewModel> {
               ),
             ),
             const SizedBox(height: 30),
-            Text(
+            const Text(
               "Horti em Casa",
               style: TextStyle(
                 fontSize: 28,
-                color: getTheme().colorScheme.onPrimaryContainer,
+                color: Color(0xff212121),
               ),
             ),
-            const SizedBox(height: 80),
-            _buildEmailTF,
-            const SizedBox(height: 30),
-            _buildPasswordTF,
-            const SizedBox(height: 30),
+            SizedBox(height: MediaQuery.of(context).size.height / x),
+            _buildEmailTF(),
+            SizedBox(height: MediaQuery.of(context).size.height / x),
+            _buildPasswordTF(),
+            SizedBox(height: MediaQuery.of(context).size.height / x),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              _buildLoginTF,
+              _buildLoginTF(),
               const SizedBox(width: 120),
-              _buildSignupTF,
+              _buildSignupTF(),
             ]),
-            const SizedBox(height: 30),
-            _buildForgetPasswordTF,
+            SizedBox(height: MediaQuery.of(context).size.height / x),
+            _buildForgetPasswordTF(),
           ],
         ),
       ]),

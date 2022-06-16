@@ -11,5 +11,8 @@ urlpatterns = [
     })),
     path('forgot/', UserView.as_view({
         'post': 'change_password'
-    }))
+    })),
+    path('personal/', UserView.as_view({
+        'post': 'add_data'
+    })),
 ]

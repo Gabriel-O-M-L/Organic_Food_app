@@ -32,17 +32,34 @@ class UserView(viewsets.ViewSet):
         else:
             return Response(status=401)
     def create(self, request):
-        password = hashlib.sha256(request.data.get('password', None).encode())
-
-        user = UserSerializer(data={
-            'email': request.data.get('email', None),
-            'password': str(password.hexdigest())
-        })
-        if user.is_valid(raise_exception=True):
-            user.save()
-            return Response(user.data, status=201)
+        if User.objects.filter(email=request.data.get('email', None)).exists():
+            return Response(status=409)
         else:
-            return Response(user.errors, status=400)
+            password = hashlib.sha256(request.data.get('password', None).encode())
+
+            user = UserSerializer(data={
+                'email': request.data.get('email', None),
+                'password': str(password.hexdigest())
+            })
+            if user.is_valid(raise_exception=True):
+                user.save()
+                return Response(user.data, status=201)
+            else:
+                return Response(user.errors, status=400)
+
+    def add_data(self,request):
+        try:
+            user = User.objects.get(email=request.data.get('email', None))
+            user.phone = request.data.get('phone', None)
+            user.latidude = request.data.get('latidude', None)
+            user.longitude = request.data.get('longitude', None)
+            user.name = request.data.get('name', None)
+
+            user.save(force_update=True)
+            return Response(status=200)
+
+        except(user.DoesNotExist, exceptions.FieldError):
+            return Response(status=401)
 
     def sign_in(self, request):
         try:

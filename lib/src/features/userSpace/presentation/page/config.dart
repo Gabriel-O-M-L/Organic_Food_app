@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pdm/src/features/product/presentation/widget/footer.dart';
 import 'package:pdm/src/features/search/presentation/view/page/search.dart';
 import 'package:pdm/src/features/userSpace/presentation/page/user.dart';
 import 'package:http/http.dart' as http;
@@ -10,12 +11,22 @@ import 'package:pdm/src/features/auth/presentation/view/page/ResetPassoword.dart
 import 'package:localization/localization.dart';
 import 'package:pdm/theme_manager.dart';
 
+import '../../../auth/presentation/view/page/login.dart';
+
 class ConfigScreen extends StatefulWidget {
+  final String? token;
+  final String? email;
+
+  const ConfigScreen({Key? key, this.token, this.email}) : super(key: key);
   @override
-  _ConfigScreenState createState() => _ConfigScreenState();
+  _ConfigScreenState createState() => _ConfigScreenState(token, email);
 }
 
 class _ConfigScreenState extends State<ConfigScreen> {
+  final String? token;
+  final String? email;
+
+  _ConfigScreenState(this.token, this.email);
   Widget get _buildLine {
     return Container(
       color: getTheme().colorScheme.primary,
@@ -29,7 +40,9 @@ class _ConfigScreenState extends State<ConfigScreen> {
     return TextButton(
       onPressed: (() => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ForgetPassword()),
+            MaterialPageRoute(
+                builder: (context) =>
+                    ForgetPassword(token: token, email: email)),
           )),
       style: TextButton.styleFrom(
         minimumSize: const Size.fromHeight(50),
@@ -51,8 +64,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Notificação",
+      child: Text(
+        "notification".i18n(),
         style: TextStyle(
           fontSize: 22,
         ),
@@ -62,13 +75,20 @@ class _ConfigScreenState extends State<ConfigScreen> {
 
   Widget get _buildTema {
     return TextButton(
-      onPressed: (changeTheme),
+      onPressed: (() {
+        changeTheme();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConfigScreen(),
+            ));
+      }),
       style: TextButton.styleFrom(
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Tema",
+      child: Text(
+        "theme".i18n(),
         style: TextStyle(
           fontSize: 22,
         ),
@@ -83,8 +103,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
         primary: getTheme().colorScheme.onPrimaryContainer,
         minimumSize: const Size.fromHeight(50),
       ),
-      child: const Text(
-        "Trocar Email",
+      child: Text(
+        "change_email".i18n(),
         style: TextStyle(
           fontSize: 22,
         ),
@@ -153,7 +173,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                       children: [
                         const SizedBox(width: 20),
                         Text(
-                          "Configurações",
+                          "configuration".i18n(),
                           style: TextStyle(
                             fontSize: 22,
                             color: getTheme().colorScheme.onPrimary,
@@ -185,10 +205,6 @@ class _ConfigScreenState extends State<ConfigScreen> {
             const SizedBox(height: 20),
             _buildLine,
             const SizedBox(height: 20),
-            _buildTrocarEmail,
-            const SizedBox(height: 20),
-            _buildLine,
-            const SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -196,7 +212,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                 ),
               ),
             ),
-            _buildFooter,
+            footer(token: token, email: email),
           ],
         ),
       ]),
