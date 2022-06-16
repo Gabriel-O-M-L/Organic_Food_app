@@ -90,14 +90,18 @@ class ChatViews(viewsets.ViewSet):
         user_receive = User.objects.get(id=request.data.get('S_id', None))
         user_sender = User.objects.get(id=decoded_jwt['user_id'])
 
+        lista = []
+        text = request.data.get('text', None) + " 1"
+        lista.append(text)
+
         chat = chatSerial(data={
             'U_id_sender': user_sender.pk,
             'U_id_receiver': user_receive.pk,
-            'text': request.data.get('text', None),
-            'text': list
+            'text': lista,
         })
-        chat.save()
+
         if chat.is_valid(raise_exception=True):
+
             chat.save()
             return Response(chat.data, status=200, content_type="application/json")
         else:
@@ -108,7 +112,7 @@ class ChatViews(viewsets.ViewSet):
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
         userChat = chat.objects.get((Q(U_id_sender_id=user.id)|Q(U_id_sender_id=request.data.get('S_id', None)) & (Q(U_id_receiver__id=request.data.get('S_id', None))|Q(U_id_sender_id=user.id))))
-        returns = json.dumps(userChat.text)
+
         return Response({
             "text": userChat.text
         },status=200,content_type="application/json")
@@ -117,12 +121,25 @@ class ChatViews(viewsets.ViewSet):
         decoded_jwt = jwt.decode(request.data.get('jwt', None), key='askdasdiuh123i1y98yejas9d812hiu89dqw9',
                                  algorithms='HS256')
         user = User.objects.get(id=decoded_jwt['user_id'])
-        userChat = chat.objects.get((Q(U_id_sender_id=user.id)|Q(U_id_sender_id=request.data.get('S_id', None)) & (Q(U_id_receiver__id=request.data.get('S_id', None))|Q(U_id_sender_id=user.id))))
+        if (user.id == request.data.get('U_id_sender', None)):
+            userChat = chat.objects.filter(U_id_sender=user.id)
+            userChat = userChat.get(U_id_receiver=request.data.get('U_id_receiver', None))
+            if(userChat.text is None):
+                userChat.text = []
+            text = request.data.get('text', None) + " 1"
+            userChat.text.append(text)
 
-        userChat.text.append(request.data.get('text', None))
+
+        else:
+            userChat = chat.objects.filter(U_id_receiver__id=user.id)
+            chats = chat.objects.filter(U_id_sender=request.data.get('U_id_sender', None)).first()
+            userChat = userChat.get(U_id_sender=request.data.get('U_id_sender', None))
+            if (userChat.text is None):
+                userChat.text = []
+            text = request.data.get('text', None) + " 0"
+            userChat.text.append(text)
 
         userChat.save()
-
         return Response(status=200)
 
     def getchatlist(self,request):
@@ -147,10 +164,10 @@ class ChatViews(viewsets.ViewSet):
         return Response({
                 'chatId': userchat.chatId,
                 'text': userchat.text,
-                'text2': userchat.text2,
                 'U_id_sender': userchat.U_id_sender.id,
                 'U_id_receiver': userchat.U_id_receiver.id,
                 'text': userchat.text,
                 "name": userchat.U_id_sender.name,
                 'secname': userchat.U_id_receiver.name
             }, status=200, content_type="application/json")
+

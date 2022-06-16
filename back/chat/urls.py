@@ -1,6 +1,5 @@
 from django.urls import path
 from chat.views import ChatViews,ChatbotViews
-from django.conf.urls import url
 
 urlpatterns = [
     path('sendBot/', ChatbotViews.as_view({
