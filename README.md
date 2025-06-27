@@ -115,37 +115,6 @@ Organic_Food_app/
 └── README.md
 ```
 
----
-
-## 🤝 Contribuição
-
-Contribuições são bem-vindas! Você pode:
-
-- Reportar bugs
-- Sugerir melhorias
-- Enviar Pull Requests
-
-Para contribuir:
-
-```bash
-# Fork o repositório
-git clone https://github.com/seu-usuario/Organic_Food_app.git
-cd Organic_Food_app
-
-# Crie uma nova branch
-git checkout -b minha-feature
-
-# Faça alterações e commit
-git commit -m 'feat: nova feature'
-
-# Suba a branch
-git push origin minha-feature
-```
-
-Depois, crie um Pull Request no GitHub!
-
----
-
 ## 📬 Contato
 
 Gabriel Oliveira Moura Lima  
